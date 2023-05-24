@@ -1,0 +1,24 @@
+#!/bin/bash
+echo '      ___               ____  ______ _____  _____   '
+echo '     / _ | ___  ___    /_  / / __/ // / _ \/ ___/   '
+echo '    / __ |/ _ \/ _ \    / /__\ \/ _  / , _/ /__     '
+echo '   /_/ |_/_//_/\___/   /___/___/_//_/_/|_|\___/     '
+echo '                                                    '
+cd "${HOME}"
+
+if [ -f "${HOME}/.zshrc" ]; then
+    echo "Renaming .zshrc to .zshrc.old"
+    mv "${HOME}/.zshrc" "${HOME}/.zshrc.old"
+fi
+
+echo "Downloading ANOZSH .zshrc file"
+curl -L -o "${HOME}/.zshrc" https://raw.githubusercontent.com/Anonoei/anozsh/main/.zshrc
+if [[ ! -d "${HOME}/.local/anozsh" ]]; then
+    echo 'Creating ~/.local/anozsh'
+    mkdir -p "${HOME}/.local/anozsh"
+fi
+
+echo "Downloading ANOZSH az_main"
+curl -L -o "${HOME}/.local/anozsh/az_main.zsh" https://raw.githubusercontent.com/Anonoei/anozsh/main/anozsh/az_main.zsh 
+echo "Done! Restarting terminal..."
+exec zsh
