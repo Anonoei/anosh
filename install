@@ -20,10 +20,8 @@ if [[ $SHELL == *"/bin/zsh"* ]]; then
     ZSH_DEFAULT=1
 fi
 
-echo "ZSH_INSTALLED=$ZSH_INSTALLED"
-echo "ZSH_DEFAULT=$ZSH_DEFAULT"
-
 if [ $ZSH_INSTALLED == 0 ]; then
+    echo "ZSH is not installed. Installing ZSH..."
     packagesNeeded='zsh'
     if [ -x "$(command -v apk)" ];       then sudo apk add --no-cache $packagesNeeded
     elif [ -x "$(command -v apt-get)" ]; then sudo apt-get install $packagesNeeded
@@ -33,6 +31,7 @@ if [ $ZSH_INSTALLED == 0 ]; then
 fi
 
 if [ $ZSH_DEFAULT == 0 ]; then
+    echo "ZSH is not the default shell. Setting ZSH to default..."
     chsh -s $(which zsh)
 fi
 

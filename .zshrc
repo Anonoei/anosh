@@ -7,7 +7,7 @@
 ######################################################
 # Author: Anonoei (https://github.com/anonoei)
 # License: MIT
-ANOZSH_VERSION="0.4.0"
+ANOZSH_VERSION="0.4.2"
 ANOZSH_GIT_AUTHOR="Anonoei"
 ANOZSH_GIT_REPO="anozsh"
 ANOZSH_GIT_BRANCH="main"
@@ -36,10 +36,6 @@ az_install() {
     curl -L -o "${HOME}/.local/$AZ_DL_FILE" $AZ_DL_URL
     unset AZ_DL_FILE
     unset AZ_DL_URL
-}
-
-az_reinstall() {
-    bash <(curl -s https://raw.githubusercontent.com/Anonoei/anozsh/main/install)
 }
 
 source ~/.local/anozsh/az_main.zsh

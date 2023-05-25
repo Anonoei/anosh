@@ -36,36 +36,3 @@ precmd () { vcs_info }
 # help info
 autoload -Uz run-help
 autoload -Uz run-help-git run-help-ip run-help-openssl run-help-p4 run-help-sudo run-help-svk run-help-svn
-
-### ---- Confirm commands ---- ###
-confirm() {
-    local response="y"
-    echo -ne "Do you want to run '$*' (y/N)? "
-    read -q response
-    echo
-    case "$response" in
-        [yY][eE][sS]|[yY]) command "${@}";;
-        *) return false;;
-    esac
-}
-confirm_wrap() {
-    if [ "$1" = '--root' ]; then
-        local as_root='1'
-        shift
-    fi
-    local prefix=''
-    if [ "${as_root}" = '1' ] && [ "${USER}" != 'root' ]; then
-        prefix="sudo"
-    fi
-
-    confirm ${prefix} "$@"
-}
-
-poweroff() { confirm_wrap --root $0 "$@"; }
-reboot() { confirm_wrap --root $0 "$@"; }
-hibernate() { confirm_wrap --root $0 "$@"; }
-# Package managers
-pacman() { confirm_wrap --root $0 "$@"; }
-apt() { confirm_wrap --root $0 "$@"; }
-nala() { confirm_wrap --root $0 "$@"; }
-port() { confirm_wrap --root $0 "$@"; }
