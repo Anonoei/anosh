@@ -38,4 +38,8 @@ az_install() {
     unset AZ_DL_URL
 }
 
+az_reinstall() {
+    bash <(curl -s https://raw.githubusercontent.com/Anonoei/anozsh/main/install)
+}
+
 source ~/.local/anozsh/az_main.zsh
