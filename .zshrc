@@ -7,7 +7,7 @@
 ######################################################
 # Author: Anonoei (https://github.com/anonoei)
 # License: MIT
-ANOZSH_VERSION="0.4.2"
+ANOZSH_VERSION="0.4.3"
 ANOZSH_GIT_AUTHOR="Anonoei"
 ANOZSH_GIT_REPO="anozsh"
 ANOZSH_GIT_BRANCH="main"

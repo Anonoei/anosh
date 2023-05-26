@@ -3,7 +3,7 @@ az_reinstall() {
 }
 
 az_update() {
-    rm -r "$PATH_ANOZSH/az_*.zsh"
+    rm -f "$PATH_ANOZSH"/az_*.zsh
     echo $AZ_IMPORTS
     for row in $AZ_IMPORTS; do
         localPath=$(echo $row | cut -d ";" -f 1)
