@@ -4,46 +4,83 @@ echo '     / _ | ___  ___    /_  / / __/ // / _ \/ ___/   '
 echo '    / __ |/ _ \/ _ \    / /__\ \/ _  / , _/ /__     '
 echo '   /_/ |_/_//_/\___/   /___/___/_//_/_/|_|\___/     '
 echo '                                                    '
-cd "${HOME}"
+AZ_INSTALLING=1
+AZ_SRC="https://raw.githubusercontent.com/Anonoei/anozsh/main/"
 
-ZSH_INSTALLED=0
-ZSH_DEFAULT=0
-
-output=$(zsh --version)
-while IFS= read -r line; do
-    if [[ $line == *"zsh "* ]]; then
-        ZSH_INSTALLED=1
+AZ_COPY() {
+    if [[ $AZ_SRC == /* ]]; then
+        cp "$1" "$2"
+    else
+        curl -L -o "$2" "$1"
     fi
-done <<< "$output"
+}
 
-if [[ $SHELL == *"/bin/zsh"* ]]; then
-    ZSH_DEFAULT=1
+if [ "$1" == "-e" ]; then
+    AZ_SRC="$2"
+    if [ "$AZ_SRC" == "." ]; then
+        AZ_SRC="$PWD"
+    fi
+    foldername=${AZ_SRC##*/}
+    foldername=${foldername:-/}
+    if [ ! $foldername == "anozsh" ]; then
+        echo "Please install from anozsh source, not $foldername"
+        exit
+    fi
+    if [ ! -d "$AZ_SRC" ]; then
+        echo "Unable to install from local directory $AZ_SRC"
+        exit
+    fi
 fi
 
-if [ $ZSH_INSTALLED == 0 ]; then
-    echo "ZSH is not installed. Installing ZSH..."
-    packagesNeeded='zsh'
-    if [ -x "$(command -v nala)" ];      then sudo nala install $packagesNeeded
-    elif [ -x "$(command -v apt-get)" ]; then sudo apt-get install $packagesNeeded
-    elif [ -x "$(command -v apk)" ];     then sudo apk add --no-cache $packagesNeeded
-    elif [ -x "$(command -v dnf)" ];     then sudo dnf install $packagesNeeded
-    elif [ -x "$(command -v zypper)" ];  then sudo zypper install $packagesNeeded
-    else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; fi
-fi
+verify_zsh_installed() {
+    output=$(zsh --version)
+    installed=0
+    while IFS= read -r line; do
+        if [[ $line == *"zsh "* ]]; then
+            installed=1
+        fi
+    done <<< "$output"
+    if [ $installed == 0 ]; then
+        echo "ZSH is not installed. Installing ZSH..."
+        packagesNeeded='zsh'
+        if [ -x "$(command -v nala)" ];      then sudo nala install $packagesNeeded
+        elif [ -x "$(command -v apt-get)" ]; then sudo apt-get install $packagesNeeded
+        elif [ -x "$(command -v apk)" ];     then sudo apk add --no-cache $packagesNeeded
+        elif [ -x "$(command -v dnf)" ];     then sudo dnf install $packagesNeeded
+        elif [ -x "$(command -v zypper)" ];  then sudo zypper install $packagesNeeded
+        else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; fi
+    fi
+}
 
-if [ $ZSH_DEFAULT == 0 ]; then
-    echo "ZSH is not the default shell. Setting ZSH to default..."
-    chsh -s $(which zsh)
-fi
+verify_zsh_default() {
+    if [[ ! $SHELL == *"/bin/zsh"* ]]; then
+        echo "ZSH is not the default shell. Setting ZSH to default..."
+        chsh -s $(which zsh)
+    fi
+}
 
-echo "Downloading ANOZSH .zshrc file"
-curl -L -o "${HOME}/.zshrc" https://raw.githubusercontent.com/Anonoei/anozsh/main/.zshrc
+cd "${HOME}"
+echo "Installing from $AZ_SRC"
+
+verify_zsh_installed
+verify_zsh_default
+
+
+echo "Downloading AnoZSH .zshrc file"
+AZ_COPY "$AZ_SRC/.zshrc" "${HOME}/.zshrc"
+mv "${HOME}/.zshrc" "${HOME}/.zshrc_tmp"
+
+sed "s|ANOZSH_SRC=.*|ANOZSH_SRC=\"$AZ_SRC\"|g" "${HOME}/.zshrc_tmp" > "${HOME}/.zshrc"
+rm "${HOME}/.zshrc_tmp"
+
 if [[ ! -d "${HOME}/.local/anozsh" ]]; then
     echo 'Creating ~/.local/anozsh'
     mkdir -p "${HOME}/.local/anozsh"
+else
+    find "${HOME}/.local/anozsh" -type f -not -name 'az_settings.zsh' -print0 | xargs -0 rm --
 fi
 
-echo "Downloading ANOZSH az_main"
-curl -L -o "${HOME}/.local/anozsh/az_main.zsh" https://raw.githubusercontent.com/Anonoei/anozsh/main/anozsh/az_main.zsh 
-echo "Done! Restarting terminal..."
+echo "Downloading AnoZSH az_main"
+AZ_COPY "$AZ_SRC/anozsh/az_main.zsh" "${HOME}/.local/anozsh/az_main.zsh"
+echo "Installed! Running AnoZSH"
 exec zsh

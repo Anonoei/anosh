@@ -1,6 +1,3 @@
-if [[ ! -d "${PATH_ZSH}" ]]; then
-    mkdir -p "${PATH_ZSH}"
-fi
 ### ---- History ---- ###
 HISTFILE="${PATH_ZSH}/.zsh_history"
 SAVEHIST=$HISTLINES # lines of history to save

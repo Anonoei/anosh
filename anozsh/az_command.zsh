@@ -1,20 +1,9 @@
 az_reinstall() {
-    bash <(curl -s https://raw.githubusercontent.com/Anonoei/anozsh/main/install)
+    az_cmd 1 "bash <(curl -s "$ANOZSH_DL/install")"
 }
 
 az_update() {
-    rm -f "$PATH_ANOZSH"/az_*.zsh
-    for row in $AZ_IMPORTS; do
-        localPath=$(echo $row | cut -d ";" -f 1)
-        file=$(echo $row | cut -d ";" -f 2)
-        gitPath=$(echo $row | cut -d ";" -f 3)
-        az_import "$localPath" "$file" "$gitPath"
-    done
-    az_install "az_main.zsh" anozsh
-    az_update_rc="$ANOZSH_URL_DOWN/$ANOZSH_GIT_AUTHOR/$ANOZSH_GIT_REPO/$ANOZSH_GIT_BRANCH/.zshrc"
-    echo "Downloading $az_update_rc"
-    curl -L -o "${HOME}/.zshrc" $az_update_rc
-    exec zsh
+    az_reinstall
 }
 
 ### ---- Confirm commands ---- ###
@@ -44,8 +33,13 @@ confirm_wrap() {
 poweroff() { confirm_wrap --root $0 "$@"; }
 reboot() { confirm_wrap --root $0 "$@"; }
 hibernate() { confirm_wrap --root $0 "$@"; }
+
 # Package managers
-pacman() { confirm_wrap --root $0 "$@"; }
-apt() { confirm_wrap --root $0 "$@"; }
-nala() { confirm_wrap --root $0 "$@"; }
-port() { confirm_wrap --root $0 "$@"; }
+az_pkgm=""
+for item in "nala" "apt" "apk" "pacman" "dnf" "yum" "port" "zypper"; do
+    cmd='{confirm_wrap --root $item "$@"}'
+    declare $item="$cmd"
+    if [ -x "$(command -v "$item")" ]; then
+        az_pkgm=item;
+    fi
+done

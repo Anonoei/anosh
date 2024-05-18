@@ -7,12 +7,10 @@
 ######################################################
 # Author: Anonoei (https://github.com/anonoei)
 # License: MIT
-ANOZSH_VERSION="0.4.3"
-ANOZSH_GIT_AUTHOR="Anonoei"
-ANOZSH_GIT_REPO="anozsh"
-ANOZSH_GIT_BRANCH="main"
-ANOZSH_URL_DOWN="https://raw.githubusercontent.com"
-ANOZSH_URL="https://github.com/${ANOZSH_GIT_AUTHOR}/${ANOZSH_GIT_REPO}"
+ANOZSH_VERSION="0.5.0"
+ANOZSH_URL="https://github.com/Anonoei/anozsh"
+ANOZSH_DL="https://raw.githubusercontent.com/Anonoei/anozsh/main/"
+ANOZSH_SRC=""
 
 ## Dependencies
 #   - curl
@@ -22,20 +20,28 @@ ANOZSH_URL="https://github.com/${ANOZSH_GIT_AUTHOR}/${ANOZSH_GIT_REPO}"
 #   - zinit (plugins)
 #   - fzf (fuzzy finder)
 
-az_install() {
-    # $1 filename
-    # $2 filepath
-    AZ_DL_FILE=""
-    if [ ! -z "$2" -a "$2" != " " ]; then
-        AZ_DL_FILE="$2/$1"
-    else
-        AZ_DL_FILE="$1"
+az_cmd() {
+    cmd="$2 $3 $4 $5 $6 $7 $8 $9"
+    if [ $1 == 0 ]; then
+        echo "AZ running $cmd"
     fi
-    AZ_DL_URL=$ANOZSH_URL_DOWN/$ANOZSH_GIT_AUTHOR/$ANOZSH_GIT_REPO/$ANOZSH_GIT_BRANCH/$AZ_DL_FILE
-    echo "Downloading $AZ_DL_URL"
-    curl -L -o "${HOME}/.local/$AZ_DL_FILE" $AZ_DL_URL
-    unset AZ_DL_FILE
-    unset AZ_DL_URL
+    cmd
 }
 
-source ~/.local/anozsh/az_main.zsh
+az_install() {
+    # $1 src, the file you want
+    # $2 dst, where you want it
+
+    src="$ANOZSH_SRC/$1"
+
+    #echo "Installing $2 from $src"
+
+    if [[ $ANOZSH_SRC == /* ]]; then
+        cp "$src" "$2"
+    else
+        curl -L -o "$2" "$src"
+        unset AZ_DL_URL
+    fi
+}
+
+source "$HOME/.local/anozsh/az_main.zsh"
