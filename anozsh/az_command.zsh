@@ -1,5 +1,5 @@
 az_reinstall() {
-    az_cmd 1 "bash <(curl -s "$ANOZSH_DL/install")"
+    bash <(curl -s "$ANOZSH_DL/install")
 }
 
 az_update() {

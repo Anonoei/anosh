@@ -7,9 +7,9 @@
 ######################################################
 # Author: Anonoei (https://github.com/anonoei)
 # License: MIT
-ANOZSH_VERSION="0.5.0"
+ANOZSH_VERSION="0.5.2"
 ANOZSH_URL="https://github.com/Anonoei/anozsh"
-ANOZSH_DL="https://raw.githubusercontent.com/Anonoei/anozsh/main/"
+ANOZSH_DL="https://raw.githubusercontent.com/Anonoei/anozsh/main"
 ANOZSH_SRC=""
 
 ## Dependencies
@@ -19,14 +19,6 @@ ANOZSH_SRC=""
 #   - zsh-autosuggestions
 #   - zinit (plugins)
 #   - fzf (fuzzy finder)
-
-az_cmd() {
-    cmd="$2 $3 $4 $5 $6 $7 $8 $9"
-    if [ $1 == 0 ]; then
-        echo "AZ running $cmd"
-    fi
-    cmd
-}
 
 az_install() {
     # $1 src, the file you want
