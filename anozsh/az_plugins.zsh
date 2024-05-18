@@ -12,14 +12,28 @@ if [ ! -d "$PATH_ZINIT" ]; then
     source "${ZINIT_HOME}/zinit.zsh"
     exec zsh
 fi
+
 if [ ! -d "$PATH_ZSH/zsh-autosuggestions" ]; then
     echo "Installing zsh-autosuggestions..."
     git clone https://github.com/zsh-users/zsh-autosuggestions "$PATH_ZSH/zsh-autosuggestions"
 fi
+
 if [ ! -d "$PATH_ZSH/zsh-syntax-highlighting" ]; then
     echo "Installing zsh-syntax-highlighting..."
     git clone https://github.com/zsh-users/zsh-syntax-highlighting "$PATH_ZSH/zsh-syntax-highlighting"
 fi
+
+if [ ! -f "$PATH_STARSHIP/starship" ]; then
+    echo "Installing starship..."
+    mkdir "$PATH_STARSHIP"
+    sh <(curl -sS "https://starship.rs/install.sh") --bin-dir "$PATH_STARSHIP"
+fi
+
+if [ ! -f "$PATH_ZOXIDE/zoxide" ]; then
+    echo "Installing zoxide..."
+    bash <(curl -sSfL "https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh") --bin-dir "$PATH_ZOXIDE"
+fi
+
 source "$ZINIT_HOME/zinit.zsh"
 
 autoload -Uz _zinit

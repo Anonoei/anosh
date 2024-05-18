@@ -1,5 +1,5 @@
 az_reinstall() {
-    bash <(curl -s "$ANOZSH_DL/install") -c
+    bash <(curl -s "${ANOZSH_DL}install") -c
 }
 
 az_update() {
@@ -10,7 +10,7 @@ az_update() {
         echo "Your version is out of date!"
         echo "Installed: \"$ANOZSH_VERSION\" / Found: $git_version"
         echo ""
-        bash <(curl -s "$ANOZSH_DL/install")
+        bash <(curl -s "${ANOZSH_DL}install")
     else
         echo "AnoZSH is up to date."
     fi
@@ -45,11 +45,42 @@ reboot() { confirm_wrap --root $0 "$@"; }
 hibernate() { confirm_wrap --root $0 "$@"; }
 
 # Package managers
-az_pkgm=""
+# Create sudo wrappers for package managers
 for item in "nala" "apt" "apk" "pacman" "dnf" "yum" "port" "zypper"; do
     cmd='{confirm_wrap --root $item "$@"}'
     declare $item="$cmd"
-    if [ -x "$(command -v "$item")" ]; then
-        az_pkgm=item;
+done
+# Create helper for installing packages
+az_pkgm=""
+for item in "nala" "apk" "apk" "pacman" "dnf" "yum" "port" "zypper" "brew"; do
+    if [ -x "$(command -v $item)" ]; then
+        az_pkgm=$item;
     fi
 done
+
+cd ()
+{
+	if [ -n "$1" ]; then
+		builtin cd "$@" && ls
+	else
+		builtin cd ~ && ls
+	fi
+}
+
+# IP address lookup
+alias whatismyip="whatsmyip"
+function whatsmyip ()
+{
+	# Internal IP Lookup.
+	if [ -e /sbin/ip ]; then
+		echo -n "Internal IP: "
+		/sbin/ip addr show wlan0 | grep "inet " | awk -F: '{print $1}' | awk '{print $2}'
+	else
+		echo -n "Internal IP: "
+		/sbin/ifconfig wlan0 | grep "inet " | awk -F: '{print $1} |' | awk '{print $2}'
+	fi
+
+	# External IP Lookup
+	echo -n "External IP: "
+	curl -s ifconfig.me
+}

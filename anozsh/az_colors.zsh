@@ -1,21 +1,24 @@
 # Initialize colors
-SupportedColors=0
-autoload colors && colors
-# foreground colors are lowercase, background colors UPPERCASE
-typeset -AHg fg fg_bold fg_no_bold
-for k in ${(k)color[(I)fg-*]}; do # foreground colors
-    name=${k#fg-} # Get color names from autoload colors, remove 'fg-' prefix
-    nameLower="${(L)name}"
-    eval $nameLower='%{$fg_no_bold[${(L)name}]%}' # wrap colours between %{ %} to avoid weird gaps in autocomplete
-    eval bold_$nameLower='%{$fg_bold[${(L)name}]%}'
-    let "SupportedColors=SupportedColors+1"
-done
-let "SupportedColors=SupportedColors*2" # for bold/non-bold
-typeset -AHg bg bg_bold bg_no_bold
-for k in ${(k)color[(I)bg-*]}; do # BACKGROUND colors
-    name=${k#bg-} # Get color names from autoload colors, remove 'bg-' prefix
-    nameUpper="${(U)name}"
-    eval $nameUpper='%{$bg_no_bold[${(L)name}]%}' # wrap colours between %{ %} to avoid weird gaps in autocomplete
-    eval BOLD_$nameUpper='%{$bg_bold[${(L)name}]%}'
-done
-eval RESET='%{$reset_color%}'
+
+S_B="$(tput bold 2>/dev/null || printf '')"
+S_U="$(tput smul 2>/dev/null || printf '')"
+
+F_B="$(tput setaf 0 2>/dev/null || printf '')"
+F_R="$(tput setaf 1 2>/dev/null || printf '')"
+F_G="$(tput setaf 2 2>/dev/null || printf '')"
+F_Y="$(tput setaf 3 2>/dev/null || printf '')"
+F_E="$(tput setaf 4 2>/dev/null || printf '')"
+F_M="$(tput setaf 5 2>/dev/null || printf '')"
+F_C="$(tput setaf 6 2>/dev/null || printf '')"
+F_W="$(tput setaf 7 2>/dev/null || printf '')"
+
+B_B="$(tput setab 0 2>/dev/null || printf '')"
+B_R="$(tput setab 1 2>/dev/null || printf '')"
+B_G="$(tput setab 2 2>/dev/null || printf '')"
+B_Y="$(tput setab 3 2>/dev/null || printf '')"
+B_E="$(tput setab 4 2>/dev/null || printf '')"
+B_M="$(tput setab 5 2>/dev/null || printf '')"
+B_C="$(tput setab 6 2>/dev/null || printf '')"
+B_W="$(tput setab 7 2>/dev/null || printf '')"
+
+S_R="$(tput sgr0 2>/dev/null || printf '')"

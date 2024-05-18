@@ -7,7 +7,7 @@
 ######################################################
 # Author: Anonoei (https://github.com/anonoei)
 # License: MIT
-ANOZSH_VERSION="0.5.3"
+ANOZSH_VERSION="0.5.4"
 ANOZSH_URL="https://github.com/Anonoei/anozsh"
 ANOZSH_DL="https://raw.githubusercontent.com/Anonoei/anozsh/main"
 ANOZSH_SRC=""
@@ -24,14 +24,12 @@ az_install() {
     # $1 src, the file you want
     # $2 dst, where you want it
 
-    src="$ANOZSH_SRC/$1"
-
     #echo "Installing $2 from $src"
 
     if [[ $ANOZSH_SRC == /* ]]; then
-        cp "$src" "$2"
+        cp "$ANOZSH_SRC/$1" "$2"
     else
-        curl -L -o "$2" "$src"
+        curl -L -o "$2" "${ANOZSH_SRC}$1"
     fi
 }
 source "$HOME/.local/anozsh/az_main.zsh"
