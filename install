@@ -15,7 +15,7 @@ AZ_COPY() {
     fi
 }
 
-if [ "$1" == "-e" ]; then
+if [ "$1" == "-l" ]; then
     AZ_SRC="$2"
     if [ "$AZ_SRC" == "." ]; then
         AZ_SRC="$PWD"
@@ -73,14 +73,20 @@ mv "${HOME}/.zshrc" "${HOME}/.zshrc_tmp"
 sed "s|ANOZSH_SRC=.*|ANOZSH_SRC=\"$AZ_SRC\"|g" "${HOME}/.zshrc_tmp" > "${HOME}/.zshrc"
 rm "${HOME}/.zshrc_tmp"
 
-if [[ ! -d "${HOME}/.local/anozsh" ]]; then
+if [ ! -d "${HOME}/.local/anozsh" ]; then
     echo 'Creating ~/.local/anozsh'
     mkdir -p "${HOME}/.local/anozsh"
 else
+    rm -rf "${HOME}/.local/plugins"
     find "${HOME}/.local/anozsh" -type f -not -name 'az_settings.zsh' -print0 | xargs -0 rm --
 fi
 
 echo "Downloading AnoZSH az_main"
 AZ_COPY "$AZ_SRC/anozsh/az_main.zsh" "${HOME}/.local/anozsh/az_main.zsh"
 echo "Installed! Running AnoZSH"
+for _ in "" "" "" "" "" ""; do
+    sleep .5
+    echo -n "."
+done
+clear
 exec zsh

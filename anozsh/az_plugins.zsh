@@ -2,32 +2,32 @@ if [[ ! -d "${PATH_PLUGINS}" ]]; then
     mkdir -p "${PATH_PLUGINS}"
 fi
 
-#PATH_PLUGINS_ZINIT="${PATH_PLUGINS}/zinit.sh"
-
 ### ---- Install QoL features ---- ###
-ZINIT_HOME="${PATH_ZINIT}/zinit.git"
-if [[ ! -d "${PATH_ZINIT}" ]]; then
-    echo "\033[1;33mInstalling Zinit...\033[0m"
-    mkdir -p "$(dirname $ZINIT_HOME)"
-    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+ZINIT_HOME="${PATH_ZINIT}"
+
+if [ ! -d "$PATH_ZINIT" ]; then
+    echo "Installing Zinit..."
+    [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+    [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
     source "${ZINIT_HOME}/zinit.zsh"
     exec zsh
 fi
-if [[ ! -d "$PATH_ZSH/zsh-autosuggestions" ]]; then
-    echo "\033[1;33mInstalling zsh-autosuggestions...\033[0m"
+if [ ! -d "$PATH_ZSH/zsh-autosuggestions" ]; then
+    echo "Installing zsh-autosuggestions..."
     git clone https://github.com/zsh-users/zsh-autosuggestions "$PATH_ZSH/zsh-autosuggestions"
 fi
-if [[ ! -d "$PATH_ZSH/zsh-syntax-highlighting" ]]; then
-    echo "\033[1;33mInstalling zsh-syntax-highlighting...\033[0m"
+if [ ! -d "$PATH_ZSH/zsh-syntax-highlighting" ]; then
+    echo "Installing zsh-syntax-highlighting..."
     git clone https://github.com/zsh-users/zsh-syntax-highlighting "$PATH_ZSH/zsh-syntax-highlighting"
 fi
+source "$ZINIT_HOME/zinit.zsh"
+
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
 if hash fzf 2> /dev/null; then
     zinit snippet "https://github.com/junegunn/fzf/tree/master/shell/key-bindings.zsh"
 fi
-
-source "${ZINIT_HOME}/zinit.zsh"
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
 
 # zsh-syntax-highlighting
 if [[ -f $PATH_ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then

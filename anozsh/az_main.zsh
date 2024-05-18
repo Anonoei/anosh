@@ -1,10 +1,10 @@
 ### ---- Paths ---- ###
 PATH_LOCAL="${HOME}/.local"
-PATH_ANOZSH="${HOME}/.local/anozsh"
-PATH_ZSH="${PATH_ANOZSH}/.zsh"
-PATH_ZINIT="${XDG_DATA_HOME:-${PATH_ANOZSH}}/.zinit"
+PATH_ANOZSH="${PATH_LOCAL}/anozsh"
+
 PATH_PLUGINS="${PATH_ANOZSH}/plugins"
-PATH_USER_ALIAS="${HOME}/.az_alias"
+PATH_ZSH="${PATH_PLUGINS}/.zsh"
+PATH_ZINIT="${PATH_PLUGINS}/.zinit"
 
 if [[ ! -d "${PATH_ZSH}" ]]; then
     mkdir -p "${PATH_ZSH}"
