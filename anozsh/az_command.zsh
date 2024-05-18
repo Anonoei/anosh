@@ -1,9 +1,19 @@
 az_reinstall() {
-    bash <(curl -s "$ANOZSH_DL/install")
+    bash <(curl -s "$ANOZSH_DL/install") -c
 }
 
 az_update() {
-    az_reinstall
+    git_version=$(curl --silent "https://raw.githubusercontent.com/Anonoei/anozsh/main/.zshrc" | grep "ANOZSH_VERSION")
+    git_version=${git_version#*=}
+
+    if [ "$git_version" != "\"$ANOZSH_VERSION\"" ]; then
+        echo "Your version is out of date!"
+        echo "Installed: \"$ANOZSH_VERSION\" / Found: $git_version"
+        echo ""
+        bash <(curl -s "$ANOZSH_DL/install")
+    else
+        echo "AnoZSH is up to date."
+    fi
 }
 
 ### ---- Confirm commands ---- ###
