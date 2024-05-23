@@ -1,3 +1,45 @@
+
+
+ash_reinstall() {
+
+    zsh <(curl -s "${ASH_DOWN}/anozsh/install") -r
+}
+
+ash_update() {
+    git_version=$(curl --silent "${ASH_DOWN}/${ASH_VER_PATH}" | grep "ASH_VERSION")
+    git_version=${git_version#*=}
+
+    if [ "$git_version" != "\"$ASH_VERSION\"" ]; then
+        echo "Your version is out of date!"
+        echo "Installed: \"$ASH_VERSION\" / Found: $git_version"
+        echo ""
+        old_path=$PWD
+        cd $ASH_PATH
+        git pull --rebase
+        cd $old_path
+    else
+        echo "AnoSH is up to date."
+    fi
+}
+
+install_package() {
+    echo "Installing $1..."
+    if  [ -x "$(command -v nala)" ];     then sudo nala install $1
+    elif [ -x "$(command -v apt-get)" ]; then sudo apt install $1
+    elif [ -x "$(command -v apk)" ];     then sudo apk add --no-cache $1
+    elif [ -x "$(command -v dnf)" ];     then sudo dnf install $1
+    elif [ -x "$(command -v pacman)" ];  then sudo pacman -Syu $1
+    elif [ -x "$(command -v zypper)" ];  then sudo zypper install $1
+    elif [ -x "$(command -v brew)" ];    then brew install $1
+    else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; fi
+}
+
+for pkg in "bat" "tree" "multitail" "fzf"; do
+    if  [ ! -x "$(command -v $pkg)" ]; then
+        install_package $pkg
+    fi
+done
+
 confirm() {
     local response="y"
     echo -ne "Do you want to run '$*' (y/N)? "

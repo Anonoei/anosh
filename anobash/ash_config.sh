@@ -1,3 +1,3 @@
 ### ---- History ---- ###
-HISTFILE="${PATH_ZSH}/.bash_history"
+HISTFILE="${HOME}/.bash_history"
 SAVEHIST=$HISTLINES # lines of history to save

@@ -5,49 +5,29 @@ echo '   /   |  ____  ____ / ___// / / /'
 echo '  / /| | / __ \/ __ \\__ \/ /_/ / '
 echo ' / ___ |/ / / / /_/ /__/ / __  /  '
 echo '/_/  |_/_/ /_/\____/____/_/ /_/   '
-ASH_INSTALLING=1
-ASH_SRC="https://raw.githubusercontent.com/Anonoei/anosh/main/"
+ASH_SRC="https://github.com/Anonoei/anosh"
+
+ASH_ROOT="${HOME}/.local/anosh"
 
 if [[ "$1" == "-h" || "$1" == "--help" ]]; then
     echo "$0"
     echo " -h|--help     : show this message"
-    echo " -r|--reset    : delete anosh/anobash"
     echo " -p|--plugins  : delete anosh/plugins"
-    echo " -c|--common   : delete anosh/common"
     echo " -u|--user     : delete user settings"
     echo " -l|--local    : install from specified path"
     exit
 fi
 
-ash_copy() {
-    if [[ $ASH_SRC == /* ]]; then
-        cp "$1" "$2"
-    else
-        curl -L -o "$2" "$1"
-    fi
-}
-
-if [[ "$1" == "-r" || "$1" == "--reset" ]]; then
-    rm -rf "${HOME}/.local/anosh/anobash"
-    shift
-fi
-
 if [[ "$1" == "-p" || "$1" == "--plugins" ]]; then
-    rm -rf "${HOME}/.local/anosh/plugins"
-    shift
-fi
-
-if [[ "$1" == "-c" || "$1" == "--common" ]]; then
-    rm -rf "${HOME}/.local/anosh/common"
+    if [ -d "${ASH_ROOT}/plugins" ]; then
+        rm -rf "${ASH_ROOT}/plugins"
+    fi
     shift
 fi
 
 if [[ "$1" == "-u" || "$1" == "--user" ]]; then
-    if [ -f "${HOME}/.local/anosh/anobash/ash_settings.sh" ]; then
-        rm "${HOME}/.local/anosh/anobash/ash_settings.sh"
-    fi
-    if [ -f "${HOME}/.local/anosh/starship.toml" ]; then
-        rm  "${HOME}/.local/anosh/starship.toml"
+    if [ -d "${ASH_ROOT}/user" ]; then
+        rm -rf "${ASH_ROOT}/user"
     fi
     shift
 fi
@@ -60,7 +40,7 @@ if [[ "$1" == "-l" || "$1" == "--local" ]]; then
     foldername=${ASH_SRC##*/}
     foldername=${foldername:-/}
     if [[ ! $foldername == "anosh" ]]; then
-        echo "Please install from anobash source, not $foldername"
+        echo "Please install from anozsh source, not $foldername"
         exit
     fi
     if [ ! -d "$ASH_SRC" ]; then
@@ -69,17 +49,9 @@ if [[ "$1" == "-l" || "$1" == "--local" ]]; then
     fi
 fi
 
-install_package() {
-    echo "Installing $1..."
-    if  [ -x "$(command -v nala)" ];     then sudo nala install $1
-    elif [ -x "$(command -v apt-get)" ]; then sudo apt install $1
-    elif [ -x "$(command -v apk)" ];     then sudo apk add --no-cache $1
-    elif [ -x "$(command -v dnf)" ];     then sudo dnf install $1
-    elif [ -x "$(command -v pacman)" ];  then sudo pacman -Syu $1
-    elif [ -x "$(command -v zypper)" ];  then sudo zypper install $1
-    elif [ -x "$(command -v brew)" ];    then brew install $1
-    else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; fi
-}
+if [ ! -d $ASH_ROOT ]; then
+    mkdir -p $ASH_ROOT
+fi
 
 verify_bash_default() {
     if [[ ! $SHELL == *"/bin/bash"* ]]; then
@@ -93,27 +65,24 @@ echo "Installing from $ASH_SRC"
 
 verify_bash_default
 
-echo "Installing dependencies"
-for pkg in "bat" "tree" "multitail" "fastfetch" "fzf" "bash-completion"; do
-    install_package $pkg
-done
-
-echo "Downloading AnoSH BASH .bashrc file"
-ash_copy "$ASH_SRC/anobash/.bashrc" "${HOME}/.bashrc"
-mv "${HOME}/.bashrc" "${HOME}/.bashrc_tmp"
-
-sed "s|ASH_SRC=.*|ASH_SRC=\"$ASH_SRC\"|g" "${HOME}/.bashrc_tmp" > "${HOME}/.bashrc"
-rm "${HOME}/.bashrc_tmp"
-
-if [ ! -d "$HOME/.local/anosh/anobash" ]; then
-    echo 'Creating ~/.local/anosh/anobash'
-    mkdir -p "${HOME}/.local/anosh/anobash"
+echo "Cloning AnoSH..."
+if [[ -d "${ASH_ROOT}/src" ]]; then
+    rm -rf "${ASH_ROOT}/src"
+fi
+if [[ $ASH_SRC == /* ]]; then
+    cp -R "${ASH_SRC}" "${ASH_ROOT}/src"
 else
-    echo "Cleaning ~/.local/anosh/anobash"
-    find "${HOME}/.local/anosh/anobash" -type f -name "ash*.sh" -not -name 'ash_settings.sh' -print0 | xargs -0 rm --
+    git clone $ASH_SRC "${ASH_ROOT}/src"
 fi
 
-echo "Installed! Running AnoSH BASH"
+echo "Writing .bashrc"
+if [ -f "${HOME}/.bashrc" ]; then
+    mv "${HOME}/.bashrc" "${HOME}/.bashrc-bak"
+fi
+
+echo "source ${ASH_ROOT}/src/anobash/ash_rc.sh" > "${HOME}/.bashrc"
+
+echo -n "Installed! Running AnoSH"
 for _ in "" "" "" "" "" ""; do
     sleep .5
     echo -n "."
