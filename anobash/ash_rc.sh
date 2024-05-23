@@ -20,7 +20,7 @@ source "${ASH_PATH}/common/verify_paths.sh"
 ASH_PATH_SETTINGS="${ASH_PATH_USER}/ash_bash_settings.sh"
 
 if [ ! -f "$ASH_PATH_SETTINGS" ]; then
-    local settings_defalt='
+    settings_defalt='
 ### ---- AnoSH BASH User Settings ---- ###
 alias edit=vim'
     echo $settings_default > "$ASH_PATH_SETTINGS"
