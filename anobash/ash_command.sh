@@ -1,8 +1,8 @@
-az_reinstall() {
+ash_reinstall() {
     bash <(curl -s "${ASH_DOWN}/anobash/install") -r
 }
 
-az_update() {
+ash_update() {
     git_version=$(curl --silent "${ASH_DOWN}/anobash/.bashrc" | grep "ASH_VERSION")
     git_version=${git_version#*=}
 

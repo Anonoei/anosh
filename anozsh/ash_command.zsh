@@ -1,8 +1,8 @@
-az_reinstall() {
+ash_reinstall() {
     zsh <(curl -s "${ASH_DOWN}/anozsh/install") -r
 }
 
-az_update() {
+ash_update() {
     git_version=$(curl --silent "${ASH_DOWN}/anozsh/.zshrc" | grep "ASH_VERSION")
     git_version=${git_version#*=}
 
