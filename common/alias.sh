@@ -1,15 +1,3 @@
-if hash exa 2> /dev/null; then
-    alias ls="exa --icons"
-    alias ll="ls -lh"
-    alias la="ls -a"
-    alias lla="ls -lha"
-else
-    alias ls="ls --color -F"
-    alias ll="ls --color -lh"
-    alias la="ls -A"
-    alias lla="ls -lA"
-fi
-
 alias q="exit"
 alias cls="clear"
 alias h="history | grep "
@@ -33,20 +21,40 @@ alias ...='cd ../..'
 alias cd='z'
 
 # Aliases for multiple directory listing commands
-alias la='ls -Alh'                # show hidden files
-alias ls='ls -aFh --color=always' # add colors and file type extensions
-alias lx='ls -lXBh'               # sort by extension
-alias lk='ls -lSrh'               # sort by size
-alias lc='ls -lcrh'               # sort by change time
-alias lu='ls -lurh'               # sort by access time
-alias lr='ls -lRh'                # recursive ls
-alias lt='ls -ltrh'               # sort by date
-alias lm='ls -alh |more'          # pipe through 'more'
-alias lw='ls -xAh'                # wide listing format
-alias ll='ls -Fls'                # long listing format
-alias labc='ls -lap'              #alphabetical sort
-alias lf="ls -l | egrep -v '^d'"  # files only
-alias ldir="ls -l | egrep '^d'"   # directories only
+if [ -x "$(command -v exa)" ]; then
+    alias ls='exa --icons -aFh'                # add colors and file type extensions
+    alias ll='exa --icons -Fl'                 # long listing format
+    alias l.='exa --icons -Alh'                # show hidden files
+    alias lw='exa --icons -xAh'                # wide listing format
+    alias lr='exa --icons -lRh'                # recursive ls
+    alias lf="exa --icons -l | egrep -v '^d'"  # files only
+    alias ldir="exa --icons -l | egrep '^d'"   # directories only
+    alias lm='exa --icons -alh | more'         # pipe through 'more'
+
+    alias lsx='exa --icons -lXBh'              # sort by extension
+    alias lsk='exa --icons -lSrh'              # sort by size
+    alias lsc='exa --icons -lcrh'              # sort by change time
+    alias lsu='exa --icons -lurh'              # sort by access time
+    alias lst='exa --icons -ltrh'              # sort by date
+    alias labc='exa --icons -lap'              # sort alphabetically
+
+else
+    alias ls='ls --color -aFh'                # add colors and file type extensions
+    alias ll='ls --color -Fl'                 # long listing format
+    alias l.='ls --color -Alh'                # show hidden files
+    alias lw='ls --color -xAh'                # wide listing format
+    alias lr='ls --color -lRh'                # recursive ls
+    alias lf="ls --color -l | egrep -v '^d'"  # files only
+    alias ldir="ls --color -l | egrep '^d'"   # directories only
+    alias lm='ls --color -alh | more'         # pipe through 'more'
+
+    alias lsx='ls --color -lXBh'              # sort by extension
+    alias lsk='ls --color -lSrh'              # sort by size
+    alias lsc='ls --color -lcrh'              # sort by change time
+    alias lsu='ls --color -lurh'              # sort by access time
+    alias lst='ls --color -ltrh'              # sort by date
+    alias labc='ls --color -lap'              # sort alphabetically
+fi
 
 # Search running processes
 alias p="ps aux | grep "
@@ -85,5 +93,9 @@ alias logs="sudo find /var/log -type f -exec file {} \; | grep 'text' | cut -d' 
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-alias cat='bat'
-alias multitail='multitail --no-repeat -c'
+if  [ ! -x "$(command -v bat)" ]; then
+    alias cat='bat'
+fi
+if  [ ! -x "$(command -v multitail)" ]; then
+    alias multitail='multitail --no-repeat -c'
+fi

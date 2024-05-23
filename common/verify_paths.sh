@@ -5,6 +5,9 @@ export ASH_PATH_USER="${ASH_ROOT}/user"
 export ASH_PLUG_BIN="${ASH_PATH_PLUGINS}/bin"
 export ASH_PLUG_FASTFETCH="${ASH_PATH_PLUGINS}/fastfetch"
 
+export ASH_PLUG_ROOT="${ASH_PATH_PLUGINS}/${ASH_REL}"
+export ASH_PATH_ROOT="${ASH_PATH}/${ASH_REL}"
+
 export STARSHIP_CONFIG="$ASH_PATH_USER/starship.toml"
 export STARSHIP_CACHE="$ASH_PATH_PLUGINS/starship-cache"
 

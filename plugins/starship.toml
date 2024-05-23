@@ -39,7 +39,7 @@ format = "[$path](bold fg:cyan)[$read_only](bold fg:red) "
 truncation_length = 3
 truncation_symbol = "…/"
 truncate_to_repo = true
-fish_style_pwd_dir_length = 1
+fish_style_pwd_dir_length = 2
 read_only = '🔒'
 
 [git_branch]

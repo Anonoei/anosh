@@ -7,17 +7,16 @@
 # Source: https://github.com/anonoei/anosh
 # License: MIT
 ASH_VERSION="0.7.0"
-ASH_VER_PATH="anobash/ash_rc.sh"
+ASH_VER_PATH="ash_rc.sh"
 
 ### ---- Paths ---- ###
 PATH_LOCAL="${HOME}/.local"
 ASH_ROOT="${PATH_LOCAL}/anosh"
 ASH_PATH="${ASH_ROOT}/src"
+ASH_REL="anobash"
 
 source "${ASH_PATH}/common/verify_paths.sh"
 
-ASH_PLUG_ROOT="${ASH_PATH_PLUGINS}/anozsh"
-ASH_PATH_ROOT="${ASH_PATH}/anobash"
 ASH_PATH_SETTINGS="${ASH_PATH_USER}/ash_bash_settings.sh"
 
 if [ ! -f "$ASH_PATH_SETTINGS" ]; then

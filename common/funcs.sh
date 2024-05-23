@@ -1,12 +1,11 @@
 
 
 ash_reinstall() {
-
-    zsh <(curl -s "${ASH_DOWN}/anozsh/install") -r
+    $SHELL <(curl -s "${ASH_DOWN}/${ASH_REL}/install")
 }
 
 ash_update() {
-    git_version=$(curl --silent "${ASH_DOWN}/${ASH_VER_PATH}" | grep "ASH_VERSION")
+    git_version=$(curl --silent "${ASH_DOWN}/${ASH_REL}/${ASH_VER_PATH}" | grep "ASH_VERSION")
     git_version=${git_version#*=}
 
     if [ "$git_version" != "\"$ASH_VERSION\"" ]; then
@@ -34,7 +33,7 @@ install_package() {
     else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; fi
 }
 
-for pkg in "bat" "tree" "multitail" "fzf"; do
+for pkg in "bat" "tree" "multitail" "fzf" "exa"; do
     if  [ ! -x "$(command -v $pkg)" ]; then
         install_package $pkg
     fi
