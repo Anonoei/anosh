@@ -1,22 +1,3 @@
-az_reinstall() {
-    bash <(curl -s "${ANOZSH_DL}install") -c
-}
-
-az_update() {
-    git_version=$(curl --silent "https://raw.githubusercontent.com/Anonoei/anozsh/main/.zshrc" | grep "ANOZSH_VERSION")
-    git_version=${git_version#*=}
-
-    if [ "$git_version" != "\"$ANOZSH_VERSION\"" ]; then
-        echo "Your version is out of date!"
-        echo "Installed: \"$ANOZSH_VERSION\" / Found: $git_version"
-        echo ""
-        bash <(curl -s "${ANOZSH_DL}install")
-    else
-        echo "AnoZSH is up to date."
-    fi
-}
-
-### ---- Confirm commands ---- ###
 confirm() {
     local response="y"
     echo -ne "Do you want to run '$*' (y/N)? "
@@ -40,26 +21,24 @@ confirm_wrap() {
     confirm ${prefix} "$@"
 }
 
-poweroff() { confirm_wrap --root $0 "$@"; }
-reboot() { confirm_wrap --root $0 "$@"; }
-hibernate() { confirm_wrap --root $0 "$@"; }
-
-# Package managers
-# Create sudo wrappers for package managers
-for item in "nala" "apt" "apk" "pacman" "dnf" "yum" "port" "zypper"; do
+# Wrap these commands to ensure they're run with sudo
+ash_sudo_wrap=("poweroff" "reboot" "hibernate" "nala" "apt" "apk" "pacman" "dnf" "yum" "zypper" "port")
+for item in ${ash_sudo_wrap[@]}; do
     cmd='{confirm_wrap --root $item "$@"}'
     declare $item="$cmd"
 done
+
 # Create helper for installing packages
-az_pkgm=""
-for item in "nala" "apk" "apk" "pacman" "dnf" "yum" "port" "zypper" "brew"; do
+# Use $ash_pkgm install <package>
+ash_pkg_managers=("nala" "apt" "apk" "pacman" "dnf" "yum" "port" "zypper" "brew")
+ash_pkgm=""
+for item in ${ash_pkg_managers}; do
     if [ -x "$(command -v $item)" ]; then
-        az_pkgm=$item;
+        ash_pkgm=$item;
     fi
 done
 
-cd ()
-{
+cd() {
 	if [ -n "$1" ]; then
 		builtin cd "$@" && ls
 	else
@@ -67,10 +46,7 @@ cd ()
 	fi
 }
 
-# IP address lookup
-alias whatismyip="whatsmyip"
-function whatsmyip ()
-{
+whatsmyip() {
 	# Internal IP Lookup.
 	if [ -e /sbin/ip ]; then
 		echo -n "Internal IP: "

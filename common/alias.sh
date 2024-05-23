@@ -82,11 +82,7 @@ alias ungz='tar -xvzf'
 # Show all logs in /var/log
 alias logs="sudo find /var/log -type f -exec file {} \; | grep 'text' | cut -d' ' -f1 | sed -e's/:$//g' | grep -v '[0-9]$' | xargs tail -f"
 
-alias azrc="edit $PATH_ANOZSH/az_settings.zsh"
-
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-alias starship="$PATH_STARSHIP/starship"
-alias zoxide="$PATH_ZOXIDE/zoxide"
 alias cat='bat'
 alias multitail='multitail --no-repeat -c'

@@ -1,0 +1,87 @@
+### ---- Starship ---- ###
+format = """
+$python\
+$username\
+$directory\
+$git_branch\
+$docker_context\
+$character
+"""
+
+right_format = """
+$git_metrics\
+$git_status\
+$git_status\
+$time
+"""
+continuation_prompt = '▶▶ '
+
+command_timeout = 5000
+add_newline = false
+
+[character]
+success_symbol = '[➜](bold green) '
+error_symbol = '[✗](bold red) '
+vimcmd_symbol = '[V](bold green) '
+
+[cmd_duration]
+min_time = 100
+format	='took [$duration](bold yellow) '
+
+[username]
+show_always = true
+style_user = "fg:cyan"
+style_root = "bold fg:bright-red"
+format = "[$user ]($style)"
+
+[directory]
+format = "[$path](bold fg:cyan)[$read_only](bold fg:red) "
+truncation_length = 3
+truncation_symbol = "…/"
+truncate_to_repo = true
+fish_style_pwd_dir_length = 1
+read_only = '🔒'
+
+[git_branch]
+symbol = "🌱 "
+truncation_length = 4
+truncation_symbol = ""
+
+[git_metrics]
+format = "[+$added](bold green)/[-$deleted](bold red) "
+
+[git_status]
+conflicted = "🏳"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+up_to_date = "✓"
+#staged = "[++\($count\)](green)"
+
+#[git_state]
+#format = "[\($state( $progress_current of $progress_total)\)]($style) "
+
+[time]
+disabled = false
+style=""
+time_format = "%F %T%z"
+format = "[ $time ](italic fg:yellow)"
+
+[battery]
+full_symbol = "• "
+charging_symbol = "⇡ "
+discharging_symbol = "⇣ "
+unknown_symbol = "❓ "
+empty_symbol = "❗ "
+
+[erlang]
+symbol = "ⓔ "
+
+[nodejs]
+symbol = "[⬢](bold green) "
+
+[pulumi]
+symbol = "🧊 "
+
+[typst]
+symbol = "t "

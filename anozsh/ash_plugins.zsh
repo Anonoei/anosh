@@ -1,57 +1,23 @@
-if [[ ! -d "${PATH_PLUGINS}" ]]; then
-    mkdir -p "${PATH_PLUGINS}"
-fi
-
 ### ---- Install QoL features ---- ###
-ZINIT_HOME="${PATH_ZINIT}"
-
-if [ ! -d "$PATH_ZINIT" ]; then
-    echo "Installing Zinit..."
-    [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-    [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-    source "${ZINIT_HOME}/zinit.zsh"
-    exec zsh
-fi
-
-if [ ! -d "$PATH_ZSH/zsh-autosuggestions" ]; then
+if [ ! -d "$ASH_PLUG_ZSH/zsh-autosuggestions" ]; then
     echo "Installing zsh-autosuggestions..."
-    git clone https://github.com/zsh-users/zsh-autosuggestions "$PATH_ZSH/zsh-autosuggestions"
+    git clone https://github.com/zsh-users/zsh-autosuggestions "$ASH_PLUG_ZSH/zsh-autosuggestions"
 fi
 
-if [ ! -d "$PATH_ZSH/zsh-syntax-highlighting" ]; then
+if [ ! -d "$ASH_PLUG_ZSH/zsh-syntax-highlighting" ]; then
     echo "Installing zsh-syntax-highlighting..."
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting "$PATH_ZSH/zsh-syntax-highlighting"
-fi
-
-if [ ! -f "$PATH_STARSHIP/starship" ]; then
-    echo "Installing starship..."
-    mkdir "$PATH_STARSHIP"
-    sh <(curl -sS "https://starship.rs/install.sh") --bin-dir "$PATH_STARSHIP"
-fi
-
-if [ ! -f "$PATH_ZOXIDE/zoxide" ]; then
-    echo "Installing zoxide..."
-    bash <(curl -sSfL "https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh") --bin-dir "$PATH_ZOXIDE"
-fi
-
-source "$ZINIT_HOME/zinit.zsh"
-
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-
-if hash fzf 2> /dev/null; then
-    zinit snippet "https://github.com/junegunn/fzf/tree/master/shell/key-bindings.zsh"
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ASH_PLUG_ZSH/zsh-syntax-highlighting"
 fi
 
 # zsh-syntax-highlighting
-if [[ -f $PATH_ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
-    . $PATH_ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh
+if [[ -f $ASH_PLUG_ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+    source $ASH_PLUG_ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh
     ZSH_HIGHLIGHT_MAXLENGTH=512
     ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 fi
 ## zsh-autosuggestions
-if [[ -f $PATH_ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
-    . $PATH_ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh
+if [[ -f $ASH_PLUG_ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+    source $ASH_PLUG_ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=magenta,bold,underline"					# highlight style
     ZSH_AUTOSUGGEST_STRATEGY=(history completion)
     #ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=
