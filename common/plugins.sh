@@ -34,14 +34,15 @@ if [ -x "$(command -v cargo)" ]; then
         old_path=$PWD
         cd $ASH_PLUG_EZA
         cargo install --path .
-        mv "$HOME/.cargo/eza" "$ASH_PLUG_BIN/eza"
+        mv "$HOME/.cargo/bin/eza" "$ASH_PLUG_BIN/eza"
         cd $old_path
     fi
     if [ ! -f "$ASH_PLUG_BIN/bat" ] && [ ! -x "$(command -v bat)" ] || [ ! -x "$(command -v batcat)" ]; then
         git clone https://github.com/sharkdp/bat.git $ASH_PLUG_BAT
         old_path=$PWD
         cd $ASH_PLUG_BAT
-        cargo install --locked bat # TODO: Check where this exports to
+        cargo install --locked bat
+        mv "$HOME/.cargo/bin/bat" "$ASH_PLUG_BIN/bat"
         cd $old_path
     fi
 fi

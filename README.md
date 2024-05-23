@@ -26,3 +26,9 @@ Features:
 
 # Reinstall
  1. Run `ash_reinstall`
+
+## Optional dependencies
+ - Rust
+   - Run `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+ - cmake
+   - Run `<your package manager> install cmake`
