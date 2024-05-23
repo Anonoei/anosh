@@ -33,7 +33,7 @@ install_package() {
     else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; fi
 }
 
-for pkg in "bat" "tree" "multitail" "fzf"; do
+for pkg in "tree" "multitail" "fzf"; do
     if  [ ! -x "$(command -v $pkg)" ]; then
         install_package $pkg
     fi
