@@ -93,9 +93,11 @@ alias logs="sudo find /var/log -type f -exec file {} \; | grep 'text' | cut -d' 
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-if  [ ! -x "$(command -v bat)" ]; then
+if  [ -x "$(command -v bat)" ]; then
     alias cat='bat'
+elif [ -x "$(command -v batcat)" ]; then
+    alias cat='batcat'
 fi
-if  [ ! -x "$(command -v multitail)" ]; then
+if  [ -x "$(command -v multitail)" ]; then
     alias multitail='multitail --no-repeat -c'
 fi
