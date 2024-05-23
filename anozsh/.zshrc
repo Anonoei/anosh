@@ -11,14 +11,6 @@ ASH_DOWN="https://raw.githubusercontent.com/anonoei/anosh/main"
 ASH_VERSION="0.6.0"
 ASH_SRC=""
 
-## Dependencies
-#   - curl
-#   - [optional] exa (terminal icons)
-#   - zsh-syntax-highlighting
-#   - zsh-autosuggestions
-#   - zinit (plugins)
-#   - fzf (fuzzy finder)
-
 ### ---- Paths ---- ###
 PATH_LOCAL="${HOME}/.local"
 ASH_PATH="${PATH_LOCAL}/anosh"
@@ -27,8 +19,8 @@ ASH_COMMON="${ASH_PATH}/common"
 
 ASH_PATH_PLUGINS="${ASH_PATH}/plugins"
 ASH_PLUG_BIN="${ASH_PATH_PLUGINS}/bin"
-ASH_PLUG_ZSH="${ASH_PATH_PLUGINS}/zsh"
 
+ASH_PLUG_ROOT="${ASH_PATH_PLUGINS}/zsh"
 ASH_PATH_ROOT="${ASH_PATH}/anozsh"
 
 PATH="${PATH}:$ASH_PLUG_BIN"

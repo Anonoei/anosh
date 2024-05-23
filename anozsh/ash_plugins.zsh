@@ -1,23 +1,23 @@
 ### ---- Install QoL features ---- ###
-if [ ! -d "$ASH_PLUG_ZSH/zsh-autosuggestions" ]; then
+if [ ! -d "$ASH_PLUG_ROOT/zsh-autosuggestions" ]; then
     echo "Installing zsh-autosuggestions..."
-    git clone https://github.com/zsh-users/zsh-autosuggestions "$ASH_PLUG_ZSH/zsh-autosuggestions"
+    git clone https://github.com/zsh-users/zsh-autosuggestions "$ASH_PLUG_ROOT/zsh-autosuggestions"
 fi
 
-if [ ! -d "$ASH_PLUG_ZSH/zsh-syntax-highlighting" ]; then
+if [ ! -d "$ASH_PLUG_ROOT/zsh-syntax-highlighting" ]; then
     echo "Installing zsh-syntax-highlighting..."
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ASH_PLUG_ZSH/zsh-syntax-highlighting"
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ASH_PLUG_ROOT/zsh-syntax-highlighting"
 fi
 
 # zsh-syntax-highlighting
-if [[ -f $ASH_PLUG_ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
-    source $ASH_PLUG_ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh
+if [[ -f $ASH_PLUG_ROOT/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+    source $ASH_PLUG_ROOT/zsh-autosuggestions/zsh-autosuggestions.zsh
     ZSH_HIGHLIGHT_MAXLENGTH=512
     ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 fi
 ## zsh-autosuggestions
-if [[ -f $ASH_PLUG_ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
-    source $ASH_PLUG_ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh
+if [[ -f $ASH_PLUG_ROOT/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+    source $ASH_PLUG_ROOT/zsh-autosuggestions/zsh-autosuggestions.zsh
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=magenta,bold,underline"					# highlight style
     ZSH_AUTOSUGGEST_STRATEGY=(history completion)
     #ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=

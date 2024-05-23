@@ -1,6 +1,4 @@
-#!/bin/zsh
-
-#set -eu
+#!/bin/bash
 
 echo '    ___               _____ __  __'
 echo '   /   |  ____  ____ / ___// / / /'
@@ -13,7 +11,7 @@ ASH_SRC="https://raw.githubusercontent.com/Anonoei/anosh/main/"
 if [[ "$1" == "-h" || "$1" == "--help" ]]; then
     echo "$0"
     echo " -h|--help     : show this message"
-    echo " -r|--reset    : delete anosh/anozsh"
+    echo " -r|--reset    : delete anosh/anobash"
     echo " -p|--plugins  : delete anosh/plugins"
     echo " -c|--common   : delete anosh/common"
     echo " -u|--user     : delete user settings"
@@ -30,7 +28,7 @@ ash_copy() {
 }
 
 if [[ "$1" == "-r" || "$1" == "--reset" ]]; then
-    rm -rf "${HOME}/.local/anosh/anozsh"
+    rm -rf "${HOME}/.local/anosh/anobash"
     shift
 fi
 
@@ -45,8 +43,8 @@ if [[ "$1" == "-c" || "$1" == "--common" ]]; then
 fi
 
 if [[ "$1" == "-u" || "$1" == "--user" ]]; then
-    if [ -f "${HOME}/.local/anosh/anozsh/ash_settings.zsh" ]; then
-        rm "${HOME}/.local/anosh/anozsh/ash_settings.zsh"
+    if [ -f "${HOME}/.local/anosh/anobash/ash_settings.sh" ]; then
+        rm "${HOME}/.local/anosh/anobash/ash_settings.sh"
     fi
     if [ -f "${HOME}/.local/anosh/starship.toml" ]; then
         rm  "${HOME}/.local/anosh/starship.toml"
@@ -62,7 +60,7 @@ if [[ "$1" == "-l" || "$1" == "--local" ]]; then
     foldername=${ASH_SRC##*/}
     foldername=${foldername:-/}
     if [[ ! $foldername == "anosh" ]]; then
-        echo "Please install from anozsh source, not $foldername"
+        echo "Please install from anobash source, not $foldername"
         exit
     fi
     if [ ! -d "$ASH_SRC" ]; then
@@ -83,59 +81,42 @@ install_package() {
     else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; fi
 }
 
-verify_zsh_installed() {
-    local output=$(zsh --version)
-    local installed=0
-    while IFS= read -r line; do
-        if [[ $line == *"zsh "* ]]; then
-            installed=1
-        fi
-    done <<< "$output"
-
-    if [[ $installed == 0 ]]; then
-        echo "ZSH is not installed. Installing ZSH..."
-        packagesNeeded='zsh'
-        install_package "zsh"
-    fi
-}
-
-verify_zsh_default() {
-    if [[ ! $SHELL == *"/bin/zsh"* ]]; then
-        echo "ZSH is not the default shell. Setting ZSH to default..."
-        chsh -s $(which zsh)
+verify_bash_default() {
+    if [[ ! $SHELL == *"/bin/bash"* ]]; then
+        echo "BASH is not the default shell. Setting BASH to default..."
+        chsh -s $(which bash)
     fi
 }
 
 cd "${HOME}"
 echo "Installing from $ASH_SRC"
 
-verify_zsh_installed
-verify_zsh_default
+verify_bash_default
 
 echo "Installing dependencies"
-for pkg in "bat" "tree" "multitail" "fastfetch" "fzf"; do
+for pkg in "bat" "tree" "multitail" "fastfetch" "fzf" "bash-completion"; do
     install_package $pkg
 done
 
-echo "Downloading AnoSH ZSH .zshrc file"
-ash_copy "$ASH_SRC/anozsh/.zshrc" "${HOME}/.zshrc"
-mv "${HOME}/.zshrc" "${HOME}/.zshrc_tmp"
+echo "Downloading AnoSH BASH .bashrc file"
+ash_copy "$ASH_SRC/anobash/.bashrc" "${HOME}/.bashrc"
+mv "${HOME}/.bashrc" "${HOME}/.bashrc_tmp"
 
-sed "s|ASH_SRC=.*|ASH_SRC=\"$ASH_SRC\"|g" "${HOME}/.zshrc_tmp" > "${HOME}/.zshrc"
-rm "${HOME}/.zshrc_tmp"
+sed "s|ASH_SRC=.*|ASH_SRC=\"$ASH_SRC\"|g" "${HOME}/.bashrc_tmp" > "${HOME}/.bashrc"
+rm "${HOME}/.bashrc_tmp"
 
-if [ ! -d "$HOME/.local/anosh/anozsh" ]; then
-    echo 'Creating ~/.local/anosh/anozsh'
-    mkdir -p "${HOME}/.local/anosh/anozsh"
+if [ ! -d "$HOME/.local/anosh/anobash" ]; then
+    echo 'Creating ~/.local/anosh/anobash'
+    mkdir -p "${HOME}/.local/anosh/anobash"
 else
-    echo "Cleaning ~/.local/anosh/anozsh"
-    find "${HOME}/.local/anosh/anozsh" -type f -name "ash*.zsh" -not -name 'ash_settings.zsh' -print0 | xargs -0 rm --
+    echo "Cleaning ~/.local/anosh/anobash"
+    find "${HOME}/.local/anosh/anobash" -type f -name "ash*.sh" -not -name 'ash_settings.sh' -print0 | xargs -0 rm --
 fi
 
-echo "Installed! Running AnoSH ZSH"
+echo "Installed! Running AnoSH BASH"
 for _ in "" "" "" "" "" ""; do
     sleep .5
     echo -n "."
 done
 echo ""
-exec zsh
+exec bash
