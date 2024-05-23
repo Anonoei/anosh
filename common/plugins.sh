@@ -29,7 +29,7 @@ fi
 
 # If cargo is installed, install things that require cargo
 if [ -x "$(command -v cargo)" ]; then
-    if [ ! -f "$ASH_PLUG_BIN/eza" ] || [ ! -x "$(command -v eza)" ]; then
+    if [ ! -f "$ASH_PLUG_BIN/eza" ] && [ ! -x "$(command -v eza)" ]; then
         git clone https://github.com/eza-community/eza.git $ASH_PLUG_EZA
         old_path=$PWD
         cd $ASH_PLUG_EZA
@@ -37,7 +37,7 @@ if [ -x "$(command -v cargo)" ]; then
         mv "$HOME/.cargo/bin/eza" "$ASH_PLUG_BIN/eza"
         cd $old_path
     fi
-    if [ ! -f "$ASH_PLUG_BIN/bat" ] || [ ! -x "$(command -v bat)" ] || [ ! -x "$(command -v batcat)" ]; then
+    if [ ! -f "$ASH_PLUG_BIN/bat" ] && [ ! -x "$(command -v bat)" ] && [ ! -x "$(command -v batcat)" ]; then
         git clone https://github.com/sharkdp/bat.git $ASH_PLUG_BAT
         old_path=$PWD
         cd $ASH_PLUG_BAT
