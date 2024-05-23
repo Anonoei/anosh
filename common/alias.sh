@@ -21,22 +21,22 @@ alias ...='cd ../..'
 alias cd='z'
 
 # Aliases for multiple directory listing commands
-if [ -x "$(command -v exa)" ]; then
-    alias ls='exa --icons -aFh'                # add colors and file type extensions
-    alias ll='exa --icons -Fl'                 # long listing format
-    alias l.='exa --icons -Alh'                # show hidden files
-    alias lw='exa --icons -xAh'                # wide listing format
-    alias lr='exa --icons -lRh'                # recursive ls
-    alias lf="exa --icons -l | egrep -v '^d'"  # files only
-    alias ldir="exa --icons -l | egrep '^d'"   # directories only
-    alias lm='exa --icons -alh | more'         # pipe through 'more'
+if [ -x "$(command -v eza)" ]; then
+    alias ls='eza --icons -aFh'                # add colors and file type extensions
+    alias ll='eza --icons -Fl'                 # long listing format
+    alias l.='eza --icons -Alh'                # show hidden files
+    alias lw='eza --icons -xAh'                # wide listing format
+    alias lr='eza --icons -lRh'                # recursive ls
+    alias lf="eza --icons -l | egrep -v '^d'"  # files only
+    alias ldir="eza --icons -l | egrep '^d'"   # directories only
+    alias lm='eza --icons -alh | more'         # pipe through 'more'
 
-    alias lsx='exa --icons -lXBh'              # sort by extension
-    alias lsk='exa --icons -lSrh'              # sort by size
-    alias lsc='exa --icons -lcrh'              # sort by change time
-    alias lsu='exa --icons -lurh'              # sort by access time
-    alias lst='exa --icons -ltrh'              # sort by date
-    alias labc='exa --icons -lap'              # sort alphabetically
+    alias lsx='eza --icons -lXBh'              # sort by extension
+    alias lsk='eza --icons -lSrh'              # sort by size
+    alias lsc='eza --icons -lcrh'              # sort by change time
+    alias lsu='eza --icons -lurh'              # sort by access time
+    alias lst='eza --icons -ltrh'              # sort by date
+    alias labc='eza --icons -lap'              # sort alphabetically
 
 else
     alias ls='ls --color -aFh'                # add colors and file type extensions

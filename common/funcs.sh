@@ -33,7 +33,7 @@ install_package() {
     else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; fi
 }
 
-for pkg in "bat" "tree" "multitail" "fzf" "exa"; do
+for pkg in "bat" "tree" "multitail" "fzf"; do
     if  [ ! -x "$(command -v $pkg)" ]; then
         install_package $pkg
     fi
@@ -67,16 +67,6 @@ ash_sudo_wrap=("poweroff" "reboot" "hibernate" "nala" "apt" "apk" "pacman" "dnf"
 for item in ${ash_sudo_wrap[@]}; do
     cmd='{confirm_wrap --root $item "$@"}'
     declare $item="$cmd"
-done
-
-# Create helper for installing packages
-# Use $ash_pkgm install <package>
-ash_pkg_managers=("nala" "apt" "apk" "pacman" "dnf" "yum" "port" "zypper" "brew")
-ash_pkgm=""
-for item in ${ash_pkg_managers}; do
-    if [ -x "$(command -v $item)" ]; then
-        ash_pkgm=$item;
-    fi
 done
 
 cd() {
