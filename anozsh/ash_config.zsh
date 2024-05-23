@@ -1,5 +1,5 @@
 ### ---- History ---- ###
-HISTFILE="${PATH_ZSH}/.zsh_history"
+HISTFILE="${HOME}/.zsh_history"
 HISTLINES=10000
 SAVEHIST=$HISTLINES # lines of history to save
 HISTCONTROL=erasedups:ignoredups:ignorespace
