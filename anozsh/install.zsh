@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 #set -eu
 
@@ -56,12 +56,12 @@ fi
 
 if [[ "$1" == "-l" || "$1" == "--local" ]]; then
     ASH_SRC="$2"
-    if [ "$ASH_SRC" == "." ]; then
+    if [[ "$ASH_SRC" == "." ]]; then
         ASH_SRC="$PWD"
     fi
     foldername=${ASH_SRC##*/}
     foldername=${foldername:-/}
-    if [ ! $foldername == "anosh" ]; then
+    if [[ ! $foldername == "anosh" ]]; then
         echo "Please install from anozsh source, not $foldername"
         exit
     fi
@@ -84,14 +84,15 @@ install_package() {
 }
 
 verify_zsh_installed() {
-    output=$(zsh --version)
-    installed=0
+    local output=$(zsh --version)
+    local installed=0
     while IFS= read -r line; do
         if [[ $line == *"zsh "* ]]; then
             installed=1
         fi
     done <<< "$output"
-    if [ $installed == 0 ]; then
+
+    if [[ $installed == 0 ]]; then
         echo "ZSH is not installed. Installing ZSH..."
         packagesNeeded='zsh'
         install_package "zsh"

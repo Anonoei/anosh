@@ -30,6 +30,7 @@ alias home='cd ~'
 alias cd..='cd ..'
 alias ..='cd ..'
 alias ...='cd ../..'
+alias cd='z'
 
 # Aliases for multiple directory listing commands
 alias la='ls -Alh'                # show hidden files
