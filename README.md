@@ -1,6 +1,9 @@
 # ANOSH
  Installable/syncable *sh configurations
 
+ <img width="1680" alt="image" src="https://github.com/Anonoei/anosh/assets/73118441/17b5bd0f-ab8d-425d-8bda-a97cf9f6e1b5">
+
+
 Features:
  - Use [starship](https://starship.rs/) for prompt
  - Use [zoxide](https://github.com/ajeetdsouza/zoxide) for cd
