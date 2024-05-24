@@ -57,13 +57,13 @@ read_only = '🔒'
 
 [git_branch]
 disabled = false
-format = "[ $branch ](bg:git)"
+format = "[( $branch )](bg:git)"
 truncation_length = 4
 truncation_symbol = ""
 
 [git_status]
 disabled = false
-format = "[ $conflicted$untracked$stashed$modified$staged$renamed$deleted|$ahead_behind](bg:git)"
+format = "[( ($conflicted$untracked$stashed$modified$staged$renamed$deleted|)$ahead_behind )](bg:git)"
 conflicted = "[=](bg:git fg:red)"
 untracked = "[?](bg:git fg:blue)"
 stashed = "[$](bg:git fg:cyan)"
@@ -90,22 +90,18 @@ format = "[$time](bg:shell fg:time_fg)"
 
 [git_metrics]
 disabled = false
-format = "[[+$added](bg:git bold green)/[-$deleted](bg:git bold red)](bg:git)"
-
-[git_state]
-disabled = false
-format = "[$state( $progress_current of $progress_total)](bg:git)"
+format = "[(([+$added](bg:git bold green))/)([-$deleted](bg:git bold red))](bg:git)"
 
 [cmd_duration]
 disabled = false
-format	='[$duration](bg:#004550 fg:#0E80AF)'
+format	='[($duration)](bg:#004550 fg:#0E80AF)'
 min_time = 100
 
 ## --- Languages --- ##
 #[$c$python$rust](bg:904303)\
 [c]
 disabled = false
-format = "[$symbol$version(-$name)](bg:language)"
+format = "[($symbol$version(-$name))](bg:language)"
 version_format = "v${raw}"
 symbol = "C"
 detect_extensions = ["c", "h", "cpp", "hpp"]
@@ -113,7 +109,7 @@ commands = [ [ 'cc', '--version' ], [ 'gcc', '--version' ], [ 'clang', '--versio
 
 [python]
 disabled = false
-format = "[$symbol$version($virtualenv)](bg:language fg:#CABF17)"
+format = "[($symbol$version($virtualenv))](bg:language fg:#CABF17)"
 version_format = "v${raw}"
 symbol = "🐍"
 pyenv_version_name = true
@@ -121,7 +117,7 @@ python_binary = ['python', 'python3', 'python2']
 
 [rust]
 disabled = false
-format = "[$symbol$version](bg:language)"
+format = "[($symbol$version)](bg:language)"
 version_format = "v${raw}"
 symbol = "🦀"
 
@@ -134,6 +130,10 @@ charging_symbol = "⇡ "
 discharging_symbol = "⇣ "
 unknown_symbol = "❓ "
 empty_symbol = "❗ "
+
+[git_state]
+disabled = false
+format = "[($state( $progress_current of $progress_total))](bg:git)"
 
 ## --- Palettes --- #
 [palettes.ano]
