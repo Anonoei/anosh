@@ -34,7 +34,9 @@ if [ -x "$(command -v cargo)" ]; then
         old_path=$PWD
         cd $ASH_PLUG_EZA
         cargo install --path .
-        mv "$HOME/.cargo/bin/eza" "$ASH_PLUG_BIN/eza"
+        if [ ! -f "$ASH_PLUG_BIN/eza" ]; then
+            mv "$HOME/.cargo/bin/eza" "$ASH_PLUG_BIN/eza"
+        fi
         cd $old_path
     fi
     if [ ! -f "$ASH_PLUG_BIN/bat" ] && [ ! -x "$(command -v bat)" ] && [ ! -x "$(command -v batcat)" ]; then
@@ -42,7 +44,9 @@ if [ -x "$(command -v cargo)" ]; then
         old_path=$PWD
         cd $ASH_PLUG_BAT
         cargo install --locked bat
-        mv "$HOME/.cargo/bin/bat" "$ASH_PLUG_BIN/bat"
+        if [ ! -f "$ASH_PLUG_BIN/bat" ]; then
+            mv "$HOME/.cargo/bin/bat" "$ASH_PLUG_BIN/bat"
+        fi
         cd $old_path
     fi
 fi

@@ -5,7 +5,7 @@ Features:
  - Use [starship](https://starship.rs/) for prompt
  - Use [zoxide](https://github.com/ajeetdsouza/zoxide) for cd
  - Install [fzf](https://github.com/junegunn/fzf)
- - Install [batcat](https://github.com/sharkdp/bat) for cat with synatx highlighting
+ - Compile/use [bat](https://github.com/sharkdp/bat) (*requires cargo*) for cat with wings
  - Install tree to show directory structures
  - Install [eza](https://github.com/eza-community/eza) (*requires cargo*) for ls icons
  - Install [multitail](https://vanheusden.com/multitail/) for better tail
@@ -32,3 +32,18 @@ Features:
    - Run `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
  - cmake
    - Run `<your package manager> install cmake`
+
+## OS Packages
+ - General
+   - [neovim](https://neovim.io/)
+   - [vscode](https://code.visualstudio.com/)
+   - [thorium](https://thorium.rocks/)
+   - [floorp](https://floorp.app/en/)
+   - [keepassxc](https://keepassxc.org/)
+ - *nix
+   - Linux
+   - MacOS
+     - [amethyst](https://ianyh.com/amethyst/)
+   - [kitty](https://sw.kovidgoyal.net/kitty/)
+   -
+ - Windows
