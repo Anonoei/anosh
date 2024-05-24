@@ -40,14 +40,14 @@ Features:
    - [thorium](https://thorium.rocks/) Chromium based browser
    - [floorp](https://floorp.app/en/) Firefox based browser
    - [keepassxc](https://keepassxc.org/) Password manager
-   - [pyenv] Python versioning managaer
+   - [pyenv](https://github.com/pyenv/pyenv) Python versioning manager
  - *nix
    - Linux
-     - [gear level]() Manage AppImages
+     - [Gear Lever](https://github.com/mijorus/gearlever) Manage AppImages
    - MacOS
      - [amethyst](https://ianyh.com/amethyst/) Tiling Window Manager
    - [kitty](https://sw.kovidgoyal.net/kitty/) Terminal Emulator
-   - [tmux] Terminal Multiplexing
-   - [btop] Prettier top/htop
-   - [tldr] More concise man pages
+   - [tmux](https://github.com/tmux/tmux) Terminal Multiplexing
+   - [btop](https://github.com/aristocratos/btop) Prettier top/htop
+   - [tldr](https://github.com/tldr-pages/tldr) More concise man pages
  - Windows
