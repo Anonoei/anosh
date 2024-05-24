@@ -35,15 +35,19 @@ Features:
 
 ## OS Packages
  - General
-   - [neovim](https://neovim.io/)
-   - [vscode](https://code.visualstudio.com/)
-   - [thorium](https://thorium.rocks/)
-   - [floorp](https://floorp.app/en/)
-   - [keepassxc](https://keepassxc.org/)
+   - [neovim](https://neovim.io/) General text editor
+   - [vscode](https://code.visualstudio.com/) IDE
+   - [thorium](https://thorium.rocks/) Chromium based browser
+   - [floorp](https://floorp.app/en/) Firefox based browser
+   - [keepassxc](https://keepassxc.org/) Password manager
+   - [pyenv] Python versioning managaer
  - *nix
    - Linux
+     - [gear level]() Manage AppImages
    - MacOS
-     - [amethyst](https://ianyh.com/amethyst/)
-   - [kitty](https://sw.kovidgoyal.net/kitty/)
-   - [tmux]
+     - [amethyst](https://ianyh.com/amethyst/) Tiling Window Manager
+   - [kitty](https://sw.kovidgoyal.net/kitty/) Terminal Emulator
+   - [tmux] Terminal Multiplexing
+   - [btop] Prettier top/htop
+   - [tldr] More concise man pages
  - Windows
