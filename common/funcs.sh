@@ -43,7 +43,7 @@ install_package() {
     else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $pkg">&2; fi
 }
 
-for pkg in "tree" "multitail" "fzf" "trash-cli"; do
+for pkg in "tree" "multitail" "fzf" "trash-cli" "tldr" "btop"; do
     install_package "$pkg"
 done
 
