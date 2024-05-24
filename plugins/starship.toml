@@ -1,41 +1,54 @@
 ### ---- Starship ---- ###
+scan_timeout = 10
+add_newline = false
+command_timeout = 5000
+palette = 'ano'
+continuation_prompt = '▶▶ '
+
 format = """
-$python\
+$shell\
+[](bg:user fg:shell)\
 $username\
+[](bg:directory fg:user)\
 $directory\
+[](bg:git fg:directory)\
 $git_branch\
-$docker_context\
-$character
+[](bg:git fg:git_sep)\
+$git_status\
+[](bg:language fg:git)\
+$c\
+$python\
+$rust\
+[](bg:prompt fg:language)\
+[$character]()\
 """
 
 right_format = """
+[](fg:duration)\
+$cmd_duration\
+[](bg:duration fg:git)\
 $git_metrics\
-$git_status\
-$git_status\
-$time
+[ ](bg:git fg:shell)\
+$time\
+[](fg:shell)\
 """
-continuation_prompt = '▶▶ '
 
-command_timeout = 5000
-add_newline = false
+## --- Left prompt --- ##
 
-[character]
-success_symbol = '[➜](bold green) '
-error_symbol = '[✗](bold red) '
-vimcmd_symbol = '[V](bold green) '
-
-[cmd_duration]
-min_time = 100
-format	='took [$duration](bold yellow) '
+[shell]
+disabled = false
+format = "[$indicator](bg:shell fg:shell_fg)"
 
 [username]
+disabled = false
+style_user = "fg:user_fg"
+style_root = "fg:root_fg"
+format = "[$user](bg:user $style)"
 show_always = true
-style_user = "fg:cyan"
-style_root = "bold fg:bright-red"
-format = "[$user ]($style)"
 
 [directory]
-format = "[$path](bold fg:cyan)[$read_only](bold fg:red) "
+disabled = false
+format = "[ $path ](bg:directory fg:directory_fg)$read_only"
 truncation_length = 3
 truncation_symbol = "…/"
 truncate_to_repo = true
@@ -43,45 +56,97 @@ fish_style_pwd_dir_length = 2
 read_only = '🔒'
 
 [git_branch]
-symbol = "🌱 "
+disabled = false
+format = "[ $branch ](bg:git)"
 truncation_length = 4
 truncation_symbol = ""
 
-[git_metrics]
-format = "[+$added](bold green)/[-$deleted](bold red) "
-
 [git_status]
-conflicted = "🏳"
-ahead = "⇡${count}"
-behind = "⇣${count}"
-diverged = "⇕⇡${ahead_count}⇣${behind_count}"
-up_to_date = "✓"
-#staged = "[++\($count\)](green)"
+disabled = false
+format = "[ $conflicted$untracked$stashed$modified$staged$renamed$deleted|$ahead_behind](bg:git)"
+conflicted = "[=](bg:git fg:red)"
+untracked = "[?](bg:git fg:blue)"
+stashed = "[$](bg:git fg:cyan)"
+modified = "[!](bg:git fg:red)"
+staged = "[+](bg:git fg:green)"
+renamed = "[»](bg:git fg:red)"
+deleted = "[✘](bg:git fg:red)"
 
-#[git_state]
-#format = "[\($state( $progress_current of $progress_total)\)]($style) "
+diverged = "[⇕⇡$ahead_count/⇣$behind_count](bg:git fg:red)"
+ahead = "[⇡$count](bg:git fg:green)"
+behind = "[⇣$count](bg:git fg:red)"
+up_to_date = "[✓](bg:git fg:green)"
 
+[character]
+disabled = false
+success_symbol = '[](fg:prompt)'
+error_symbol = '[](fg:prompt)'
+
+## --- Right prompt --- ##
 [time]
 disabled = false
-style=""
 time_format = "%F %T%z"
-format = "[ $time ](italic fg:yellow)"
+format = "[$time](bg:shell fg:time_fg)"
+
+[git_metrics]
+disabled = false
+format = "[[+$added](bg:git bold green)/[-$deleted](bg:git bold red)](bg:git)"
+
+[git_state]
+disabled = false
+format = "[$state( $progress_current of $progress_total)](bg:git)"
+
+[cmd_duration]
+disabled = false
+format	='[$duration](bg:#004550 fg:#0E80AF)'
+min_time = 100
+
+## --- Languages --- ##
+#[$c$python$rust](bg:904303)\
+[c]
+disabled = false
+format = "[$symbol$version(-$name)](bg:language)"
+version_format = "v${raw}"
+symbol = "C"
+detect_extensions = ["c", "h", "cpp", "hpp"]
+commands = [ [ 'cc', '--version' ], [ 'gcc', '--version' ], [ 'clang', '--version' ] ]
+
+[python]
+disabled = false
+format = "[$symbol$version($virtualenv)](bg:language fg:#CABF17)"
+version_format = "v${raw}"
+symbol = "🐍"
+pyenv_version_name = true
+python_binary = ['python', 'python3', 'python2']
+
+[rust]
+disabled = false
+format = "[$symbol$version](bg:language)"
+version_format = "v${raw}"
+symbol = "🦀"
+
+## --- Other --- ##
 
 [battery]
+disabled = false
 full_symbol = "• "
 charging_symbol = "⇡ "
 discharging_symbol = "⇣ "
 unknown_symbol = "❓ "
 empty_symbol = "❗ "
 
-[erlang]
-symbol = "ⓔ "
-
-[nodejs]
-symbol = "[⬢](bold green) "
-
-[pulumi]
-symbol = "🧊 "
-
-[typst]
-symbol = "t "
+## --- Palettes --- #
+[palettes.ano]
+shell = "#0F0050"
+shell_fg = "#696969"
+user = "#001E50"
+user_fg = "#2AB5AF"
+root_fg = "#DB590F"
+directory = "#004150"
+directory_fg = "cyan"
+git = "#005039"
+git_sep = "#0F8161"
+language = "#904303"
+prompt = "#DB590F"
+duration = "#004550"
+time_fg = "#337590"
