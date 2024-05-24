@@ -22,21 +22,29 @@ ash_update() {
 }
 
 install_package() {
-    echo "Installing $1..."
-    if  [ -x "$(command -v nala)" ];     then sudo nala install $1
-    elif [ -x "$(command -v apt-get)" ]; then sudo apt install $1
-    elif [ -x "$(command -v apk)" ];     then sudo apk add --no-cache $1
-    elif [ -x "$(command -v dnf)" ];     then sudo dnf install $1
-    elif [ -x "$(command -v pacman)" ];  then sudo pacman -Syu $1
-    elif [ -x "$(command -v zypper)" ];  then sudo zypper install $1
-    elif [ -x "$(command -v brew)" ];    then brew install $1
-    else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; fi
+    pkg="$1"
+    if [[ "$pkg" == "trash-cli" ]]; then
+        pkg_cmd="trash"
+    else
+        pkg_cmd=$pkg
+    fi
+    #echo "Checking if $pkg is installed as $pkg_cmd"
+    if  [ -x "$(command -v $pkg_cmd)" ]; then
+        return
+    fi
+    echo "Installing $pkg..."
+    if  [ -x "$(command -v nala)" ];     then sudo nala install $pkg
+    elif [ -x "$(command -v apt-get)" ]; then sudo apt install $pkg
+    elif [ -x "$(command -v apk)" ];     then sudo apk add --no-cache $pkg
+    elif [ -x "$(command -v dnf)" ];     then sudo dnf install $pkg
+    elif [ -x "$(command -v pacman)" ];  then sudo pacman -Syu $pkg
+    elif [ -x "$(command -v zypper)" ];  then sudo zypper install $pkg
+    elif [ -x "$(command -v brew)" ];    then brew install $pkg
+    else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $pkg">&2; fi
 }
 
-for pkg in "tree" "multitail" "fzf"; do
-    if  [ ! -x "$(command -v $pkg)" ]; then
-        install_package $pkg
-    fi
+for pkg in "tree" "multitail" "fzf" "trash-cli"; do
+    install_package "$pkg"
 done
 
 confirm() {
@@ -50,7 +58,7 @@ confirm() {
     esac
 }
 confirm_wrap() {
-    if [ "$1" = '--root' ]; then
+    if [ "$1" == '--root' ]; then
         local as_root='1'
         shift
     fi

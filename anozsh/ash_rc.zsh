@@ -17,17 +17,16 @@ ASH_REL="anozsh"
 
 source "${ASH_PATH}/common/verify_paths.sh"
 
-ASH_PATH_SETTINGS="${ASH_PATH_USER}/ash_zsh_settings.zsh"
+ash_init_settings "ash_zsh_settings.zsh" '### ---- AnoSH ZSH User Settings ---- ###
+alias edit=nvim
+EDITOR=edit
+VISUAL=edit
 
-if [ ! -f "$ASH_PATH_SETTINGS" ]; then
-    settings_defalt='
-### ---- AnoSH ZSH User Settings ---- ###
-alias edit=vim'
-    echo $settings_default > "$ASH_PATH_SETTINGS"
-fi
+alias vi=edit
+alias vim=edit
+'
 
-source "$ASH_PATH_SETTINGS"
-
+### ---- Initialize everything else ---- $
 source "${ASH_PATH_COMMON}/init.sh"
 
 source "${ASH_PATH_ROOT}/ash_config.zsh"

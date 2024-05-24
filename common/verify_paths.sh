@@ -32,4 +32,14 @@ if [ ! -f "$STARSHIP_CONFIG" ]; then
     cp "${ASH_PATH}/plugins/starship.toml" "$STARSHIP_CONFIG"
 fi
 
+ash_init_settings() {
+    # $1 settings path
+    ASH_PATH_SETTINGS="${ASH_PATH_USER}/$1"
+    if [ ! -f "$ASH_PATH_SETTINGS" ]; then
+        echo "Writing default user settings to \$ASH_PATH_USER/$1"
+        echo "$2" > $ASH_PATH_SETTINGS
+    fi
+    source "$ASH_PATH_SETTINGS"
+}
+
 PATH="${PATH}:$ASH_PLUG_BIN"

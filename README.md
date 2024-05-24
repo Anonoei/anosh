@@ -45,5 +45,5 @@ Features:
    - MacOS
      - [amethyst](https://ianyh.com/amethyst/)
    - [kitty](https://sw.kovidgoyal.net/kitty/)
-   -
+   - [tmux]
  - Windows

@@ -21,40 +21,31 @@ alias ...='cd ../..'
 alias cd='z'
 
 # Aliases for multiple directory listing commands
+ls_cmd=""
 if [ -x "$(command -v eza)" ]; then
-    alias ls='eza --icons -aFh'                # add colors and file type extensions
-    alias ll='eza --icons -Fl'                 # long listing format
-    alias l.='eza --icons -Alh'                # show hidden files
-    alias lw='eza --icons -xAh'                # wide listing format
-    alias lr='eza --icons -lRh'                # recursive ls
-    alias lf="eza --icons -l | egrep -v '^d'"  # files only
-    alias ldir="eza --icons -l | egrep '^d'"   # directories only
-    alias lm='eza --icons -alh | more'         # pipe through 'more'
-
-    alias lsx='eza --icons -lXBh'              # sort by extension
-    alias lsk='eza --icons -lSrh'              # sort by size
-    alias lsc='eza --icons -lcrh'              # sort by change time
-    alias lsu='eza --icons -lurh'              # sort by access time
-    alias lst='eza --icons -ltrh'              # sort by date
-    alias labc='eza --icons -lap'              # sort alphabetically
-
+    ls_cmd="eza --icons=auto --color=auto --classify=auto"
 else
-    alias ls='ls --color -aFh'                # add colors and file type extensions
-    alias ll='ls --color -Fl'                 # long listing format
-    alias l.='ls --color -Alh'                # show hidden files
-    alias lw='ls --color -xAh'                # wide listing format
-    alias lr='ls --color -lRh'                # recursive ls
-    alias lf="ls --color -l | egrep -v '^d'"  # files only
-    alias ldir="ls --color -l | egrep '^d'"   # directories only
-    alias lm='ls --color -alh | more'         # pipe through 'more'
-
-    alias lsx='ls --color -lXBh'              # sort by extension
-    alias lsk='ls --color -lSrh'              # sort by size
-    alias lsc='ls --color -lcrh'              # sort by change time
-    alias lsu='ls --color -lurh'              # sort by access time
-    alias lst='ls --color -ltrh'              # sort by date
-    alias labc='ls --color -lap'              # sort alphabetically
+    ls_cmd="ls --color=always"
 fi
+alias ls="${ls_cmd}"
+alias ll="${ls_cmd} -l"                     # long listing format
+alias l.="${ls_cmd} -alh"                   # show hidden files
+alias lw="${ls_cmd} -xah"                   # wide listing format
+alias lr="${ls_cmd} -lRh"                   # recursive ls
+alias lf="${ls_cmd} -l | egrep -v '^d'"     # files only
+alias l.f="${ls_cmd} -lah | egrep -v '^d'"  # files only
+alias ldir="${ls_cmd} -l | egrep '^d'"      # directories only
+alias l.dir="${ls_cmd} -l | egrep '^d'"     # directories only
+alias lm="${ls_cmd} -alh | more"            # pipe through 'more'
+alias lg="${ls_cmd} -alh | grep"            # pipe through 'grep'
+
+alias lsx="${ls_cmd} -lXBh"              # sort by extension
+alias lsk="${ls_cmd} -lSrh"              # sort by size
+alias lsc="${ls_cmd} -lcrh"              # sort by change time
+alias lsu="${ls_cmd} -lurh"              # sort by access time
+alias lst="${ls_cmd} -ltrh"              # sort by date
+alias labc="${ls_cmd} -lap"              # sort alphabetically
+unset ls_cmd
 
 # Search running processes
 alias p="ps aux | grep "
