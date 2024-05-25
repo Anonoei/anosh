@@ -5,14 +5,18 @@
 
 
 Features:
- - Use [starship](https://starship.rs/) for prompt
- - Use [zoxide](https://github.com/ajeetdsouza/zoxide) for cd
- - Install [fzf](https://github.com/junegunn/fzf)
- - Compile/use [bat](https://github.com/sharkdp/bat) (*requires cargo*) for cat with wings
- - Install tree to show directory structures
- - Install [eza](https://github.com/eza-community/eza) (*requires cargo*) for ls icons
- - Install [multitail](https://vanheusden.com/multitail/) for better tail
- - Compile/use [fastfetch](https://github.com/fastfetch-cli/fastfetch) (*requires cmake*) to show off your system
+ - Install [starship](https://starship.rs/) for modern prompt
+ - Install [zoxide](https://github.com/ajeetdsouza/zoxide) for modern cd
+ - Use Nix to install packages:
+   - [tree]() for showing directory structures
+   - [multitail](https://vanheusden.com/multitail) for better tail
+   - [fzf](https://github.com/junegunn/fzf) for fuzzy finding
+   - [trash]() for cached rm
+   - [tldr]() for more concise man pages
+   - [btop]() for prettier top/htop
+   - [fastfetch](https://github.com/fastfetch-cli/fastfetch) for showing off your system
+   - [eza](https://github.com/eza-community/eza) for pretty ls
+   - [bat](https://github.com/sharkdp/bat) for cat with wings
 
 # Install
  1. Pick between `bash`, `zsh`, or `ps`
@@ -29,12 +33,6 @@ Features:
 
 # Reinstall
  1. Run `ash_reinstall`
-
-## Optional dependencies
- - Rust
-   - Run `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
- - cmake
-   - Run `<your package manager> install cmake`
 
 ## OS Packages
  - General
@@ -53,4 +51,5 @@ Features:
    - [tmux](https://github.com/tmux/tmux) Terminal Multiplexing
    - [btop](https://github.com/aristocratos/btop) Prettier top/htop
    - [tldr](https://github.com/tldr-pages/tldr) More concise man pages
+   - [nix] Fast, reproducible package manager
  - Windows

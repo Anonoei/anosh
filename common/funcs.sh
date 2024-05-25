@@ -1,5 +1,3 @@
-
-
 ash_reinstall() {
     $SHELL <(curl -s "${ASH_DOWN}/${ASH_REL}/install")
 }
@@ -21,31 +19,23 @@ ash_update() {
     fi
 }
 
-install_package() {
-    pkg="$1"
-    if [[ "$pkg" == "trash-cli" ]]; then
-        pkg_cmd="trash"
-    else
-        pkg_cmd=$pkg
+install_nix() {
+    distro=$(bash ${ASH_ROOT}/src/common/scripts/distro)
+    if [ ! -x "$(command -v nix)" ]; then
+        echo -ne "Install Nix package manager? (Y/n)"
+        read -q response
+        if [[ "$response" == n* ]]; then
+            echo "Not installing Nix..."
+        else
+            if [ $distro == "MacOS" ]; then
+                sh <(curl -L https://nixos.org/nix/install)
+            else
+                sh <(curl -L https://nixos.org/nix/install) --daemon
+            fi
+        fi
     fi
-    #echo "Checking if $pkg is installed as $pkg_cmd"
-    if  [ -x "$(command -v $pkg_cmd)" ]; then
-        return
-    fi
-    echo "Installing $pkg..."
-    if  [ -x "$(command -v nala)" ];     then sudo nala install $pkg
-    elif [ -x "$(command -v apt-get)" ]; then sudo apt install $pkg
-    elif [ -x "$(command -v apk)" ];     then sudo apk add --no-cache $pkg
-    elif [ -x "$(command -v dnf)" ];     then sudo dnf install $pkg
-    elif [ -x "$(command -v pacman)" ];  then sudo pacman -Syu $pkg
-    elif [ -x "$(command -v zypper)" ];  then sudo zypper install $pkg
-    elif [ -x "$(command -v brew)" ];    then brew install $pkg
-    else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $pkg">&2; fi
 }
-
-for pkg in "tree" "multitail" "fzf" "trash-cli" "tldr" "btop"; do
-    install_package "$pkg"
-done
+install_nix
 
 confirm() {
     local response="y"

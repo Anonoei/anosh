@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Returns current distrobution
+# $dtype is one of:
+#  Linux
+#    rhel
+#    suse
+#    debian
+#    gentoo
+#    arch
+#    slackware
+#  MacOS
+#  unknown
+
+dtype="unknown"  # Default to unknown
+
+# Use /etc/os-release for modern distro identification
+if [ -r /etc/os-release ]; then
+	source /etc/os-release
+	case $ID in
+		fedora|rhel|centos)
+			dtype="rhel"
+			;;
+		sles|opensuse*)
+			dtype="suse"
+			;;
+		ubuntu|debian)
+			dtype="debian"
+			;;
+		gentoo)
+			dtype="gentoo"
+			;;
+		arch)
+			dtype="arch"
+			;;
+		slackware)
+			dtype="slackware"
+			;;
+		*)
+			# If ID is not recognized, keep dtype as unknown
+			;;
+	esac
+fi
+
+if [[ "$dtype" == "unknown" ]]; then
+	if [[ "$(uname)" == "Darwin" ]]; then
+		dtype="MacOS"
+	fi
+fi
+
+echo $dtype

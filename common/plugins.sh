@@ -8,45 +8,35 @@ if [ ! -f "$ASH_PLUG_BIN/zoxide" ] && [ ! -x "$(command -v zoxide)" ]; then
     bash <(curl -sSfL "https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh") --bin-dir "$ASH_PLUG_BIN"
 fi
 
-# If cmake is installed, install things that require cmake
-if [ -x "$(command -v cmake)" ]; then
-    if [ ! -f "$ASH_PLUG_BIN/fastfetch" ] && [ ! -x "$(command -v fastfetch)" ]; then
-        git clone https://github.com/fastfetch-cli/fastfetch.git $ASH_PLUG_FASTFETCH
-        old_path=$PWD
-        cd $ASH_PLUG_FASTFETCH
-        mkdir -p build
-        cd build
-        echo "Compiling fastfetch..."
-        cmake ..
-        cmake --build . --target fastfetch --target flashfetch
-        mv "$ASH_PLUG_FASTFETCH/build/fastfetch" "$ASH_PLUG_BIN/fastfetch"
-        mv "$ASH_PLUG_FASTFETCH/build/flashfetch" "$ASH_PLUG_BIN/flashfetch"
-        cd ..
-        rm -rf build
-        cd $old_path
+install_deps() {
+    if [[ "$(which tree)" == *"not found" ]]; then
+        nix-env -iA nixpkgs.tree
     fi
-fi
-
-# If cargo is installed, install things that require cargo
-if [ -x "$(command -v cargo)" ]; then
-    if [ ! -f "$ASH_PLUG_BIN/eza" ] && [ ! -x "$(command -v eza)" ]; then
-        git clone https://github.com/eza-community/eza.git $ASH_PLUG_EZA
-        old_path=$PWD
-        cd $ASH_PLUG_EZA
-        cargo install --path .
-        if [ ! -f "$ASH_PLUG_BIN/eza" ]; then
-            mv "$HOME/.cargo/bin/eza" "$ASH_PLUG_BIN/eza"
-        fi
-        cd $old_path
+    if [[ "$(which multitail)" == *"not found" ]]; then
+        nix-env -iA nixpkgs.multitail
     fi
-    if [ ! -f "$ASH_PLUG_BIN/bat" ] && [ ! -x "$(command -v bat)" ] && [ ! -x "$(command -v batcat)" ]; then
-        git clone https://github.com/sharkdp/bat.git $ASH_PLUG_BAT
-        old_path=$PWD
-        cd $ASH_PLUG_BAT
-        cargo install --locked bat
-        if [ ! -f "$ASH_PLUG_BIN/bat" ]; then
-            mv "$HOME/.cargo/bin/bat" "$ASH_PLUG_BIN/bat"
-        fi
-        cd $old_path
+    if [[ "$(which fzf)" == *"not found" ]]; then
+        nix-env -iA nixpkgs.fzf
     fi
+    if [[ "$(which trash)" == *"not found" ]]; then
+        nix-env -iA nixpkgs.trash-cli
+    fi
+    if [[ "$(which tldr)" == *"not found" ]]; then
+        nix-env -iA nixpkgs.tldr
+    fi
+    if [[ "$(which btop)" == *"not found" ]]; then
+        nix-env -iA nixpkgs.btop
+    fi
+    if [[ "$(which fastfetch)" == *"not found" ]]; then
+        nix-env -iA nixpkgs.fastfetch
+    fi
+    if [[ "$(which eza)" == *"not found" ]]; then
+        nix-env -iA nixpkgs.eza
+    fi
+    if [[ "$(which bat)" == *"not found" ]]; then
+        nix-env -iA nixpkgs.bat
+    fi
+}
+if [ -x "$(command -v nix)" ]; then
+    install_deps
 fi
