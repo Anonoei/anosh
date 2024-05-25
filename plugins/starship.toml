@@ -6,12 +6,13 @@ palette = 'ano'
 continuation_prompt = '▶▶ '
 
 format = """
+[](fg:shell)\
 $shell\
 [](bg:user fg:shell)\
 $username\
+$hostname\
 [](bg:directory fg:user)\
 $directory\
-[](bg:git fg:directory)\
 $git_branch\
 [](bg:git fg:git_sep)\
 $git_status\
@@ -46,13 +47,20 @@ style_root = "fg:root_fg"
 format = "[$user](bg:user $style)"
 show_always = true
 
+[hostname]
+disabled = false
+format = "[[@](bg:user fg:prompt)$ssh_symbol$hostname](bg:user fg:user_fg)"
+ssh_only = true
+ssh_symbol = ""
+trim_at = "."
+
 [directory]
 disabled = false
-format = "[ $path ](bg:directory fg:directory_fg)$read_only"
-truncation_length = 3
+format = "[$path](bg:directory fg:directory_fg)$read_only"
+truncation_length = 2
 truncation_symbol = "…/"
 truncate_to_repo = true
-fish_style_pwd_dir_length = 2
+fish_style_pwd_dir_length = 3
 read_only = '🔒'
 
 [git_branch]
