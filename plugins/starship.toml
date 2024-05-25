@@ -93,7 +93,7 @@ error_symbol = '[](fg:prompt)'
 ## --- Right prompt --- ##
 [time]
 disabled = false
-time_format = "%F %T%z"
+time_format = "%Y-%m-%d %H:%M:%S"
 format = "[$time](bg:shell fg:time_fg)"
 
 [git_metrics]
