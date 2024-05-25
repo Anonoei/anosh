@@ -26,15 +26,18 @@ alias vi=edit
 alias vim=edit
 '
 
+export ASH_PLUG_BLERC="$ASH_PATH_USER/blerc"
+
 ### ---- Initialize everything else ---- $
 source "${ASH_PATH_COMMON}/init.sh"
 
-source "${ASH_PATH_ROOT}/ash_config.sh"
+#source "${ASH_PATH_ROOT}/ash_config.sh"
 source "${ASH_PATH_ROOT}/ash_define.sh"
 source "${ASH_PATH_ROOT}/ash_plugins.sh"
 
 eval "$(starship init bash)"
 eval "$(zoxide init bash)"
+
 if [ -x "$(command -v blesh-share)" ]; then
-    source "$(blesh-share)"/ble.sh
+  source "$(blesh-share)/ble.sh" --rcfile "${ASH_PATH_ROOT}/ash_config.sh"
 fi

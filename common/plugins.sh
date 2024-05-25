@@ -11,7 +11,7 @@ fi
 install_nix_pkg() {
     # $1 package name
     # $2 command to test instalation
-    if [[ "$(which $2)" == *"not found" ]]; then
+    if [[ "$(which $2)" == *"not found" ]] || [ -z "$(which $2)" ]; then
         nix-env -iA $1
     fi
 }
