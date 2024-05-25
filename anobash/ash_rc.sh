@@ -35,4 +35,6 @@ source "${ASH_PATH_ROOT}/ash_plugins.sh"
 
 eval "$(starship init bash)"
 eval "$(zoxide init bash)"
-source "$(blesh-share)"/ble.sh
+if [ -x "$(command -v blesh-share)" ]; then
+    source "$(blesh-share)"/ble.sh
+fi
