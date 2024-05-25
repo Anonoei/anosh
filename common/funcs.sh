@@ -40,7 +40,10 @@ install_nix
 confirm() {
     local response="y"
     echo -ne "Do you want to run '$*' (y/N)? "
-    read -q response
+    if [[ $SHELL = *zsh* ]]; then
+        read -q response
+    else
+        read -N 1
     echo
     case "$response" in
         [yY][eE][sS]|[yY]) command "${@}";;

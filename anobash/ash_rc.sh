@@ -17,7 +17,7 @@ ASH_REL="anobash"
 
 source "${ASH_PATH}/common/verify_paths.sh"
 
-ash_init_settings "${ASH_PATH_USER}/ash_bash_settings.sh" '### ---- AnoSH BASH User Settings ---- ###
+ash_init_settings "ash_bash_settings.sh" '### ---- AnoSH BASH User Settings ---- ###
 alias edit=nvim
 EDITOR=edit
 VISUAL=edit
