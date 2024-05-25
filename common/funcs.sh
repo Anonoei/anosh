@@ -44,6 +44,7 @@ confirm() {
         read -q response
     else
         read -N 1
+    fi
     echo
     case "$response" in
         [yY][eE][sS]|[yY]) command "${@}";;
