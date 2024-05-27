@@ -52,4 +52,7 @@ Features:
    - [btop](https://github.com/aristocratos/btop) Prettier top/htop
    - [tldr](https://github.com/tldr-pages/tldr) More concise man pages
    - [nix] Fast, reproducible package manager
+   - [atuin](https://github.com/atuinsh/atuin) zoxide for command history
+   - [powertop](https://github.com/fenrus75/powertop) show/optimize process power usage
+   - [dust](https://github.com/bootandy/dust) df -h and windirstat's successor
  - Windows

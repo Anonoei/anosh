@@ -13,6 +13,7 @@ $username\
 $hostname\
 [](bg:directory fg:user)\
 $directory\
+[](bg:git fg:directory)\
 $git_branch\
 [](bg:git fg:git_sep)\
 $git_status\
@@ -71,7 +72,7 @@ truncation_symbol = ""
 
 [git_status]
 disabled = false
-format = "[( ($conflicted$untracked$stashed$modified$staged$renamed$deleted|)$ahead_behind )](bg:git)"
+format = "[($conflicted$untracked$stashed$modified$staged$renamed$deleted)($ahead_behind)](bg:git)"
 conflicted = "[=](bg:git fg:red)"
 untracked = "[?](bg:git fg:blue)"
 stashed = "[$](bg:git fg:cyan)"
@@ -98,7 +99,7 @@ format = "[$time](bg:shell fg:time_fg)"
 
 [git_metrics]
 disabled = false
-format = "[(([+$added](bg:git bold green))/)([-$deleted](bg:git bold red))](bg:git)"
+format = "[(([+$added](bg:git bold green))([-$deleted](bg:git bold red)))](bg:git)"
 
 [cmd_duration]
 disabled = false
