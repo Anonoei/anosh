@@ -26,6 +26,7 @@ install_deps() {
     install_nix_pkg "nixpkgs.fastfetch" "fastfetch"
     install_nix_pkg "nixpkgs.eza" "eza"
     install_nix_pkg "nixpkgs.bat" "bat"
+    install_nix_pkg "nixpkgs.atuin" "atuin"
 }
 if [ -x "$(command -v nix)" ]; then
     install_deps

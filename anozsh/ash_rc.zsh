@@ -35,3 +35,4 @@ source "${ASH_PATH_ROOT}/ash_plugins.zsh"
 
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
+eval "$(atuin init zsh)"

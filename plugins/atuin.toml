@@ -1,0 +1,3 @@
+auto_sync = false
+update_check = true
+db_path = "$HOME/.local/anosh/.history.db"

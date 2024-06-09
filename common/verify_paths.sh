@@ -12,6 +12,8 @@ export ASH_PATH_ROOT="${ASH_PATH}/${ASH_REL}"
 export STARSHIP_CONFIG="$ASH_PATH_USER/starship.toml"
 export STARSHIP_CACHE="$ASH_PATH_PLUGINS/starship-cache"
 
+export ATUIN_CONFIG="$ASH_PATH_USER/atuin.toml"
+
 if [[ ! -d "${ASH_PATH_COMMON}" ]]; then
     mkdir -p "${ASH_PATH_COMMON}"
 fi
@@ -32,9 +34,13 @@ if [ ! -f "$STARSHIP_CONFIG" ]; then
     cp "${ASH_PATH}/plugins/starship.toml" "$STARSHIP_CONFIG"
 fi
 
+if [ ! -f "$ATUIN_CONFIG" ]; then
+    cp "${ASH_PATH}/plugins/atuin.toml" "$ATUIN_CONFIG"
+fi
+
 ash_init_settings() {
     # $1 settings path
-    ASH_PATH_SETTINGS="${ASH_PATH_USER}/$1"
+    export ASH_PATH_SETTINGS="${ASH_PATH_USER}/$1"
     if [ ! -f "$ASH_PATH_SETTINGS" ]; then
         echo "Writing default user settings to \$ASH_PATH_USER/$1"
         echo "$2" > $ASH_PATH_SETTINGS
