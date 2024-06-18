@@ -44,6 +44,7 @@ Features:
  - *nix
    - Linux
      - [Gear Lever](https://github.com/mijorus/gearlever) Manage AppImages
+     - [Bismuth](https://github.com/Bismuth-Forge/bismuth) Tiling Window Manager for KDE
    - MacOS
      - [amethyst](https://ianyh.com/amethyst/) Tiling Window Manager
    - [kitty](https://sw.kovidgoyal.net/kitty/) Terminal Emulator
