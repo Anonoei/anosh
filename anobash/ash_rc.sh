@@ -26,8 +26,6 @@ alias vi=edit
 alias vim=edit
 '
 
-export ASH_PLUG_BLERC="$ASH_PATH_USER/blerc"
-
 ### ---- Initialize everything else ---- $
 source "${ASH_PATH_COMMON}/init.sh"
 
@@ -37,4 +35,7 @@ source "${ASH_PATH_ROOT}/ash_plugins.sh"
 
 eval "$(starship init bash)"
 eval "$(zoxide init bash)"
+
+[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+
 eval "$(atuin init bash)"

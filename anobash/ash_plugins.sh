@@ -1,2 +1,5 @@
 ### ---- Install QoL features ---- ###
-# Use bash-completion, if available
+
+if [ ! -f "$HOME/.bash-preexec.sh" ]; then
+    curl https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh -o ~/.bash-preexec.sh
+fi

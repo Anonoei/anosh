@@ -12,7 +12,8 @@ export ASH_PATH_ROOT="${ASH_PATH}/${ASH_REL}"
 export STARSHIP_CONFIG="$ASH_PATH_USER/starship.toml"
 export STARSHIP_CACHE="$ASH_PATH_PLUGINS/starship-cache"
 
-export ATUIN_CONFIG="$ASH_PATH_USER/atuin.toml"
+export ATUIN_CONFIG_DIR="$ASH_PATH_USER/atuin"
+export ATUIN_CONFIG="$ATUIN_CONFIG_DIR/config.toml"
 
 if [[ ! -d "${ASH_PATH_COMMON}" ]]; then
     mkdir -p "${ASH_PATH_COMMON}"
@@ -35,6 +36,7 @@ if [ ! -f "$STARSHIP_CONFIG" ]; then
 fi
 
 if [ ! -f "$ATUIN_CONFIG" ]; then
+    mkdir -p $ATUIN_CONFIG_DIR
     cp "${ASH_PATH}/plugins/atuin.toml" "$ATUIN_CONFIG"
 fi
 
