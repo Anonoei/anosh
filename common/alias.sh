@@ -1,3 +1,4 @@
+# Quick aliases
 alias q="exit"
 alias cls="clear"
 alias h="history | grep "
@@ -18,11 +19,10 @@ alias home='cd ~'
 alias cd..='cd ..'
 alias ..='cd ..'
 alias ...='cd ../..'
-alias cd='z'
 
 # Aliases for multiple directory listing commands
 ls_cmd=""
-if [ -x "$(command -v eza)" ]; then
+if [[ ${ASH_PLUGS[@]} =~ "eza" ]]; then
     ls_cmd="eza --icons=auto --color=auto --classify=auto"
 else
     ls_cmd="ls --color=always"
@@ -84,11 +84,26 @@ alias logs="sudo find /var/log -type f -exec file {} \; | grep 'text' | cut -d' 
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-if  [ -x "$(command -v bat)" ]; then
-    alias cat='bat'
-elif [ -x "$(command -v batcat)" ]; then
-    alias cat='batcat'
+# Configure bat
+if [[ ${ASH_PLUGS[@]} =~ "bat" ]]; then
+    if [ -x "$(command -v bat)" ]; then
+        alias cat='bat'
+    elif [ -x "$(command -v batcat)" ]; then
+        alias cat='batcat'
+    fi
 fi
-if  [ -x "$(command -v multitail)" ]; then
+
+# Configure multitail
+if [[ ${ASH_PLUGS[@]} =~ "multitail" ]]; then
     alias multitail='multitail --no-repeat -c'
 fi
+
+# Configure logout
+ash_logout() {
+    while IFS=' ' read -r sess_id _ user seat tty; do
+        echo "Terminating session ID: ${sess_id}"
+        loginctl terminate-session $sess_id
+        # Do whatever you want with the session id here
+    done < <(loginctl list-sessions)
+}
+alias lo='ash_logout'

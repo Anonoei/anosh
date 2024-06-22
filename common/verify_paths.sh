@@ -42,9 +42,9 @@ fi
 
 ash_init_settings() {
     # $1 settings path
-    export ASH_PATH_SETTINGS="${ASH_PATH_USER}/$1"
+    export ASH_PATH_SETTINGS="${HOME}/$1"
     if [ ! -f "$ASH_PATH_SETTINGS" ]; then
-        echo "Writing default user settings to \$ASH_PATH_USER/$1"
+        echo "Writing default user settings to ~/$1"
         echo "$2" > $ASH_PATH_SETTINGS
     fi
     source "$ASH_PATH_SETTINGS"

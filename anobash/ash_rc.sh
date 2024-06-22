@@ -6,7 +6,7 @@
 # Author: Anonoei (https://github.com/anonoei)
 # Source: https://github.com/anonoei/anosh
 # License: MIT
-ASH_VERSION="0.7.2"
+ASH_VERSION="0.8.0"
 ASH_VER_PATH="ash_rc.sh"
 
 ### ---- Paths ---- ###
@@ -17,7 +17,7 @@ ASH_REL="anobash"
 
 source "${ASH_PATH}/common/verify_paths.sh"
 
-ash_init_settings "ash_bash_settings.sh" '### ---- AnoSH BASH User Settings ---- ###
+ash_init_settings ".ash_bashrc" '### ---- AnoSH BASH User Settings ---- ###
 alias edit=nvim
 EDITOR=edit
 VISUAL=edit
@@ -26,16 +26,23 @@ alias vi=edit
 alias vim=edit
 '
 
-### ---- Initialize everything else ---- $
+### ---- Initialize anosh ---- ###
 source "${ASH_PATH_COMMON}/init.sh"
 
-#source "${ASH_PATH_ROOT}/ash_config.sh"
+source "${ASH_PATH_ROOT}/ash_config.sh"
 source "${ASH_PATH_ROOT}/ash_define.sh"
 source "${ASH_PATH_ROOT}/ash_plugins.sh"
 
-eval "$(starship init bash)"
-eval "$(zoxide init bash)"
+### ---- Initialize everything else ---- ###
+if [[ ${ASH_PLUGS[@]} =~ "starship" ]]; then
+    eval "$(starship init bash)"
+fi
 
-[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+if [[ ! ${ASH_PLUGS[@]} =~ "zoxide" ]]; then
+    eval "$(zoxide init bash)"
+fi
 
-eval "$(atuin init bash)"
+if [[ ! ${ASH_PLUGS[@]} =~ "atuin" ]]; then
+    [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+    eval "$(atuin init bash)"
+fi
