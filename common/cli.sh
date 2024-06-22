@@ -9,11 +9,18 @@ _ash_help() {
     echo "AnoSH '${ASH_REL}' v${ASH_VERSION}, cli v${ASH_CLI_VERSION}"
     echo ""
 
+    echo "Usage:  ash [OPTIONS] COMMAND"
+    echo ""
+
+    echo "Manage AnoSH installation"
+    echo ""
+
     echo "Commands:"
     echo "  vars"
     echo "  plugs"
     echo "  reinstall"
     echo "  update"
+    echo "  pkg"
     echo "  help"
     echo ""
 
@@ -28,6 +35,7 @@ _ash_help() {
 
 source "${ASH_PATH_COMMON}/cli/base.sh"
 source "${ASH_PATH_COMMON}/cli/status.sh"
+source "${ASH_PATH_COMMON}/cli/pkg.sh"
 
 _ash() {
     if [[ "$1" == "help" ]] || [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
@@ -45,9 +53,12 @@ _ash() {
     elif [[ "$1" == "update" ]] || [[ "$1" == "-u" ]]; then
         shift
         _ash_update $*
+    elif [[ "$1" == "pkg" ]]; then
+        shift
+        _ash_pkg $*
     else
         echo "Unknown ash syntax: ash $*"
-        _ash_help
+        echo "Run 'ash help' for more information"
     fi
 }
 alias ash="_ash"
