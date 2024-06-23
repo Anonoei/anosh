@@ -14,7 +14,9 @@ install_nix() {
         fi
     fi
 }
-install_nix
+if [[ $- == *i* ]]; then
+    install_nix
+fi
 
 confirm() {
     local response="y"

@@ -6,7 +6,7 @@
 # Author: Anonoei (https://github.com/anonoei)
 # Source: https://github.com/anonoei/anosh
 # License: MIT
-ASH_VERSION="0.8.0"
+ASH_VERSION="0.8.1"
 ASH_VER_PATH="ash_rc.zsh"
 
 ### ---- Paths ---- ###
@@ -14,6 +14,7 @@ PATH_LOCAL="${HOME}/.local"
 ASH_ROOT="${PATH_LOCAL}/anosh"
 ASH_PATH="${ASH_ROOT}/src"
 ASH_REL="anozsh"
+ASH_SHELL="zsh"
 
 source "${ASH_PATH}/common/verify_paths.sh"
 
@@ -28,21 +29,3 @@ alias vim=edit
 
 ### ---- Initialize anosh ---- ###
 source "${ASH_PATH_COMMON}/init.sh"
-
-source "${ASH_PATH_ROOT}/ash_config.zsh"
-source "${ASH_PATH_ROOT}/ash_define.zsh"
-source "${ASH_PATH_ROOT}/ash_plugins.zsh"
-
-
-### ---- Initialize everything else ---- ###
-if [[ ${ASH_PLUGS[@]} =~ "starship" ]]; then
-    eval "$(starship init zsh)"
-fi
-
-if [[ ! ${ASH_PLUGS[@]} =~ "zoxide" ]]; then
-    eval "$(zoxide init zsh)"
-fi
-
-if [[ ! ${ASH_PLUGS[@]} =~ "atuin" ]]; then
-    eval "$(atuin init zsh)"
-fi
