@@ -19,12 +19,10 @@ ASH_SHELL="zsh"
 source "${ASH_PATH}/common/verify_paths.sh"
 
 ash_init_settings ".ash_zshrc" '### ---- AnoSH ZSH User Settings ---- ###
-alias edit=nvim
-EDITOR=edit
-VISUAL=edit
+EDITOR=nvim
+VISUAL=nvim
 
-alias vi=edit
-alias vim=edit
+alias vi=EDITOR
 '
 
 ### ---- Initialize anosh ---- ###

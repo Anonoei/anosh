@@ -6,7 +6,7 @@
 # Author: Anonoei (https://github.com/anonoei)
 # Source: https://github.com/anonoei/anosh
 # License: MIT
-ASH_VERSION="0.8.1"
+cd ..ASH_VERSION="0.8.1"
 ASH_VER_PATH="ash_rc.sh"
 
 ### ---- Paths ---- ###
@@ -19,12 +19,10 @@ ASH_SHELL="bash"
 source "${ASH_PATH}/common/verify_paths.sh"
 
 ash_init_settings ".ash_bashrc" '### ---- AnoSH BASH User Settings ---- ###
-alias edit=nvim
-EDITOR=edit
-VISUAL=edit
+EDITOR=nvim
+VISUAL=nvim
 
-alias vi=edit
-alias vim=edit
+alias vi=EDITOR
 '
 
 ### ---- Initialize anosh ---- ###
