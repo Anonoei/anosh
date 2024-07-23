@@ -6,7 +6,7 @@
 # Author: Anonoei (https://github.com/anonoei)
 # Source: https://github.com/anonoei/anosh
 # License: MIT
-ASH_VERSION="0.8.1"
+ASH_VERSION="0.8.3"
 ASH_VER_PATH="ash_rc.zsh"
 
 ### ---- Paths ---- ###

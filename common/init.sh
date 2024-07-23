@@ -16,18 +16,22 @@ done
 
 ### ---- Initialize everything else ---- ###
 if [[ $- == *i* ]]; then # interactive shell
-    if [[ ${ASH_PLUGS[@]} =~ "starship" ]]; then
-        eval "$(starship init $ASH_SHELL)"
+    if [[ ! $XDG_SESSION_TYPE == "tty" ]]; then
+        if [[ ${ASH_PLUGS[@]} =~ "starship" ]]; then
+            eval "$(starship init $ASH_SHELL)"
+        fi
+
+        if [[ ${ASH_PLUGS[@]} =~ "atuin" ]]; then
+            if [[ $ASH_SHELL == "bash" ]]; then
+                [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+            fi
+            eval "$(atuin init $ASH_SHELL)"
+        fi
     fi
 
-    if [[ ! ${ASH_PLUGS[@]} =~ "zoxide" ]]; then
+    if [[ ${ASH_PLUGS[@]} =~ "zoxide" ]]; then
         eval "$(zoxide init $ASH_SHELL)"
     fi
 
-    if [[ ! ${ASH_PLUGS[@]} =~ "atuin" ]]; then
-        if [[ $ASH_SHELL == "bash" ]]; then
-            [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
-        fi
-        eval "$(atuin init $ASH_SHELL)"
-    fi
+
 fi
