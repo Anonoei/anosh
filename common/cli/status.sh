@@ -12,7 +12,8 @@ _ash_update() {
         echo ""
         old_path=$PWD
         cd $ASH_PATH
-        git pull --rebase --force
+        git reset --hard origin
+        git pull origin main --force
         cd $old_path
     else
         echo "AnoSH is up to date."
