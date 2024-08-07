@@ -8,6 +8,7 @@ _ash_pkg_help() {
     echo "Commands:"
     echo "  update"
     echo "  nix"
+    echo "  extra"
     echo "  help"
     echo ""
 
@@ -22,6 +23,8 @@ source "${ASH_PATH_COMMON}/cli/pkg/nix.sh"
 
 source "${ASH_PATH_COMMON}/cli/pkg/update.sh"
 
+source "${ASH_PATH_COMMON}/cli/pkg/extra.sh"
+
 
 _ash_pkg() {
     if [[ "$1" == "help" ]] || [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
@@ -33,6 +36,9 @@ _ash_pkg() {
     elif [[ "$1" == "nix" ]]; then
         shift
         _ash_pkg_nix $*
+    elif [[ "$1" == "extra" ]]; then
+        shift
+        _ash_pkg_extra $*
     else
         echo "Unknown ash pkg syntax: ash pkg $*"
         echo "Run 'ash pkg help' for more information"
