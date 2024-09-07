@@ -77,10 +77,13 @@ fi
 
 echo "Writing .zshrc"
 if [ -f "${HOME}/.zshrc" ]; then
-    mv "${HOME}/.zshrc" "${HOME}/.zshrc-bak"
+    if ! grep -q "^source ${ASH_ROOT}/src/anozsh/ash_rc.zsh$" "${HOME}/.zshrc"; then
+        echo "# Source AnoSH"
+        echo "source ${ASH_ROOT}/src/anozsh/ash_rc.zsh" >> "${HOME}/.zshrc"
+    fi
+else
+    echo "source ${ASH_ROOT}/src/anozsh/ash_rc.zsh" > "${HOME}/.zshrc"
 fi
-
-echo "source ${ASH_ROOT}/src/anozsh/ash_rc.zsh" > "${HOME}/.zshrc"
 
 echo -n "Installed! Running AnoSH"
 for _ in "" "" "" "" "" ""; do

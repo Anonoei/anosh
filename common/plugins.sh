@@ -1,19 +1,21 @@
+# --- Starship --- #
 if [ ! -f "$ASH_PLUG_BIN/starship" ] && [ ! -x "$(command -v starship)" ]; then
     echo "Installing starship..."
     sh <(curl -sS "https://starship.rs/install.sh") --bin-dir "$ASH_PLUG_BIN"
 fi
-if [ -x "$(command -v starship)" ]; then
+if [ -f "$ASH_PLUG_BIN/starship" ] || [ -x "$(command -v starship)" ]; then
     ASH_PLUGS+=("starship")
 fi
-
+# --- Zoxide --- #
 if [ ! -f "$ASH_PLUG_BIN/zoxide" ] && [ ! -x "$(command -v zoxide)" ]; then
     echo "Installing zoxide..."
     bash <(curl -sSfL "https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh") --bin-dir "$ASH_PLUG_BIN"
 fi
-if [ -x "$(command -v zoxide)" ]; then
+if [ -f "$ASH_PLUG_BIN/zoxide" ] || [ -x "$(command -v zoxide)" ]; then
     ASH_PLUGS+=("zoxide")
 fi
 
+# --- Deps --- #
 install_deps() {
     _ash_pkg_nix_install "nixpkgs.tree" "tree"
     _ash_pkg_nix_install "nixpkgs.multitail" "multitail"

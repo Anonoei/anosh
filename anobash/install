@@ -77,10 +77,14 @@ fi
 
 echo "Writing .bashrc"
 if [ -f "${HOME}/.bashrc" ]; then
-    mv "${HOME}/.bashrc" "${HOME}/.bashrc-bak"
+    if ! grep -q "^source ${ASH_ROOT}/src/anobash/ash_rc.sh$" "${HOME}/.bashrc"; then
+        echo "# Source AnoSH"
+        echo "source ${ASH_ROOT}/src/anobash/ash_rc.sh" >> "${HOME}/.bashrc"
+    fi
+else
+    echo "# Source AnoSH"
+    echo "source ${ASH_ROOT}/src/anobash/ash_rc.sh" > "${HOME}/.bashrc"
 fi
-
-echo "source ${ASH_ROOT}/src/anobash/ash_rc.sh" > "${HOME}/.bashrc"
 
 echo -n "Installed! Running AnoSH"
 for _ in "" "" "" "" "" ""; do

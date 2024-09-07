@@ -1,11 +1,3 @@
-### ---- History ---- ###
-HISTFILE="${HOME}/.zsh_history"
-HISTLINES=10000
-SAVEHIST=$HISTLINES # lines of history to save
-HISTCONTROL=erasedups:ignoredups:ignorespace
-setopt EXTENDED_HISTORY # add timestamp and duration to command
-setopt INC_APPEND_HISTORY # append to histfile instead of rewriting
-
 ### ---- Options ---- ###
 autoload -U select-word-style
 select-word-style bash

@@ -1,3 +1,12 @@
 auto_sync = false
 update_check = true
-db_path = "$HOME/.local/anosh/.history.db"
+db_path = "~/.local/anosh/user/atuin/history.db"
+key_path = "~/.local/anosh/user/atuin/.key"
+session_path = "~/.local/anosh/user/atuin/.session"
+sync_frequency = "10m"
+search_mode = "fuzzy"
+filter_mode = "global"
+history_format = "{time}\t{command}\t{duration}"
+keymap_mode = "vim-normal"
+local_timeout = 5
+enter_accept = true

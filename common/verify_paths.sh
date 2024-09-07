@@ -38,16 +38,10 @@ fi
 if [ ! -f "$ATUIN_CONFIG" ]; then
     mkdir -p $ATUIN_CONFIG_DIR
     cp "${ASH_PATH}/plugins/atuin.toml" "$ATUIN_CONFIG"
-fi
-
-ash_init_settings() {
-    # $1 settings path
-    export ASH_PATH_SETTINGS="${HOME}/$1"
-    if [ ! -f "$ASH_PATH_SETTINGS" ]; then
-        echo "Writing default user settings to ~/$1"
-        echo "$2" > $ASH_PATH_SETTINGS
+    if [ -f "$HOME/.config/atuin/config.toml" ]; then
+        rm "$HOME/.config/atuin/config.toml"
     fi
-    source "$ASH_PATH_SETTINGS"
-}
+    ln -s "${ASH_PATH}/plugins/atuin.toml" "$HOME/.config/atuin/config.toml"
+fi
 
 PATH="${PATH}:$ASH_PLUG_BIN"
