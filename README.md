@@ -1,7 +1,7 @@
 # ANOSH
  Installable/syncable *sh configurations
-
-<img width="1680" alt="image" src="https://github.com/Anonoei/anosh/assets/73118441/1b43a8ba-46b9-471a-a145-d8667a4a8c13">
+ 
+![image](https://github.com/user-attachments/assets/920c323f-70cd-4048-8178-be1e9bc315a0)
 
 Features:
  - Install [starship](https://starship.rs/) for modern prompt
