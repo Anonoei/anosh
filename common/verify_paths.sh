@@ -6,8 +6,8 @@ export ASH_DISTRO=$(bash ${ASH_ROOT}/src/common/scripts/distro)
 export ASH_PKGMAN=$(bash ${ASH_ROOT}/src/common/scripts/pkgman)
 
 export ASH_PLUG_BIN="${ASH_PATH_PLUGINS}/bin"
-export ASH_PLUG_FASTFETCH="${ASH_PATH_PLUGINS}/fastfetch"
-export ASH_PLUG_EZA="${ASH_PATH_PLUGINS}/eza"
+
+export PATH="${PATH}:${ASH_PLUG_BIN}"
 
 export ASH_PLUG_ROOT="${ASH_PATH_PLUGINS}/${ASH_REL}"
 export ASH_PATH_ROOT="${ASH_PATH}/${ASH_REL}"
@@ -46,5 +46,3 @@ if [ ! -f "$ATUIN_CONFIG" ]; then
     fi
     ln -s "${ASH_PATH}/plugins/atuin.toml" "$HOME/.config/atuin/config.toml"
 fi
-
-PATH="${PATH}:$ASH_PLUG_BIN"
