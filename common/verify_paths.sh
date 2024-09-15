@@ -2,6 +2,9 @@ export ASH_PATH_COMMON="${ASH_PATH}/common"
 export ASH_PATH_PLUGINS="${ASH_ROOT}/plugins"
 export ASH_PATH_USER="${ASH_ROOT}/user"
 
+export ASH_DISTRO=$(bash ${ASH_ROOT}/src/common/scripts/distro)
+export ASH_PKGMAN=$(bash ${ASH_ROOT}/src/common/scripts/pkgman)
+
 export ASH_PLUG_BIN="${ASH_PATH_PLUGINS}/bin"
 export ASH_PLUG_FASTFETCH="${ASH_PATH_PLUGINS}/fastfetch"
 export ASH_PLUG_EZA="${ASH_PATH_PLUGINS}/eza"

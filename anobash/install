@@ -78,11 +78,11 @@ fi
 echo "Writing .bashrc"
 if [ -f "${HOME}/.bashrc" ]; then
     if ! grep -q "^source ${ASH_ROOT}/src/anobash/ash_rc.sh$" "${HOME}/.bashrc"; then
-        echo "# Source AnoSH"
+        echo "# Source AnoSH" >> "${HOME}/.bashrc"
         echo "source ${ASH_ROOT}/src/anobash/ash_rc.sh" >> "${HOME}/.bashrc"
     fi
 else
-    echo "# Source AnoSH"
+    echo "# Source AnoSH" >> "${HOME}/.bashrc"
     echo "source ${ASH_ROOT}/src/anobash/ash_rc.sh" > "${HOME}/.bashrc"
 fi
 

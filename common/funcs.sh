@@ -1,23 +1,3 @@
-install_nix() {
-    distro=$(bash ${ASH_ROOT}/src/common/scripts/distro)
-    if [ ! -x "$(command -v nix)" ]; then
-        echo -ne "Install Nix package manager? (Y/n)"
-        read -q response
-        if [[ "$response" == n* ]]; then
-            echo "Not installing Nix..."
-        else
-            if [ $distro == "MacOS" ]; then
-                sh <(curl -L https://nixos.org/nix/install)
-            else
-                sh <(curl -L https://nixos.org/nix/install) --daemon
-            fi
-        fi
-    fi
-}
-if [[ $- == *i* ]]; then
-    install_nix
-fi
-
 confirm() {
     local response="y"
     echo -ne "Do you want to run '$*' (y/N)? "
@@ -51,14 +31,6 @@ for item in ${ash_sudo_wrap[@]}; do
     cmd='{confirm_wrap --root $item "$@"}'
     declare $item="$cmd"
 done
-
-cd() {
-	if [ -n "$1" ]; then
-		builtin cd "$@" && ls
-	else
-		builtin cd ~ && ls
-	fi
-}
 
 whatsmyip() {
 	# Internal IP Lookup.

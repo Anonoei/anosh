@@ -61,7 +61,8 @@ alias countfiles="for t in files links directories; do echo \`find . -type \${t:
 alias checkcommand="type -t"
 
 # Show open ports
-alias openports='netstat -nape --inet'
+alias openports='netstat -nape --tcp --udp'
+alias listening='netstat -npel --tcp --udp'
 
 # Alias's to show disk space and space used in a folder
 alias diskspace="du -S | sort -n -r |more"

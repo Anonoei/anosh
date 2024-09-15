@@ -32,6 +32,4 @@ if [[ $- == *i* ]]; then # interactive shell
     if [[ ${ASH_PLUGS[@]} =~ "zoxide" ]]; then
         eval "$(zoxide init $ASH_SHELL)"
     fi
-
-
 fi

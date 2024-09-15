@@ -6,7 +6,10 @@ _ash_pkg_help() {
     echo ""
 
     echo "Commands:"
+    echo "  install"
+    echo "  remove"
     echo "  update"
+    echo ""
     echo "  nix"
     echo "  extra"
     echo "  help"
@@ -19,20 +22,23 @@ _ash_pkg_help() {
     echo ""
 }
 
+source "${ASH_PATH_COMMON}/cli/pkg/pkgm.sh"
 source "${ASH_PATH_COMMON}/cli/pkg/nix.sh"
-
-source "${ASH_PATH_COMMON}/cli/pkg/update.sh"
-
 source "${ASH_PATH_COMMON}/cli/pkg/extra.sh"
-
 
 _ash_pkg() {
     if [[ "$1" == "help" ]] || [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
         shift
         _ash_pkg_help $*
-    elif [[ "$1" == "update" ]] || [[ "$1" == "-u" ]]; then
+    elif [[ "$1" == "install" ]]; then
         shift
-        _ash_pkg_update $*
+        _ash_pkg_pkgm_install $*
+    elif [[ "$1" == "remove" ]]; then
+        shift
+        _ash_pkg_pkgm_remove $*
+    elif [[ "$1" == "update" ]]; then
+        shift
+        _ash_pkg_pkgm_update $*
     elif [[ "$1" == "nix" ]]; then
         shift
         _ash_pkg_nix $*
