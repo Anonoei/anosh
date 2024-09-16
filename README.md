@@ -1,21 +1,7 @@
 # ANOSH
  Installable/syncable *sh configurations
- 
-![image](https://github.com/user-attachments/assets/920c323f-70cd-4048-8178-be1e9bc315a0)
 
-Features:
- - Install [starship](https://starship.rs/) for modern prompt
- - Install [zoxide](https://github.com/ajeetdsouza/zoxide) for modern cd
- - Use Nix to install packages:
-   - [tree]() for showing directory structures
-   - [multitail](https://vanheusden.com/multitail) for better tail
-   - [fzf](https://github.com/junegunn/fzf) for fuzzy finding
-   - [trash]() for cached rm
-   - [tldr]() for more concise man pages
-   - [btop]() for prettier top/htop
-   - [fastfetch](https://github.com/fastfetch-cli/fastfetch) for showing off your system
-   - [eza](https://github.com/eza-community/eza) for pretty ls
-   - [bat](https://github.com/sharkdp/bat) for cat with wings
+![image](https://github.com/user-attachments/assets/920c323f-70cd-4048-8178-be1e9bc315a0)
 
 # Install
  1. Pick between `bash`, `zsh`, or `ps`
@@ -34,25 +20,36 @@ Features:
  1. Run `ash_reinstall`
 
 ## OS Packages
- - General
-   - [neovim](https://neovim.io/) General text editor
-   - [vscode](https://code.visualstudio.com/) IDE
+ - [neovim](https://neovim.io/) General text editor
+ - [vscode](https://code.visualstudio.com/) IDE
+ - [kitty](https://sw.kovidgoyal.net/kitty/) Terminal Emulator
+ - [starship](https://starship.rs/) graphical prompt
+ - [tldr](https://github.com/tldr-pages/tldr) More concise man pages
+ - [zoxide](https://github.com/ajeetdsouza/zoxide) modern cd
+ - [hyperfine](https://github.com/sharkdp/hyperfine) cli benchmakring
+ - [pyenv](https://github.com/pyenv/pyenv) Python versioning manager
+ - [keepassxc](https://keepassxc.org/) Password manager
+ - [Gear Lever](https://github.com/mijorus/gearlever) Manage AppImages
+ - [powertop](https://github.com/fenrus75/powertop) show/optimize process power usage
+ - [ripgrep](https://github.com/BurntSushi/ripgrep) recursive grep
+ - [delta](https://github.com/dandavison/delta) syntax-highlighting pager
+ - [fzf](https://github.com/junegunn/fzf) fuzzy find
+ - [eza](https://github.com/eza-community/eza) modern ls
+ - [bat](https://github.com/sharkdp/bat) cat with wings
+ - [fastfetch](https://github.com/fastfetch-cli/fastfetch) new neofetch
+ - [trash](https://github.com/andreafrancia/trash-cli) cached rm
+ - [multitail](https://vanheusden.com/multitail) for better tail
+ - [up](https://github.com/akavel/up) interactive pipe creation
+ - Browsers
    - [thorium](https://thorium.rocks/) Chromium based browser
    - [floorp](https://floorp.app/en/) Firefox based browser
-   - [keepassxc](https://keepassxc.org/) Password manager
-   - [pyenv](https://github.com/pyenv/pyenv) Python versioning manager
- - *nix
-   - Linux
-     - [Gear Lever](https://github.com/mijorus/gearlever) Manage AppImages
-     - [Bismuth](https://github.com/Bismuth-Forge/bismuth) Tiling Window Manager for KDE
-   - MacOS
-     - [amethyst](https://ianyh.com/amethyst/) Tiling Window Manager
-   - [kitty](https://sw.kovidgoyal.net/kitty/) Terminal Emulator
-   - [tmux](https://github.com/tmux/tmux) Terminal Multiplexing
-   - [btop](https://github.com/aristocratos/btop) Prettier top/htop
-   - [tldr](https://github.com/tldr-pages/tldr) More concise man pages
-   - [nix] Fast, reproducible package manager
+ - TUIs
    - [atuin](https://github.com/atuinsh/atuin) zoxide for command history
-   - [powertop](https://github.com/fenrus75/powertop) show/optimize process power usage
-   - [dust](https://github.com/bootandy/dust) df -h and windirstat's successor
- - Windows
+   - [sshs](https://github.com/quantumsheep/sshs) ssh tui
+   - [lazygit](https://github.com/jesseduffield/lazygit) git tui
+   - [lazydocker](https://github.com/jesseduffield/lazydocker) docker tui
+   - [bottom](https://github.com/ClementTsang/bottom) top tui
+   - [bandwhich](https://github.com/imsnif/bandwhich) bandwidth usage tui
+   - [dust](https://github.com/bootandy/dust) df -h and windirstat successor
+   - [btop](https://github.com/aristocratos/btop) Prettier top/htop
+   - [gping](https://github.com/orf/gping) ping with graph
