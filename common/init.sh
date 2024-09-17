@@ -16,7 +16,7 @@ done
 
 ### ---- Initialize everything else ---- ###
 if [[ $- == *i* ]]; then # interactive shell
-    if [[ ! $XDG_SESSION_TYPE == "tty" ]]; then
+    if [[ ! $TERM == "linux" ]]; then
         if [[ ${ASH_PLUGS[@]} =~ "starship" ]]; then
             eval "$(starship init $ASH_SHELL)"
         fi
