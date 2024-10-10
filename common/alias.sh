@@ -12,7 +12,6 @@ alias mv='mv -i'
 alias rm='trash -v'
 alias mkdir='mkdir -p'
 alias less='less -R'
-alias history="history -d"
 
 # Aliases for changing directories
 alias home='cd ~'
@@ -90,7 +89,10 @@ if [[ ${ASH_PLUGS[@]} =~ "bat" ]]; then
     if [ -x "$(command -v bat)" ]; then
         alias cat='bat'
     elif [ -x "$(command -v batcat)" ]; then
-        alias cat='batcat'
+        bat_path="$(which batcat)"
+        bat_path="$(dirname $bat_path)"
+        sudo ln -s $($bat_path)/batcat $($bat_path)/bat
+        alias cat='bat'
     fi
 fi
 
