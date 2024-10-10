@@ -91,7 +91,7 @@ if [[ ${ASH_PLUGS[@]} =~ "bat" ]]; then
     elif [ -x "$(command -v batcat)" ]; then
         bat_path="$(which batcat)"
         bat_path="$(dirname $bat_path)"
-        sudo ln -s $bat_path/batcat $bat_path/bat
+        sudo ln $bat_path/batcat $bat_path/bat
         alias cat='bat'
     fi
 fi
