@@ -37,6 +37,8 @@ install_deps() {
     while [ $i -lt ${#all_pkgs[@]} ]; do
         if ! command -v "${all_cmds[$i]}" &> /dev/null; then
             needed_pkgs+=("${all_pkgs[$i]}")
+        else
+            ASH_PLUGS+=("${all_pkgs[$i]}")
         fi
         ((i++))
     done
@@ -61,6 +63,9 @@ install_deps() {
 	esac
     if [[ ${needed_pkgs[@]} ]]; then
         _ash_pkg_pkgm_install ${needed_pkgs[@]}
+        for plug in ${needed_pkgs[@]}; do
+            ASH_PLUGS+=("$plug")
+        done
     fi
 }
 install_deps
