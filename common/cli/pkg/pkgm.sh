@@ -9,6 +9,9 @@ _ash_pkg_pkgm_install() {
 		pacman)
 			sudo $ASH_PKGMAN -Syu $*
 			;;
+		brew)
+			sudo $ASH_PKGMAN install $*
+			;;
 		*)
 			echo "Unknown package manager: $ASH_PKGMAN"
 			;;

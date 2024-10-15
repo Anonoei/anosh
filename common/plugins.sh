@@ -57,6 +57,8 @@ install_deps() {
 			;;
 		arch)
 			;;
+        MacOS)
+            ;;
 		*)
 			echo "Unknown distro: $ASH_DISTRO"
 			;;
