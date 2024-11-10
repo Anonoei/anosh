@@ -6,7 +6,7 @@
 # Author: Anonoei (https://github.com/anonoei)
 # Source: https://github.com/anonoei/anosh
 # License: MIT
-export ASH_VERSION="0.10.3"
+export ASH_VERSION="0.10.4"
 ASH_TIMER=$(date +%s%N | cut -b1-13)
 
 if [[ $# -eq 0 ]]; then
@@ -34,6 +34,7 @@ export ASH_HOME=$ASH_CONFIG_HOME
 export ASH_DOWN=$ASH_CONFIG_DOWN
 
 export ASH_INST="$ASH_ROOT/src"
+export ASH_USER="${HOME}/.config/anosh"
 export _ASH_PATH_COMMON="$ASH_INST/nix/common"
 
 source $_ASH_PATH_COMMON/ash
@@ -42,7 +43,7 @@ source $_ASH_PATH_COMMON/logger
 ash_log_title "AnoSH"
 ash_log_level $ASH_CONFIG_LOG_LEVEL
 #ash_log_clear
-#ash_log_file "$ASH_ROOT/user/anosh.log"
+#ash_log_file "$ASH_USER/anosh.log"
 
 
 ash_debug "main" "Starting up AnoSH v${ASH_VERSION}!"

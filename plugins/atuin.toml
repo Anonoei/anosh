@@ -1,7 +1,7 @@
 auto_sync = false
 update_check = true
-db_path = "~/.local/anosh/user/atuin/history.db"
-key_path = "~/.local/anosh/user/atuin/.key"
+db_path = "~/.config/anosh/atuin/history.db"
+key_path = "~/.config/anosh/atuin/.key"
 sync_frequency = "10m"
 search_mode = "fuzzy"
 filter_mode = "global"

@@ -8,6 +8,7 @@ ASH_SRC="https://github.com/Anonoei/anosh"
 
 # ASH_ROOT is where AnoSH files will be stored
 ASH_ROOT="${HOME}/.local/anosh"
+ASH_USER="${HOME}/.config/anosh"
 # ---------------------- #
 
 ASH_SHELLS=(bash zsh pwsh)
@@ -91,8 +92,8 @@ if [[ $ARG_PLUGINS -eq 1 ]]; then
 fi
 
 if [[ $ARG_USER -eq 1 ]]; then
-    if [ -d "${ASH_ROOT}/user" ]; then
-        rm -rf "${ASH_ROOT}/user"
+    if [ -d "$ASH_HOME" ]; then
+        rm -rf "$ASH_HOME"
     fi
 fi
 
@@ -132,14 +133,11 @@ fi
 cd ${HOME}
 echo "Installing from $ASH_SRC"
 
-if [ ! -d $ASH_ROOT ]; then
-    mkdir -p $ASH_ROOT
-fi
+mkdir -p $ASH_ROOT
+mkdir -p $ASH_USER
 
 echo "Cloning AnoSH..."
-if [[ -d "${ASH_ROOT}/src" ]]; then
-    rm -rf "${ASH_ROOT}/src"
-fi
+[[ -d "${ASH_ROOT}/src" ]] &&  rm -rf "${ASH_ROOT}/src"
 
 if [[ ! $ASH_SRC == /* ]]; then
     git clone $ASH_SRC "${ASH_ROOT}/src"
@@ -151,13 +149,13 @@ echo "Updaing $INST_RC..."
 function ash_updrc {
     echo "" >> $1
     echo "# --- AnoSH Begin --- #" >> $1
-    echo "source $ASH_ROOT/user/ano.sh" >> $1
-    echo "source \$ASH_CONFIG_ROOT/src/nix/main $ASH_SHELL" >> $1
+    echo "source $ASH_USER/ano.sh" >> $1
+    echo "source \$ASH_CONFIG_ROOT/src/nix/main $ARG_SHELL" >> $1
     echo "# --- AnoSH End--- #" >> $1
     echo "" >> $1
 }
 if [ -f "$HOME/$INST_RC" ]; then
-    if ! grep -q "^source $ASH_ROOT/user/ano.sh" "${HOME}/$INST_RC"; then
+    if ! grep -q "^source $ASH_USER/ano.sh" "${HOME}/$INST_RC"; then
         ash_updrc "${HOME}/$INST_RC"
     fi
 else
@@ -165,16 +163,13 @@ else
     ash_updrc "${HOME}/$INST_RC"
 fi
 
-echo "Making required directories"
-mkdir -p $ASH_ROOT/user
-
 echo "Copying AnoSH configuration"
-if [ ! -f "$ASH_ROOT/user/ano.sh" ]; then
-    cp "$ASH_ROOT/src/nix/ano.sh" "$ASH_ROOT/user/ano.sh"
+if [ ! -f "$ASH_USER/ano.sh" ]; then
+    cp "$ASH_ROOT/src/nix/ano.sh" "$ASH_USER/ano.sh"
 
     if [[ $ASH_SRC == /* ]]; then
-        sed -i "/export ASH_CONFIG_HOME/c\export ASH_CONFIG_HOME=$ASH_SRC" $ASH_ROOT/user/ano.sh
-        sed -i "/export ASH_CONFIG_DOWN/c\export ASH_CONFIG_DOWN=$ASH_SRC" $ASH_ROOT/user/ano.sh
+        sed -i "/export ASH_CONFIG_HOME/c\export ASH_CONFIG_HOME=$ASH_SRC" $ASH_USER/ano.sh
+        sed -i "/export ASH_CONFIG_DOWN/c\export ASH_CONFIG_DOWN=$ASH_SRC" $ASH_USER/ano.sh
     fi
 fi
 

@@ -22,10 +22,10 @@ function _ash_config {
             _ash_config_help $*
             ;;
         print)
-            cat $ASH_ROOT/user/ano.sh
+            cat $ASH_USER/ano.sh
             ;;
         edit)
-            vi $ASH_ROOT/user/ano.sh
+            vi $ASH_USER/ano.sh
             ;;
         reset)
             _ash_config_reset $*
@@ -41,7 +41,7 @@ function _ash_config {
 }
 
 function _ash_config_reset {
-    rm $ASH_ROOT/user/ano.sh
-    cp "$ASH_ROOT/src/nix/ano.sh" "$ASH_ROOT/user/ano.sh"
+    rm $ASH_USER/ano.sh
+    cp "$ASH_ROOT/src/nix/ano.sh" "$ASH_USER/ano.sh"
     exec $ASH_SHELL
 }

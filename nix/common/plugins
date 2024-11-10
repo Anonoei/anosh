@@ -6,7 +6,7 @@ mkdir -p $ASH_ROOT/plugins
 mkdir -p $ASH_ROOT/plugins/bin
 mkdir -p $ASH_PATH_SHELL_PLUGS
 
-mkdir -p $ASH_ROOT/user/atuin
+mkdir -p $ASH_USER/atuin
 
 # --- Install plugins --- #
 # starship
@@ -41,22 +41,22 @@ done
 
 if [[ ${ASH_PLUGS[@]} =~ "starship" ]]; then
     ash_trace "common.plugins" "Initializing starship configuration"
-    export STARSHIP_CONFIG="$ASH_ROOT/user/starship.toml"
-    export STARSHIP_CACHE="$ASH_ROOT/user/starship-cache"
+    export STARSHIP_CONFIG="$ASH_USER/starship.toml"
+    export STARSHIP_CACHE="$ASH_USER/starship-cache"
 fi
 
 if [[ ${ASH_PLUGS[@]} =~ "atuin" ]]; then
     ash_trace "common.plugins" "Initializing atuin configuration"
-    export ATUIN_CONFIG_DIR="$ASH_ROOT/user/atuin"
+    export ATUIN_CONFIG_DIR="$ASH_USER/atuin"
     export ATUIN_CONFIG="$ATUIN_CONFIG_DIR/config.toml"
 fi
 
 # --- Copy default config if needed --- #
-if [ ! -f "$ASH_ROOT/user/starship.toml" ]; then
+if [ ! -f "$ASH_USER/starship.toml" ]; then
     ash_trace "common.plugins" "Copying starship.toml to user dir"
-    cp $ASH_INST/plugins/starship.toml $ASH_ROOT/user/starship.toml
+    cp $ASH_INST/plugins/starship.toml $ASH_USER/starship.toml
 fi
-if [ ! -f "$ASH_ROOT/user/atuin/config.toml" ]; then
+if [ ! -f "$ASH_USER/atuin/config.toml" ]; then
     ash_trace "common.plugins" "Copying starship.toml to user dir"
-    cp $ASH_INST/plugins/atuin.toml $ASH_ROOT/user/atuin/config.toml
+    cp $ASH_INST/plugins/atuin.toml $ASH_USER/atuin/config.toml
 fi
