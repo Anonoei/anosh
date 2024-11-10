@@ -1,6 +1,6 @@
 export _ASH_LOG_LEVEL=3
-export _ASH_LOG_FILE=
-export _ASH_LOG_TITLE=
+export _ASH_LOG_FILE=""
+export _ASH_LOG_TITLE=""
 
 ASH_LOG_NAMES=("TRACE" "DEBUG" "INFO" "WARN" "ERROR")
 _ASH_LOG_LEVELS=(5 4 3 2 1)
