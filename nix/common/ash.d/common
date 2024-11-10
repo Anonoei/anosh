@@ -1,9 +1,9 @@
 function _ash_reinstall {
     ash_info "ash.common" "Reinstalling from $ASH_DOWN/nix/install"
     if [[ ! $ASH_SRC == /* ]]; then
-        sh <(curl -s "$ASH_DOWN/nix/install") $ASH_SHELL
+        $SHELL <(curl -sS "$ASH_DOWN/nix/install") $ASH_SHELL
     else
-        sh <(cat $ASH_DOWN/nix/install) $ASH_SHELL
+        $SHELL <(cat $ASH_DOWN/nix/install) $ASH_SHELL
     fi
 }
 
@@ -34,6 +34,7 @@ function _ash_update {
     if [[ ! $ASH_HOME == /* ]]; then
         git reset --hard origin
         git pull origin main --force
+        git pull origin main
     else
         rm -rf $ASH_INST
         cp -r $ASH_HOME $ASH_INST
