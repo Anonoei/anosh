@@ -41,8 +41,9 @@ source $_ASH_PATH_COMMON/ash
 source $_ASH_PATH_COMMON/logger
 ash_log_title "AnoSH"
 ash_log_level $ASH_CONFIG_LOG_LEVEL
-ash_log_file "$ASH_ROOT/user/anosh.log"
-ash_log_clear
+#ash_log_clear
+#ash_log_file "$ASH_ROOT/user/anosh.log"
+
 
 ash_debug "main" "Starting up AnoSH v${ASH_VERSION}!"
 

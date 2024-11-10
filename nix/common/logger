@@ -36,7 +36,7 @@ function ash_log_title {
 
 function ash_log_clear {
     if [[ -f $_ASH_LOG_FILE ]]; then
-        rm $_ASH_LOG_FILE > /dev/null 2>&1
+        rm $_ASH_LOG_FILE
     fi
 }
 
