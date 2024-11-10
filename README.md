@@ -8,9 +8,9 @@
    1. Pick a shell from `bash`, `zsh` or `pwsh`
    2. Ensure you have `curl`, `git`, and your shell installed
    3. Run `sh <(curl -s "https://raw.githubusercontent.com/Anonoei/anosh/main/nix/install") <SHELL>`
-      - bash: `sh <(curl -s "https://raw.githubusercontent.com/Anonoei/anosh/main/nix/install") bash`
-      - zsh:  `sh <(curl -s "https://raw.githubusercontent.com/Anonoei/anosh/main/nix/install") zsh`
-      - pwsh: `sh <(curl -s "https://raw.githubusercontent.com/Anonoei/anosh/main/nix/install") pwsh`
+      - bash: `bash <(curl -s "https://raw.githubusercontent.com/Anonoei/anosh/main/nix/install") bash`
+      - zsh:  `bash <(curl -s "https://raw.githubusercontent.com/Anonoei/anosh/main/nix/install") zsh`
+      - pwsh: `bash <(curl -s "https://raw.githubusercontent.com/Anonoei/anosh/main/nix/install") pwsh`
         - **NOT IMPLEMENTED**
  - Windows
    - **NOT IMPLEMENTED**

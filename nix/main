@@ -6,7 +6,7 @@
 # Author: Anonoei (https://github.com/anonoei)
 # Source: https://github.com/anonoei/anosh
 # License: MIT
-export ASH_VERSION="0.10.2"
+export ASH_VERSION="0.10.3"
 ASH_TIMER=$(date +%s%N | cut -b1-13)
 
 if [[ $# -eq 0 ]]; then
