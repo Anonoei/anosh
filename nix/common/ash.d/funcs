@@ -1,0 +1,17 @@
+function _ash_showip {
+    # Internal IP Lookup.
+    if [ -e /sbin/ip ]; then
+        ASH_INTS=($(/sbin/ip link | grep "qlen" | awk -F": " '{print $2}' | grep -v lo))
+        echo "Internal IP:"
+        for i in ${$ASH_INTS[@]}; do
+            echo "  $i: $(/sbin/ip addr show $i | grep "inet " | awk -F" " '{print $2}')"
+        done
+    else
+        echo -n "Internal IP: "
+        /sbin/ifconfig wlan0 | grep "inet " | awk -F: '{print $1} |' | awk '{print $2}'
+    fi
+
+    # External IP Lookup
+    echo -n "External IP: "
+    curl -s ifconfig.me
+}

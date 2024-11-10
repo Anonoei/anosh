@@ -1,0 +1,71 @@
+export ASH_VER_CLI="0.2.0"
+
+source "${ASH_PATH_COMMON}/ash.d/common"
+source "${ASH_PATH_COMMON}/ash.d/escape"
+source "${ASH_PATH_COMMON}/ash.d/funcs"
+source "${ASH_PATH_COMMON}/ash.d/pkg"
+
+function _ash_help {
+    echo '    ___               _____ __  __'
+    echo '   /   |  ____  ____ / ___// / / /'
+    echo '  / /| | / __ \/ __ \\__ \/ /_/ / '
+    echo ' / ___ |/ / / / /_/ /__/ / __  /  '
+    echo '/_/  |_/_/ /_/\____/____/_/ /_/   '
+    echo "AnoSH '${ASH_SHELL}' v${ASH_VERSION}, cli v${ASH_VER_CLI}"
+    echo ""
+    echo "Usage:  ash COMMAND"
+    echo ""
+    echo "Commands:"
+    echo "  help.......................show this message"
+    echo "  plugs......................print AnoSH plugins"
+    echo "  reinstall..................reinstall AnoSH"
+    echo "  uninstall..................uninstall AnoSH"
+    echo "  update.....................update AnoSH"
+    echo "  pkg........................manage packages"
+    echo ""
+    echo "Functions:"
+    echo "  escape.....................ansi escape helper"
+    echo "  showip.....................show ips"
+    echo ""
+    echo "Run 'ash COMMAND --help' for more information on a command"
+}
+
+function _ash {
+    ASH_CMD=$1
+    shift
+    case $ASH_CMD in
+        help|-h|--help)
+            _ash_help $*
+            ;;
+        vars)
+            _ash_vars $*
+            ;;
+        plugs)
+            _ash_plugs $*
+            ;;
+        reinstall|-r)
+            _ash_reinstall $*
+            ;;
+        uninstall)
+            _ash_uninstall $*
+            ;;
+        update|-u)
+            _ash_update $*
+            ;;
+        pkg)
+            _ash_pkg $*
+            ;;
+        escape)
+            _ash_escape $*
+            ;;
+        showip)
+            _ash_showip $*
+            ;;
+        *)
+            echo "Unknown ash syntax: ash $ASH_CMD $*"
+            echo "Run 'ash help' for more information"
+            ;;
+    esac
+}
+alias ash="_ash"
+alias ash-esc="_ash_escape"

@@ -1,0 +1,74 @@
+#          ___               _____ __  __
+#         /   |  ____  ____ / ___// / / /
+#        / /| | / __ \/ __ \\__ \/ /_/ /
+#       / ___ |/ / / / /_/ /__/ / __  /
+#      /_/  |_/_/ /_/\____/____/_/ /_/
+# Author: Anonoei (https://github.com/anonoei)
+# Source: https://github.com/anonoei/anosh
+# License: MIT
+export ASH_VERSION="0.9.0"
+
+ASH_TIMER=$(date +%s%N | cut -b1-13)
+
+# Initialize AnoSH variables
+export ASH_PLUGS=()
+export ASH_PATH_COMMON="$ASH_INST/nix/common"
+
+export ASH_DISTRO=$(bash $ASH_PATH_COMMON/scripts/distro)
+export ASH_PKGMAN=$(bash $ASH_PATH_COMMON/scripts/pkgman)
+
+export PATH="$PATH:$ASH_ROOT/plugins/bin" # Add ash plugs to PATH
+
+# Ensure paths exist
+mkdir -p $ASH_ROOT/user
+#mkdir -p $ASH_ROOT/user/fonts
+
+source $ASH_PATH_COMMON/ash
+source $ASH_PATH_COMMON/logger
+ash_log_title "AnoSH"
+ash_log_level "WARN"
+ash_log_file "$ASH_ROOT/user/anosh.log"
+ash_log_clear
+
+ash_debug "main" "Starting up AnoSH!"
+
+function _ash_main_source {
+    ash_trace "main" "Sourcing $1"
+    source $1
+}
+
+
+_ash_main_source "$ASH_PATH_COMMON/colors"
+_ash_main_source "$ASH_PATH_COMMON/plugins"
+_ash_main_source "$ASH_PATH_COMMON/packages"
+
+_ash_main_source "$ASH_PATH_COMMON/aliases"
+
+_ash_main_source "$ASH_INST/nix/$ASH_SHELL/main"
+
+### ---- Initialize everything else ---- ###
+if [[ $- == *i* ]]; then # interactive shell
+    if [[ ${ASH_PLUGS[@]} =~ "zoxide" ]]; then
+        ash_debug "main" "Initializing zoxide..."
+        eval "$(zoxide init $ASH_SHELL)"
+    fi
+
+    if [[ ! $TERM == "linux" ]]; then
+        if [[ ${ASH_PLUGS[@]} =~ "atuin" ]]; then
+            ash_debug "main" "Initializing atuin..."
+            eval "$(atuin init $ASH_SHELL)"
+        fi
+
+        if [[ ${ASH_PLUGS[@]} =~ "starship" ]]; then
+            ash_debug "main" "Initializing starship..."
+            eval "$(starship init $ASH_SHELL)"
+        fi
+    else
+        ash_debug "main" "Using built in terminal, skipping atuin and starship"
+    fi
+    ASH_TIMER=$(($(date +%s%N | cut -b1-13)-$ASH_TIMER))
+    ASH_TIMER="$(($ASH_TIMER/1000)).${ASH_TIMER:-3}"
+    ash_info "main" "AnoSH initialized after ${ASH_TIMER}s"
+else
+    ash_debug "main" "Not running in interactive shell"
+fi

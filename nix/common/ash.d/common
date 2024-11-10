@@ -1,0 +1,35 @@
+function _ash_vars {
+    env | grep ASH
+}
+
+function _ash_plugs {
+    echo ${ASH_PLUGS[@]}
+}
+
+function _ash_reinstall {
+    $SHELL <(curl -s "${ASH_DOWN}/nix/install")
+}
+
+function _ash_uninstall {
+    local FILE_START
+    local FILE_END
+    FILE_START=$(frep -Fn '# --- AnoSH Begin --- #' $HOME/.${ASH_SHELL}rc | awk -F: '{print $1}')
+    FILE_END=$(frep -Fn '# --- AnoSH End--- #' $HOME/.${ASH_SHELL}rc | awk -F: '{print $1}')
+
+    ((FILE_START--))
+    ((FILE_END++))
+    sed "$FILE_START,$FILE_ENDd" $HOME/.${ASH_SHELL}rc > $HOME/.${ASH_SHELL}rc
+
+    rm -rf $ASH_INST
+}
+
+function _ash_update {
+    old_path=$PWD
+    cd $ASH_PATH
+
+    git reset --hard origin
+    git pull origin main --force
+
+    cd $old_path
+    exec $ASH_SHELL
+}

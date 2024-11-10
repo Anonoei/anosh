@@ -1,0 +1,43 @@
+source "${ASH_PATH_COMMON}/ash.d/pkg.d/main"
+source "${ASH_PATH_COMMON}/ash.d/pkg.d/extra"
+
+_ash_pkg_help() {
+    echo "Usage:  ash pkg [OPTIONS] COMMAND"
+    echo ""
+    echo "Manage AnoSH installation"
+    echo ""
+    echo "Commands:"
+    echo "  help.......................show this message"
+    echo "  install....................install a package"
+    echo "  remove.....................remove a package"
+    echo "  update.....................update packages"
+    echo ""
+    echo "  extra......................manage extras"
+    echo ""
+}
+
+_ash_pkg() {
+    ASH_CMD=$1
+    shift
+    case $ASH_CMD in
+        help|-h|--help)
+            _ash_pkg_help $*
+            ;;
+        install)
+            _ash_pkg_install $*
+            ;;
+        remove)
+            _ash_pkg_remove $*
+            ;;
+        update)
+            _ash_pkg_update $*
+            ;;
+        extra)
+            _ash_pkg_extra $*
+            ;;
+        *)
+            echo "Unknown ash pkg syntax: ash pkg $ASH_CMD $*"
+            echo "Run 'ash pkg help' for more information"
+            ;;
+    esac
+}

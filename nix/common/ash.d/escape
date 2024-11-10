@@ -1,0 +1,159 @@
+function _ash_escape_help {
+    echo "Usage:  ash escape [OPTIONS]"
+    echo ""
+    echo "Options:"
+    echo "  -h|--help..................show this message"
+    echo "  -r|--reset.................reset style and color"
+    echo "  -s|--style <style>.........set ANSI style"
+    echo "        <style> is (reset bold dim...)"
+    echo "  -c|--color <color>.........set color"
+    echo "        <color> is <pos><name>"
+    echo "          <pos> is (f b) - foreground/background"
+    echo "          <name> is (black red green...)"
+    echo ""
+    echo "Run 'ash escape --help' for more information on a command"
+}
+
+function _ash_escape_parse {
+    if [[ $# -eq 0 ]]; then
+        return
+    fi
+    CUR_ARG=$1
+    shift
+    case $CUR_ARG in
+        -h|--help|help)
+            _ash_escape_help
+            return
+            ;;
+        -s|--style)
+            ARG_STYLE=$1
+            shift
+            _ash_escape_parse_style "$ARG_STYLE"
+            ;;
+        -r|--reset)
+            _ash_escape_parse_style reset
+            return
+            ;;
+        -c|--color)
+            ARG_COLOR_CMD=$1
+            shift
+            _ash_escape_parse_color "$ARG_COLOR_CMD"
+            ;;
+    esac
+    _ash_escape_parse $*
+}
+
+function _ash_escape_parse_style {
+    case $1 in
+        reset)
+            ESC_STYLE+=(0)
+            ;;
+        bold)
+            ESC_STYLE+=(1)
+            ;;
+        dim|faint)
+            ESC_STYLE+=(2)
+            ;;
+        italic)
+            ESC_STYLE+=(3)
+            ;;
+        underline)
+            ESC_STYLE+=(4)
+            ;;
+        blink)
+            ESC_STYLE+=(5)
+            ;;
+        inverse|reverse)
+            ESC_STYLE+=(7)
+            ;;
+        hidden|invisible)
+            ESC_STYLE+=(8)
+            ;;
+        strike|strikethrough)
+            ESC_STYLE+=(9)
+            ;;
+        *)
+            ;;
+    esac
+}
+
+function _ash_escape_parse_color {
+    ARG_COLOR_CMD=$1
+    ARG_COLOR_POS="${ARG_COLOR_CMD:0:1}"
+    ARG_COLOR_CMD="${ARG_COLOR_CMD:1}"
+    case $ARG_COLOR_CMD in
+        k|black)
+            ESC_COLOR+=(${ARG_COLOR_POS}0)
+            ;;
+        r|red)
+            ESC_COLOR+=(${ARG_COLOR_POS}1)
+            ;;
+        g|green)
+            ESC_COLOR+=(${ARG_COLOR_POS}2)
+            ;;
+        y|yellow)
+            ESC_COLOR+=(${ARG_COLOR_POS}3)
+            ;;
+        b|blue)
+            ESC_COLOR+=(${ARG_COLOR_POS}4)
+            ;;
+        m|magenta)
+            ESC_COLOR+=(${ARG_COLOR_POS}5)
+            ;;
+        c|cyan)
+            ESC_COLOR+=(${ARG_COLOR_POS}6)
+            ;;
+        w|white)
+            ESC_COLOR+=(${ARG_COLOR_POS}7)
+            ;;
+        d|default)
+            ESC_COLOR+=(${ARG_COLOR_POS}8)
+            ;;
+    esac
+}
+
+function _ash_escape {
+    ESC_STYLE=()
+    ESC_COLOR=()
+
+    _ash_escape_parse $*
+
+    #echo "ash escape:"
+    #echo "  ESC_STYLE: ${ESC_STYLE[@]}"
+    #echo "  ESC_COLOR: ${ESC_COLOR[@]}"
+
+    retr_esc="\x1b["
+    retr_cmd=""
+
+    if [[ ! ${#ESC_STYLE[@]} -eq 0 ]]; then
+        i=1
+        while [[ $i -lt ${#ESC_STYLE[@]} ]]; do
+            retr_cmd="${retr_cmd}${ESC_STYLE[$i-1]};"
+            ((i++))
+        done
+        retr_cmd="${retr_cmd}${ESC_STYLE[$i-1]}"
+    fi
+
+    if [[ ! ${#ESC_COLOR[@]} -eq 0 ]]; then
+        if [[ ! -z $retr_cmd ]]; then
+            retr_cmd="${retr_cmd};"
+        fi
+        for col in ${ESC_COLOR[@]}; do
+            col_pos="${col:0:1}"
+            col_id="${col:1:1}"
+
+            if [[ "$col_pos"=="f" ]]; then
+                retr_cmd="${retr_cmd}3$col_id"
+            elif [[ "$col_pos"=="b" ]]; then
+                retr_cmd="${retr_cmd}4$col_id"
+            fi
+        done
+    fi
+
+    #echo "  retr_cmd: $retr_cmd"
+    #echo "  returning ${retr_esc}${retr_cmd}m"
+
+    if [[ ! -z $retr_cmd ]]; then
+        echo -n "${retr_esc}${retr_cmd}m"
+    fi
+}

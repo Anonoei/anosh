@@ -1,0 +1,34 @@
+ASH_SHELLS=(bash zsh pwsh)
+
+function ash_export_usr {
+    # AnoSH user variables
+    export ASH_ROOT="$HOME/.local/anosh"
+
+    export ASH_HOME="https://github.com/anonoei/anosh"
+    export ASH_DOWN="https://raw.githubusercontent.com/anonoei/anosh/main"
+}
+
+function ash_init {
+    # $1 = shell
+    if [[ $# -eq 0 ]]; then
+        echo "ash_init ERROR: Missing shell!"
+        echo "  Add your shell to your rc file to use ash."
+        return
+    fi
+
+    if [[ ! ${ASH_SHELLS[@]} =~ "$1" ]]; then
+        echo "ash_init ERROR: Unknown shell \"$1\""
+        echo "  shell must be one of (${ASH_SHELLS[@]})"
+        echo "  Update your shell in your rc file to use ash."
+        return
+    fi
+
+    # Initialize AnoSH startup variables
+    export ASH_SHELL=$1
+
+    ash_export_usr
+
+    export ASH_INST="$ASH_ROOT/src"
+
+    source $ASH_INST/nix/main # Load AnoSH
+}

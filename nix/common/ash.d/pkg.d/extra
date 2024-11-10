@@ -6,15 +6,15 @@ _ash_pkg_extra_help() {
     echo ""
 
     echo "Commands:"
-    echo "  install"
-    echo "  list"
-    echo "  update"
-    echo "  help"
+    echo "  help.......................shows this message"
+    echo "  install....................install an extra"
+    echo "  list.......................lists available extras"
+    echo "  update.....................updates installed extras"
     echo ""
 
     echo "Options:"
-    echo "  -h, --help    Runs ash pkg extra help"
-    echo "  -u            Runs ash pkg extra update"
+    echo "  -h|--help..................Runs ash pkg extra help"
+    echo "  -u.........................Runs ash pkg extra update"
     echo ""
 }
 

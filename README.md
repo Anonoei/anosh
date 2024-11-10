@@ -4,22 +4,27 @@
 ![image](https://github.com/user-attachments/assets/920c323f-70cd-4048-8178-be1e9bc315a0)
 
 # Install
- 1. Pick between `bash`, `zsh`, or `ps`
- 2. Ensure you have installed curl, git your shell of choice
-    - Bash
-      1. `bash <(curl -s https://raw.githubusercontent.com/Anonoei/anosh/main/anobash/install)`
-    - Zsh
-      1. `zsh <(curl -s https://raw.githubusercontent.com/Anonoei/anosh/main/anozsh/install)`
-    - PS **(not implemented)**
-      1. `ps <(curl -s https://raw.githubusercontent.com/Anonoei/anosh/main/anops/install)`
+ - *nix (Linux, MacOS)
+   1. Pick a shell from `bash`, `zsh` or `pwsh`
+   2. Ensure you have `curl`, `git`, and your shell installed
+   3. Run `sh <(curl -s "[AnoSH Down]/nix/install") <SHELL>`
+      - bash: `sh <(curl -s "[AnoSH Down]/nix/install") bash`
+      - zsh:  `sh <(curl -s "[AnoSH Down]/nix/install") zsh`
+      - pwsh: `sh <(curl -s "[AnoSH Down]/nix/install") pwsh`
+        - **NOT IMPLEMENTED**
+ - Windows
+   - **NOT IMPLEMENTED**
 
-# Update
- 1. Run `ash_update`
 
-# Reinstall
- 1. Run `ash_reinstall`
+## Helper CLI
+Run `ash help` to see commands
 
-## OS Packages
+ - Update AnoSH: `ash update`
+ - Reinstall: `ash reinstall`
+ - Uninstall: `ash uninstall`
+
+
+## Useful packages
  - [neovim](https://neovim.io/) General text editor
  - [vscode](https://code.visualstudio.com/) IDE
  - [kitty](https://sw.kovidgoyal.net/kitty/) Terminal Emulator
@@ -53,3 +58,5 @@
    - [dust](https://github.com/bootandy/dust) df -h and windirstat successor
    - [btop](https://github.com/aristocratos/btop) Prettier top/htop
    - [gping](https://github.com/orf/gping) ping with graph
+
+[AnoSH Down]: https://raw.githubusercontent.com/Anonoei/anosh/main

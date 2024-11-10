@@ -1,0 +1,53 @@
+_ash_pkg_install() {
+    case $ASH_PKGMAN in
+        yum|dnf)
+            sudo $ASH_PKGMAN install $*
+            ;;
+        apt)
+            sudo $ASH_PKGMAN install $*
+            ;;
+        pacman)
+            sudo $ASH_PKGMAN -Syu $*
+            ;;
+        brew)
+            sudo $ASH_PKGMAN install $*
+            ;;
+        *)
+            echo "Unknown package manager: $ASH_PKGMAN"
+            ;;
+    esac
+}
+
+_ash_pkg_remove() {
+    case $ASH_PKGMAN in
+        yum|dnf)
+            sudo $ASH_PKGMAN remove $*
+            ;;
+        apt)
+            sudo $ASH_PKGMAN remove $*
+            ;;
+        pacman)
+            sudo $ASH_PKGMAN -Rs $*
+            ;;
+        *)
+            echo "Unknown package manager: $ASH_PKGMAN"
+            ;;
+    esac
+}
+
+_ash_pkg_update() {
+    case $ASH_PKGMAN in
+        yum|dnf)
+            sudo $ASH_PKGMAN update
+            ;;
+        apt)
+            sudo $ASH_PKGMAN update
+            ;;
+        pacman)
+            sudo $ASH_PKGMAN -Sy
+            ;;
+        *)
+            echo "Unknown package manager: $ASH_PKGMAN"
+            ;;
+    esac
+}
