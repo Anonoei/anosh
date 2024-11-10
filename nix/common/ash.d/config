@@ -1,0 +1,47 @@
+source "${_ASH_PATH_COMMON}/ash.d/config.d/show"
+
+function _ash_config_help {
+    echo "Usage:  ash config COMMAND"
+    echo ""
+    echo "Configuration helper"
+    echo ""
+    echo "Commands:"
+    echo "  help.......................show this message"
+    echo "  print......................prints current config"
+    echo "  edit.......................opens editor on config"
+    echo "  reset......................resets config to default"
+    echo "  show.......................show various variables"
+    echo ""
+}
+
+function _ash_config {
+    ASH_CMD=$1
+    shift
+    case $ASH_CMD in
+        help|-h|--help)
+            _ash_config_help $*
+            ;;
+        print)
+            cat $ASH_ROOT/user/ano.sh
+            ;;
+        edit)
+            vi $ASH_ROOT/user/ano.sh
+            ;;
+        reset)
+            _ash_config_reset $*
+            ;;
+        show)
+            _ash_config_show $*
+            ;;
+        *)
+            echo "Unknown ash config syntax: ash config $ASH_CMD $*"
+            echo "Run 'ash config help' for more information"
+            ;;
+    esac
+}
+
+function _ash_config_reset {
+    rm $ASH_ROOT/user/ano.sh
+    cp "$ASH_ROOT/src/nix/ano.sh" "$ASH_ROOT/user/ano.sh"
+    exec $ASH_SHELL
+}

@@ -1,10 +1,8 @@
 _ash_pkg_extra_help() {
     echo "Usage:  ash pkg extra [OPTIONS] COMMAND"
     echo ""
-
     echo "Install AnoSH extras"
     echo ""
-
     echo "Commands:"
     echo "  help.......................shows this message"
     echo "  install....................install an extra"

@@ -1,34 +1,43 @@
-function _ash_vars {
-    env | grep ASH
-}
-
-function _ash_plugs {
-    echo ${ASH_PLUGS[@]}
-}
-
 function _ash_reinstall {
-    $SHELL <(curl -s "${ASH_DOWN}/nix/install")
+    ash_info "ash.common" "Reinstalling from $ASH_DOWN/nix/install"
+    if [[ ! $ASH_SRC == /* ]]; then
+        sh <(curl -s "$ASH_DOWN/nix/install") $ASH_SHELL
+    else
+        sh <(cat $ASH_DOWN/nix/install) $ASH_SHELL
+    fi
 }
 
 function _ash_uninstall {
+    ash_info "ash.common" "Uninstalling..."
     local FILE_START
     local FILE_END
-    FILE_START=$(frep -Fn '# --- AnoSH Begin --- #' $HOME/.${ASH_SHELL}rc | awk -F: '{print $1}')
-    FILE_END=$(frep -Fn '# --- AnoSH End--- #' $HOME/.${ASH_SHELL}rc | awk -F: '{print $1}')
+    FILE_START=$(grep -Fn '# --- AnoSH Begin --- #' $HOME/.${ASH_SHELL}rc | awk -F: '{print $1}')
+    FILE_END=$(grep -Fn '# --- AnoSH End--- #' $HOME/.${ASH_SHELL}rc | awk -F: '{print $1}')
 
+    ash_info "ash.common" "Removing lines from $HOME/.${ASH_SHELL}rc"
     ((FILE_START--))
     ((FILE_END++))
-    sed "$FILE_START,$FILE_ENDd" $HOME/.${ASH_SHELL}rc > $HOME/.${ASH_SHELL}rc
+    sed "${FILE_START},${FILE_END}d" $HOME/.${ASH_SHELL}rc > $HOME/.${ASH_SHELL}rc
 
+    ash_info "ash.common" "Deleting $ASH_INST"
     rm -rf $ASH_INST
+    echo "AnoSH has been uninstalled!"
+    exec $ASH_SHELL
 }
 
 function _ash_update {
     old_path=$PWD
-    cd $ASH_PATH
+    cd $ASH_INST
 
-    git reset --hard origin
-    git pull origin main --force
+    ash_info "ash.common" "Updating from $ASH_HOME"
+
+    if [[ ! $ASH_HOME == /* ]]; then
+        git reset --hard origin
+        git pull origin main --force
+    else
+        rm -rf $ASH_INST
+        cp -r $ASH_HOME $ASH_INST
+    fi
 
     cd $old_path
     exec $ASH_SHELL

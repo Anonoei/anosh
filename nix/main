@@ -6,43 +6,64 @@
 # Author: Anonoei (https://github.com/anonoei)
 # Source: https://github.com/anonoei/anosh
 # License: MIT
-export ASH_VERSION="0.9.0"
-
+export ASH_VERSION="0.10.2"
 ASH_TIMER=$(date +%s%N | cut -b1-13)
 
+if [[ $# -eq 0 ]]; then
+    echo "AnoSH.main ERROR: Missing shell!"
+    echo "  Add your shell to your rc file to use AnoSH."
+    return
+fi
+
+function get_shell {
+    local ASH_SHELLS=(bash zsh pwsh)
+
+    if [[ ! ${ASH_SHELLS[@]} =~ "$1" ]]; then
+        echo "AnoSH.init ERROR: Unknown shell \"$1\""
+        echo "  shell must be one of (${ASH_SHELLS[@]})"
+        echo "  Update your shell in your rc file to use AnoSH."
+        return
+    fi
+    export ASH_SHELL=$1
+}
+get_shell $1
+
 # Initialize AnoSH variables
-export ASH_PLUGS=()
-export ASH_PATH_COMMON="$ASH_INST/nix/common"
+export ASH_ROOT=$ASH_CONFIG_ROOT
+export ASH_HOME=$ASH_CONFIG_HOME
+export ASH_DOWN=$ASH_CONFIG_DOWN
 
-export ASH_DISTRO=$(bash $ASH_PATH_COMMON/scripts/distro)
-export ASH_PKGMAN=$(bash $ASH_PATH_COMMON/scripts/pkgman)
+export ASH_INST="$ASH_ROOT/src"
+export _ASH_PATH_COMMON="$ASH_INST/nix/common"
 
-export PATH="$PATH:$ASH_ROOT/plugins/bin" # Add ash plugs to PATH
+source $_ASH_PATH_COMMON/ash
 
-# Ensure paths exist
-mkdir -p $ASH_ROOT/user
-#mkdir -p $ASH_ROOT/user/fonts
-
-source $ASH_PATH_COMMON/ash
-source $ASH_PATH_COMMON/logger
+source $_ASH_PATH_COMMON/logger
 ash_log_title "AnoSH"
-ash_log_level "WARN"
+ash_log_level $ASH_CONFIG_LOG_LEVEL
 ash_log_file "$ASH_ROOT/user/anosh.log"
 ash_log_clear
 
-ash_debug "main" "Starting up AnoSH!"
+ash_debug "main" "Starting up AnoSH v${ASH_VERSION}!"
+
+
+export ASH_PLUGS=()
+export PATH="$PATH:$ASH_ROOT/plugins/bin" # Add ash plugs to PATH
+
+export ASH_DISTRO=$(bash $_ASH_PATH_COMMON/scripts/distro)
+export ASH_PKGMAN=$(bash $_ASH_PATH_COMMON/scripts/pkgman)
+
 
 function _ash_main_source {
     ash_trace "main" "Sourcing $1"
     source $1
 }
 
+_ash_main_source "$_ASH_PATH_COMMON/colors"
+_ash_main_source "$_ASH_PATH_COMMON/plugins"
+_ash_main_source "$_ASH_PATH_COMMON/packages"
 
-_ash_main_source "$ASH_PATH_COMMON/colors"
-_ash_main_source "$ASH_PATH_COMMON/plugins"
-_ash_main_source "$ASH_PATH_COMMON/packages"
-
-_ash_main_source "$ASH_PATH_COMMON/aliases"
+_ash_main_source "$_ASH_PATH_COMMON/aliases"
 
 _ash_main_source "$ASH_INST/nix/$ASH_SHELL/main"
 

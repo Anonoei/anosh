@@ -1,30 +1,36 @@
 export ASH_VER_CLI="0.2.0"
 
-source "${ASH_PATH_COMMON}/ash.d/common"
-source "${ASH_PATH_COMMON}/ash.d/escape"
-source "${ASH_PATH_COMMON}/ash.d/funcs"
-source "${ASH_PATH_COMMON}/ash.d/pkg"
+source "${_ASH_PATH_COMMON}/ash.d/common"
+
+source "${_ASH_PATH_COMMON}/ash.d/pkg"
+
+source "${_ASH_PATH_COMMON}/ash.d/escape"
+source "${_ASH_PATH_COMMON}/ash.d/config"
+
+source "${_ASH_PATH_COMMON}/ash.d/funcs"
 
 function _ash_help {
-    echo '    ___               _____ __  __'
-    echo '   /   |  ____  ____ / ___// / / /'
-    echo '  / /| | / __ \/ __ \\__ \/ /_/ / '
-    echo ' / ___ |/ / / / /_/ /__/ / __  /  '
-    echo '/_/  |_/_/ /_/\____/____/_/ /_/   '
-    echo "AnoSH '${ASH_SHELL}' v${ASH_VERSION}, cli v${ASH_VER_CLI}"
+    echo '    ___  _____ __  __'
+    echo '   /   |/ ___// / / /'
+    echo '  / /| |\__ \/ /_/ / '
+    echo ' / ___ |__/ / __  /  '
+    echo '/_/  |_|___/_/ /_/   '
+    echo "ASH CLI v${ASH_VER_CLI}"
     echo ""
     echo "Usage:  ash COMMAND"
     echo ""
+    echo "CLI helper"
+    echo ""
     echo "Commands:"
     echo "  help.......................show this message"
-    echo "  plugs......................print AnoSH plugins"
     echo "  reinstall..................reinstall AnoSH"
     echo "  uninstall..................uninstall AnoSH"
     echo "  update.....................update AnoSH"
     echo "  pkg........................manage packages"
+    echo "  escape.....................ansi escape helper"
+    echo "  config.....................AnoSH configuration helper"
     echo ""
     echo "Functions:"
-    echo "  escape.....................ansi escape helper"
     echo "  showip.....................show ips"
     echo ""
     echo "Run 'ash COMMAND --help' for more information on a command"
@@ -57,6 +63,9 @@ function _ash {
             ;;
         escape)
             _ash_escape $*
+            ;;
+        config)
+            _ash_config $*
             ;;
         showip)
             _ash_showip $*

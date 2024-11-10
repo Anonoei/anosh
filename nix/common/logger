@@ -1,42 +1,42 @@
-export ASH_LOG_LEVEL=3
-export ASH_LOG_FILE=
-export ASH_LOG_TITLE=
+export _ASH_LOG_LEVEL=3
+export _ASH_LOG_FILE=
+export _ASH_LOG_TITLE=
 
 ASH_LOG_NAMES=("TRACE" "DEBUG" "INFO" "WARN" "ERROR")
-ASH_LOG_LEVELS=(5 4 3 2 1)
+_ASH_LOG_LEVELS=(5 4 3 2 1)
 
 function ash_log_level {
     if [[ $# -eq 0 ]]; then
-        echo "$ASH_LOG_LEVEL"
+        echo "$_ASH_LOG_LEVEL"
     else
         set_to=$1
         if [[ ${#set_to} -eq 1 ]]; then
-            export ASH_LOG_LEVEL=$set_to
+            export _ASH_LOG_LEVEL=$set_to
         else
-            export ASH_LOG_LEVEL=$(ash_log_get $set_to)
+            export _ASH_LOG_LEVEL=$(ash_log_get $set_to)
         fi
     fi
 }
 
 function ash_log_file {
     if [[ $# -eq 0 ]]; then
-        echo "$ASH_LOG_FILE"
+        echo "$_ASH_LOG_FILE"
     else
-        export ASH_LOG_FILE=$1
+        export _ASH_LOG_FILE=$1
     fi
 }
 
 function ash_log_title {
     if [[ $# -eq 0 ]]; then
-        echo "$ASH_LOG_TITLE"
+        echo "$_ASH_LOG_TITLE"
     else
-        export ASH_LOG_TITLE=$1
+        export _ASH_LOG_TITLE=$1
     fi
 }
 
 function ash_log_clear {
-    if [[ -f $ASH_LOG_FILE ]]; then
-        rm $ASH_LOG_FILE
+    if [[ -f $_ASH_LOG_FILE ]]; then
+        rm $_ASH_LOG_FILE
     fi
 }
 
@@ -49,7 +49,7 @@ function ash_log_get {
 
     for ((i=0; $i<${#ASH_LOG_NAMES[@]}; i++)); do
         if [[ "${ASH_LOG_NAMES[$i]}" == "$1" ]]; then
-            echo "${ASH_LOG_LEVELS[$i]}"
+            echo "${_ASH_LOG_LEVELS[$i]}"
             return
         fi
     done
@@ -69,16 +69,16 @@ function _ash_log {
     local log_number=$(ash_log_get $log_level)
 
     local log_date="$(date +"%Y-%m-%d_%H%M%S")"
-    if [[ ! -z $ASH_LOG_TITLE ]]; then
-        log_name="$ASH_LOG_TITLE.$log_name"
+    if [[ ! -z $_ASH_LOG_TITLE ]]; then
+        log_name="$_ASH_LOG_TITLE.$log_name"
     fi
     local log_header="$log_date $log_name <$log_level>"
 
-    if [[ ! -z $ASH_LOG_FILE ]]; then
-        echo "${log_header}: $log_msg" >> $ASH_LOG_FILE
+    if [[ ! -z $_ASH_LOG_FILE ]]; then
+        echo "${log_header}: $log_msg" >> $_ASH_LOG_FILE
     fi
 
-    if [[ $log_number -gt $ASH_LOG_LEVEL ]]; then
+    if [[ $log_number -gt $_ASH_LOG_LEVEL ]]; then
         return
     fi
 

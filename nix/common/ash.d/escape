@@ -1,6 +1,8 @@
 function _ash_escape_help {
     echo "Usage:  ash escape [OPTIONS]"
     echo ""
+    echo "ANSI escape helper"
+    echo ""
     echo "Options:"
     echo "  -h|--help..................show this message"
     echo "  -r|--reset.................reset style and color"

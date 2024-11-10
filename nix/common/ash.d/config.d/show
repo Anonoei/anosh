@@ -1,0 +1,43 @@
+function _ash_config_show_help {
+    echo "Usage:  ash config show COMMAND"
+    echo ""
+    echo "Show variables"
+    echo ""
+    echo "Commands:"
+    echo "  help.......................show this message"
+    echo "  plugs......................print loaded plugins"
+    echo "  vars.......................print exported variables"
+    echo ""
+}
+
+function _ash_config_show {
+    ASH_CMD=$1
+    shift
+    case $ASH_CMD in
+        help|-h|--help)
+            _ash_config_show_help $*
+            ;;
+        plugs)
+            echo ${ASH_PLUGS[@]}
+            ;;
+        vars)
+            _ash_config_show_vars $*
+            ;;
+        *)
+            echo "Unknown ash config show syntax: ash config show $ASH_CMD $*"
+            echo "Run 'ash config show help' for more information"
+            ;;
+    esac
+}
+
+function _ash_config_show_vars {
+    echo "ASH_VERSION......$ASH_VERSION"
+    echo "ASH_VER_CLI......$ASH_VER_CLI"
+    echo "ASH_SHELL........$ASH_SHELL"
+    echo "ASH_ROOT.........$ASH_ROOT"
+    echo "ASH_INST.........$ASH_INST"
+    echo "ASH_HOME.........$ASH_HOME"
+    echo "ASH_DOWN.........$ASH_DOWN"
+    echo "ASH_DISTRO.......$ASH_DISTRO"
+    echo "ASH_PKGMAN.......$ASH_PKGMAN"
+}

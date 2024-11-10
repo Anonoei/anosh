@@ -1,10 +1,10 @@
-source "${ASH_PATH_COMMON}/ash.d/pkg.d/main"
-source "${ASH_PATH_COMMON}/ash.d/pkg.d/extra"
+source "${_ASH_PATH_COMMON}/ash.d/pkg.d/main"
+source "${_ASH_PATH_COMMON}/ash.d/pkg.d/extra"
 
-_ash_pkg_help() {
+function _ash_pkg_help {
     echo "Usage:  ash pkg [OPTIONS] COMMAND"
     echo ""
-    echo "Manage AnoSH installation"
+    echo "Package management helper"
     echo ""
     echo "Commands:"
     echo "  help.......................show this message"
@@ -16,7 +16,7 @@ _ash_pkg_help() {
     echo ""
 }
 
-_ash_pkg() {
+function _ash_pkg {
     ASH_CMD=$1
     shift
     case $ASH_CMD in

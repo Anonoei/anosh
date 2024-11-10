@@ -151,18 +151,31 @@ echo "Updaing $INST_RC..."
 function ash_updrc {
     echo "" >> $1
     echo "# --- AnoSH Begin --- #" >> $1
-    echo "source ${ASH_ROOT}/src/nix/init" >> $1
-    echo "ash_init $ARG_SHELL" >> $1
+    echo "source $ASH_ROOT/user/ano.sh" >> $1
+    echo "source \$ASH_CONFIG_ROOT/src/nix/main $ASH_SHELL" >> $1
     echo "# --- AnoSH End--- #" >> $1
     echo "" >> $1
 }
 if [ -f "$HOME/$INST_RC" ]; then
-    if ! grep -q "^source ${ASH_ROOT}/src/nix/init" "${HOME}/$INST_RC"; then
+    if ! grep -q "^source $ASH_ROOT/user/ano.sh" "${HOME}/$INST_RC"; then
         ash_updrc "${HOME}/$INST_RC"
     fi
 else
     touch "${HOME}/$INST_RC"
     ash_updrc "${HOME}/$INST_RC"
+fi
+
+echo "Making required directories"
+mkdir -p $ASH_ROOT/user
+
+echo "Copying AnoSH configuration"
+if [ ! -f "$ASH_ROOT/user/ano.sh" ]; then
+    cp "$ASH_ROOT/src/nix/ano.sh" "$ASH_ROOT/user/ano.sh"
+
+    if [[ $ASH_SRC == /* ]]; then
+        sed -i "/export ASH_CONFIG_HOME/c\export ASH_CONFIG_HOME=$ASH_SRC" $ASH_ROOT/user/ano.sh
+        sed -i "/export ASH_CONFIG_DOWN/c\export ASH_CONFIG_DOWN=$ASH_SRC" $ASH_ROOT/user/ano.sh
+    fi
 fi
 
 echo -n "Installed! Running AnoSH"
