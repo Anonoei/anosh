@@ -7,10 +7,10 @@
  - *nix (Linux, MacOS)
    1. Pick a shell from `bash`, `zsh` or `pwsh`
    2. Ensure you have `curl`, `git`, and your shell installed
-   3. Run `sh <(curl -s "[AnoSH Down]/nix/install") <SHELL>`
-      - bash: `sh <(curl -s "[AnoSH Down]/nix/install") bash`
-      - zsh:  `sh <(curl -s "[AnoSH Down]/nix/install") zsh`
-      - pwsh: `sh <(curl -s "[AnoSH Down]/nix/install") pwsh`
+   3. Run `sh <(curl -s "https://raw.githubusercontent.com/Anonoei/anosh/main/nix/install") <SHELL>`
+      - bash: `sh <(curl -s "https://raw.githubusercontent.com/Anonoei/anosh/main/nix/install") bash`
+      - zsh:  `sh <(curl -s "https://raw.githubusercontent.com/Anonoei/anosh/main/nix/install") zsh`
+      - pwsh: `sh <(curl -s "https://raw.githubusercontent.com/Anonoei/anosh/main/nix/install") pwsh`
         - **NOT IMPLEMENTED**
  - Windows
    - **NOT IMPLEMENTED**
@@ -58,5 +58,3 @@ Run `ash help` to see commands
    - [dust](https://github.com/bootandy/dust) df -h and windirstat successor
    - [btop](https://github.com/aristocratos/btop) Prettier top/htop
    - [gping](https://github.com/orf/gping) ping with graph
-
-[AnoSH Down]: https://raw.githubusercontent.com/Anonoei/anosh/main
