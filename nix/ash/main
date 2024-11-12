@@ -1,13 +1,11 @@
 #!/bin/bash
 
 function _extra_anosh_help {
-    _ash_fmt_banner
     echo "Usage:  anosh COMMAND"
     echo ""
-    echo "CLI helper"
+    echo "Helper for AnoSH"
     echo ""
     echo "Commands:"
-    echo " ASH:"
     commands=(
         "h|help;show_this_message"
         "i|install;install_AnoSH"
@@ -24,11 +22,11 @@ function _extra_anosh_install {
 }
 
 function _extra_anosh_reinstall {
-    echo "Reinstalling from $ASH_DOWN/nix/install"
-    if [[ ! $ASH_SRC == /* ]]; then
-        $SHELL <(curl -sS "$ASH_DOWN/nix/install") $ASH_SHELL
+    echo "Reinstalling from $ANOSH_DOWN/nix/install"
+    if [[ ! $ANOSH_SRC == /* ]]; then
+        $SHELL <(curl -sS "$ANOSH_DOWN/nix/install") $ANOSH_SHELL
     else
-        $SHELL <(cat $ASH_DOWN/nix/install) $ASH_SHELL
+        $SHELL <(cat $ANOSH_DOWN/nix/install) $ANOSH_SHELL
     fi
 }
 
@@ -36,22 +34,37 @@ function _extra_anosh_uninstall {
     echo "Uninstalling..."
     local FILE_START
     local FILE_END
-    FILE_START=$(grep -Fn '# --- AnoSH Begin --- #' $HOME/.${ASH_SHELL}rc | awk -F: '{print $1}')
-    FILE_END=$(grep -Fn '# --- AnoSH End--- #' $HOME/.${ASH_SHELL}rc | awk -F: '{print $1}')
+    FILE_START=$(grep -Fn '# --- AnoSH Begin --- #' $HOME/.${ANOSH_SHELL}rc | awk -F: '{print $1}')
+    FILE_END=$(grep -Fn '# --- AnoSH End--- #' $HOME/.${ANOSH_SHELL}rc | awk -F: '{print $1}')
 
-    echo "Removing lines from $HOME/.${ASH_SHELL}rc"
+    echo "Removing lines from $HOME/.${ANOSH_SHELL}rc"
     ((FILE_START--))
     ((FILE_END++))
-    sed "${FILE_START},${FILE_END}d" $HOME/.${ASH_SHELL}rc > $HOME/.${ASH_SHELL}rc
+    sed "${FILE_START},${FILE_END}d" $HOME/.${ANOSH_SHELL}rc > $HOME/.${ANOSH_SHELL}rc
 
-    echo "Deleting $ASH_INST"
-    rm -rf $ASH_INST
+    echo "Deleting $ANOSH_INST"
+    rm -rf $ANOSH_INST
     echo "AnoSH has been uninstalled!"
-    exec $ASH_SHELL
+    exec $ANOSH_SHELL
 }
 
 function _extra_anosh_update {
+    old_path=$PWD
+    cd $ANOSH_INST
 
+    ash_info "ash.common" "Updating from $ANOSH_HOME"
+
+    if [[ ! $ANOSH_HOME == /* ]]; then
+        git reset --hard origin
+        git pull origin main --force
+        git pull origin main
+    else
+        rm -rf $ANOSH_INST
+        cp -r $ANOSH_HOME $ANOSH_INST
+    fi
+
+    cd $old_path
+    exec $ANOSH_SHELL
 }
 
 if [[ $# -eq 0 ]]; then
