@@ -1,0 +1,6 @@
+PATH_ROOT=~/.local/anosh
+
+PATH_HOME=https://github.com/anonoei/anosh
+PATH_DOWN=https://raw.githubusercontent.com/anonoei/anosh/main
+
+LOG_LEVEL=WARN

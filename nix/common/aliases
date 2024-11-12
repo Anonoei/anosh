@@ -20,7 +20,7 @@ alias ...='cd ../..'
 
 # Aliases for multiple directory listing commands
 ls_cmd=""
-if [[ ${ASH_PLUGS[@]} =~ "eza" ]]; then
+if [[ ${ANOSH_PLUGS[@]} =~ "eza" ]]; then
     ls_cmd="eza --icons=auto --color=auto --classify=auto"
 else
     ls_cmd="ls --color=always"
@@ -70,7 +70,7 @@ alias logs="sudo find /var/log -type f -exec file {} \; | grep 'text' | cut -d' 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Configure bat
-if [[ ${ASH_PLUGS[@]} =~ "bat" ]]; then
+if [[ ${ANOSH_PLUGS[@]} =~ "bat" ]]; then
     if [ -x "$(command -v bat)" ]; then
         alias cat='bat'
     elif [ -x "$(command -v batcat)" ]; then
@@ -82,7 +82,7 @@ if [[ ${ASH_PLUGS[@]} =~ "bat" ]]; then
 fi
 
 # Configure multitail
-if [[ ${ASH_PLUGS[@]} =~ "multitail" ]]; then
+if [[ ${ANOSH_PLUGS[@]} =~ "multitail" ]]; then
     alias multitail='multitail --no-repeat -c'
 fi
 

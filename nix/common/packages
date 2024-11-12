@@ -7,15 +7,15 @@ needed_pkgs=()
 
 for ((i=0; i<${#all_pkgs[@]}; i++)); do
     if ! command -v "${all_cmds[$i]}" &> /dev/null; then
-        ash_trace "common.packages" "Package ${all_pkgs[$i]} is not installed."
+        AnoSH_trace "common.packages" "Package ${all_pkgs[$i]} is not installed."
         needed_pkgs+=("${all_pkgs[$i]}")
     else
-        ASH_PLUGS+=("${all_pkgs[$i]}")
+        ANOSH_PLUGS+=("${all_pkgs[$i]}")
     fi
 done
 
 if [[ ! ${#needed_pkgs[@]} -eq 0 ]]; then
-    case $ASH_DISTRO in
+    case $ANOSH_DISTRO in
         rhel)
             ;;
         arch)
@@ -32,14 +32,14 @@ if [[ ! ${#needed_pkgs[@]} -eq 0 ]]; then
             fi
             ;;
         *)
-            echo "Unsupported distro: $ASH_DISTRO"
+            echo "Unsupported distro: $ANOSH_DISTRO"
             ;;
     esac
 
 
-    ash_info "common.packages" "Installing ${needed_pkgs[@]}"
-    _ash_pkg_install ${needed_pkgs[@]}
+    AnoSH_info "common.packages" "Installing ${needed_pkgs[@]}"
+    _anosh_pkg_install ${needed_pkgs[@]}
     for plug in ${needed_pkgs[@]}; do
-        ASH_PLUGS+=("$plug")
+        ANOSH_PLUGS+=("$plug")
     done
 fi

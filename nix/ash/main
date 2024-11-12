@@ -1,0 +1,83 @@
+#!/bin/bash
+
+function _extra_anosh_help {
+    _ash_fmt_banner
+    echo "Usage:  anosh COMMAND"
+    echo ""
+    echo "CLI helper"
+    echo ""
+    echo "Commands:"
+    echo " ASH:"
+    commands=(
+        "h|help;show_this_message"
+        "i|install;install_AnoSH"
+        "R|reinstall;reinstall_AnoSH"
+        "U|uninstall;uninstall_AnoSH"
+        "u|update;update_AnoSH"
+        )
+    _ash_fmt_help_items "${commands[@]}"
+    echo ""
+}
+
+function _extra_anosh_install {
+    $SHELL <(curl -sS "https://raw.githubusercontent.com/Anonoei/anosh/main/nix/install") $*
+}
+
+function _extra_anosh_reinstall {
+    echo "Reinstalling from $ASH_DOWN/nix/install"
+    if [[ ! $ASH_SRC == /* ]]; then
+        $SHELL <(curl -sS "$ASH_DOWN/nix/install") $ASH_SHELL
+    else
+        $SHELL <(cat $ASH_DOWN/nix/install) $ASH_SHELL
+    fi
+}
+
+function _extra_anosh_uninstall {
+    echo "Uninstalling..."
+    local FILE_START
+    local FILE_END
+    FILE_START=$(grep -Fn '# --- AnoSH Begin --- #' $HOME/.${ASH_SHELL}rc | awk -F: '{print $1}')
+    FILE_END=$(grep -Fn '# --- AnoSH End--- #' $HOME/.${ASH_SHELL}rc | awk -F: '{print $1}')
+
+    echo "Removing lines from $HOME/.${ASH_SHELL}rc"
+    ((FILE_START--))
+    ((FILE_END++))
+    sed "${FILE_START},${FILE_END}d" $HOME/.${ASH_SHELL}rc > $HOME/.${ASH_SHELL}rc
+
+    echo "Deleting $ASH_INST"
+    rm -rf $ASH_INST
+    echo "AnoSH has been uninstalled!"
+    exec $ASH_SHELL
+}
+
+function _extra_anosh_update {
+
+}
+
+if [[ $# -eq 0 ]]; then
+    _extra_anosh_help
+    return
+fi
+
+ASH_CMD=$1
+shift
+case $ASH_CMD in
+    h|help)
+        _extra_anosh_help $*
+        ;;
+    i|install)
+        _extra_anosh_install $*
+        ;;
+    R|reinstall)
+        _extra_anosh_reinstall $*
+        ;;
+    U|uninstall)
+        _extra_anosh_uninstall $*
+        ;;
+    u|update)
+        _extra_anosh_update $*
+        ;;
+    *)
+        _ash_fmt_help_unk "anosh" $ASH_CMD $*
+        ;;
+esac

@@ -8,11 +8,16 @@ export LESS_TERMCAP_ue=$"${S_R}"
 export LESS_TERMCAP_us=$"${S_R}${B_B}${F_M}"
 
 ### ---- Install QoL features ---- ###
-
+# Atuin needs bash-preexec to work
 if [ ! -f "$HOME/.bash-preexec.sh" ]; then
     curl https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh -o $HOME/.bash-preexec.sh
 fi
 
-
-# For atuin
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+
+# Bash completion
+if [[ ! -f /usr/share/bash-completion/bash_completion ]]; then
+    _anosh_pkg_install "bash_completion"
+fi
+[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
+    . /usr/share/bash-completion/bash_completion

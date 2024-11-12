@@ -6,8 +6,9 @@
 # Author: Anonoei (https://github.com/anonoei)
 # Source: https://github.com/anonoei/anosh
 # License: MIT
-export ASH_VERSION="0.10.4"
-ASH_TIMER=$(date +%s%N | cut -b1-13)
+ANOSH_VERSION="0.11.0"
+ANOSH_CONFIG="$HOME/.config/anosh"
+ANOSH_TIMER=$(date +%s%N | cut -b1-13)
 
 if [[ $# -eq 0 ]]; then
     echo "AnoSH.main ERROR: Missing shell!"
@@ -15,83 +16,90 @@ if [[ $# -eq 0 ]]; then
     return
 fi
 
-function get_shell {
-    local ASH_SHELLS=(bash zsh pwsh)
+ANOSH_SHELLS=(bash zsh pwsh)
 
-    if [[ ! ${ASH_SHELLS[@]} =~ "$1" ]]; then
-        echo "AnoSH.init ERROR: Unknown shell \"$1\""
-        echo "  shell must be one of (${ASH_SHELLS[@]})"
-        echo "  Update your shell in your rc file to use AnoSH."
-        return
-    fi
-    export ASH_SHELL=$1
+if [[ ! ${ANOSH_SHELLS[@]} =~ "$1" ]]; then
+    echo "AnoSH.main ERROR: Unknown shell \"$1\""
+    echo "  shell must be one of (${ANOSH_SHELLS[@]})"
+    echo "  Update your shell in your rc file to use AnoSH."
+    return
+fi
+ASH_SHELL=$1
+
+if [[ ! -f "$ANOSH_CONFIG/anosh.conf" ]]; then
+    echo "AnoSH.main ERROR: Failed to find configuration!"
+    echo "  $ANOSH_CONFIG/anosh.conf"
+    return
+fi
+
+function anosh_config_read {
+    (grep -E "^${2}=" -m 1 "${1}" 2>/dev/null || echo "VAR=__UNDEFINED__") | head -n 1 | cut -d '=' -f 2-;
 }
-get_shell $1
+
+function anosh_config_get {
+    val="$(anosh_config_read $ANOSH_CONFIG/anosh.conf "${1}")";
+    if [ "${val}" = "__UNDEFINED__" ]; then
+        val="$(anosh_config_read nix/anosh.conf.defaults "${1}")";
+    fi
+    printf -- "%s" "${val}";
+}
 
 # Initialize AnoSH variables
-export ASH_ROOT=$ASH_CONFIG_ROOT
-export ASH_HOME=$ASH_CONFIG_HOME
-export ASH_DOWN=$ASH_CONFIG_DOWN
+ANOSH_ROOT="$(anosh_config_get "PATH_ROOT" | sed 's/~/$HOME/g')"
+ANOSH_ROOT="$(eval echo $ANOSH_ROOT)"
+ANOSH_HOME="$(anosh_config_get "PATH_HOME")"
+ANOSH_DOWN="$(anosh_config_get "PATH_DOWN")"
 
-export ASH_INST="$ASH_ROOT/src"
-export ASH_USER="${HOME}/.config/anosh"
-export _ASH_PATH_COMMON="$ASH_INST/nix/common"
-
-source $_ASH_PATH_COMMON/ash
-
-source $_ASH_PATH_COMMON/logger
-ash_log_title "AnoSH"
-ash_log_level $ASH_CONFIG_LOG_LEVEL
-#ash_log_clear
-#ash_log_file "$ASH_USER/anosh.log"
+ANOSH_INST="$ANOSH_ROOT/src"
+_ANOSH_PATH_COMMON="$ANOSH_INST/nix/common"
 
 
-ash_debug "main" "Starting up AnoSH v${ASH_VERSION}!"
+ash log new "AnoSH" -l "WARN"
+AnoSH_debug "main" "Starting up AnoSH v${ANOSH_VERSION}!"
 
 
-export ASH_PLUGS=()
-export PATH="$PATH:$ASH_ROOT/plugins/bin" # Add ash plugs to PATH
+ANOSH_PLUGS=()
 
-export ASH_DISTRO=$(bash $_ASH_PATH_COMMON/scripts/distro)
-export ASH_PKGMAN=$(bash $_ASH_PATH_COMMON/scripts/pkgman)
+ANOSH_DISTRO=$(bash $_ANOSH_PATH_COMMON/scripts/distro)
+ANOSH_PKGMAN=$(bash $_ANOSH_PATH_COMMON/scripts/pkgman)
 
 
-function _ash_main_source {
-    ash_trace "main" "Sourcing $1"
+function _anosh_main_source {
+    AnoSH_trace "main" "Sourcing $1"
     source $1
 }
 
-_ash_main_source "$_ASH_PATH_COMMON/colors"
-_ash_main_source "$_ASH_PATH_COMMON/plugins"
-_ash_main_source "$_ASH_PATH_COMMON/packages"
+_anosh_main_source "$_ANOSH_PATH_COMMON/colors"
+_anosh_main_source "$_ANOSH_PATH_COMMON/plugins"
+_anosh_main_source "$_ANOSH_PATH_COMMON/packages"
 
-_ash_main_source "$_ASH_PATH_COMMON/aliases"
+_anosh_main_source "$_ANOSH_PATH_COMMON/aliases"
 
-_ash_main_source "$ASH_INST/nix/$ASH_SHELL/main"
+_anosh_main_source "$ANOSH_INST/nix/$ASH_SHELL/main"
 
 ### ---- Initialize everything else ---- ###
 if [[ $- == *i* ]]; then # interactive shell
-    if [[ ${ASH_PLUGS[@]} =~ "zoxide" ]]; then
-        ash_debug "main" "Initializing zoxide..."
+    if [[ ${ANOSH_PLUGS[@]} =~ "zoxide" ]]; then
+        AnoSH_debug "main" "Initializing zoxide..."
         eval "$(zoxide init $ASH_SHELL)"
     fi
 
     if [[ ! $TERM == "linux" ]]; then
-        if [[ ${ASH_PLUGS[@]} =~ "atuin" ]]; then
-            ash_debug "main" "Initializing atuin..."
+        if [[ ${ANOSH_PLUGS[@]} =~ "atuin" ]]; then
+            AnoSH_debug "main" "Initializing atuin..."
             eval "$(atuin init $ASH_SHELL)"
         fi
 
-        if [[ ${ASH_PLUGS[@]} =~ "starship" ]]; then
-            ash_debug "main" "Initializing starship..."
+        if [[ ${ANOSH_PLUGS[@]} =~ "starship" ]]; then
+            AnoSH_debug "main" "Initializing starship..."
             eval "$(starship init $ASH_SHELL)"
         fi
     else
-        ash_debug "main" "Using built in terminal, skipping atuin and starship"
+        AnoSH_debug "main" "Using built in terminal, skipping atuin and starship"
     fi
-    ASH_TIMER=$(($(date +%s%N | cut -b1-13)-$ASH_TIMER))
-    ASH_TIMER="$(($ASH_TIMER/1000)).${ASH_TIMER:-3}"
-    ash_info "main" "AnoSH initialized after ${ASH_TIMER}s"
+    ANOSH_TIMER=$(($(date +%s%N | cut -b1-13)-$ANOSH_TIMER))
+    ANOSH_TIMER="$(($ANOSH_TIMER/1000)).${ANOSH_TIMER:-3}"
+    AnoSH_info "main" "AnoSH initialized after ${ANOSH_TIMER}s"
 else
-    ash_debug "main" "Not running in interactive shell"
+    AnoSH_debug "main" "Not running in interactive shell"
 fi

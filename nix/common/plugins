@@ -1,62 +1,64 @@
 # Global AnoSH plugins
 
-export ASH_PATH_SHELL_PLUGS="$ASH_ROOT/plugins/$ASH_SHELL"
+ASH_PATH_SHELL_PLUGS="$ANOSH_ROOT/plugins/$ASH_SHELL"
 
-mkdir -p $ASH_ROOT/plugins
-mkdir -p $ASH_ROOT/plugins/bin
+mkdir -p $ANOSH_ROOT/plugins
+mkdir -p $ANOSH_ROOT/plugins/bin
 mkdir -p $ASH_PATH_SHELL_PLUGS
 
-mkdir -p $ASH_USER/atuin
+mkdir -p $ANOSH_CONFIG/atuin
+
+export PATH="$PATH:$ANOSH_ROOT/plugins/bin" # Add ash plugs to PATH
 
 # --- Install plugins --- #
 # starship
-if [ ! -f "$ASH_ROOT/plugins/bin/starship" ] && ! command -v starship &> /dev/null; then
+if [ ! -f "$ANOSH_ROOT/plugins/bin/starship" ] && ! command -v starship &> /dev/null; then
     echo "Installing starship..."
-    sh <(curl -sS "https://starship.rs/install.sh") -y --bin-dir "$ASH_ROOT/plugins/bin"
+    sh <(curl -sS "https://starship.rs/install.sh") -y --bin-dir "$ANOSH_ROOT/plugins/bin"
 fi
 # zoxide
-if [ ! -f "$ASH_ROOT/plugins/bin/zoxide" ] && ! command -v zoxide &> /dev/null; then
+if [ ! -f "$ANOSH_ROOT/plugins/bin/zoxide" ] && ! command -v zoxide &> /dev/null; then
     echo "Installing zoxide..."
-    bash <(curl -sSfL "https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh") --bin-dir "$ASH_ROOT/plugins/bin"
+    bash <(curl -sSfL "https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh") --bin-dir "$ANOSH_ROOT/plugins/bin"
 fi
 # atuin
-if [ ! -f "$ASH_ROOT/plugins/bin/atuin" ] && ! command -v atuin &> /dev/null; then
+if [ ! -f "$ANOSH_ROOT/plugins/bin/atuin" ] && ! command -v atuin &> /dev/null; then
     echo "Installing atuin..."
     sh <(curl --proto '=https' --tlsv1.2 -LsSf https://github.com/atuinsh/atuin/releases/latest/download/atuin-installer.sh) --no-modify-path
-    mv "${HOME}/.atuin/bin/atuin" "$ASH_ROOT/plugins/bin/atuin"
-    mv "${HOME}/.atuin/bin/atuin-update" "$ASH_ROOT/plugins/bin/atuin-update"
+    mv "${HOME}/.atuin/bin/atuin" "$ANOSH_ROOT/plugins/bin/atuin"
+    mv "${HOME}/.atuin/bin/atuin-update" "$ANOSH_ROOT/plugins/bin/atuin-update"
     rm -rf "${HOME}/.atuin"
 
-    $ASH_ROOT/plugins/bin/atuin import auto
+    $ANOSH_ROOT/plugins/bin/atuin import auto
 fi
 
 # --- Verify installed plugins --- #
 for plug in "starship" "zoxide" "atuin"; do
-    ash_trace "common.plugins" "Checking if $plug is installed"
+    AnoSH_trace "common.plugins" "Checking if $plug is installed"
     if [ -f "$ASH_PLUG_BIN/$plug" ] || command -v $plug &> /dev/null; then
-        ash_trace "common.plugins" "$plug is installed!"
-        ASH_PLUGS+=("$plug")
+        AnoSH_trace "common.plugins" "$plug is installed!"
+        ANOSH_PLUGS+=("$plug")
     fi
 done
 
-if [[ ${ASH_PLUGS[@]} =~ "starship" ]]; then
-    ash_trace "common.plugins" "Initializing starship configuration"
-    export STARSHIP_CONFIG="$ASH_USER/starship.toml"
-    export STARSHIP_CACHE="$ASH_USER/starship-cache"
+if [[ ${ANOSH_PLUGS[@]} =~ "starship" ]]; then
+    AnoSH_trace "common.plugins" "Initializing starship configuration"
+    export STARSHIP_CONFIG="$ANOSH_CONFIG/starship.toml"
+    export STARSHIP_CACHE="$ANOSH_CONFIG/starship-cache"
 fi
 
-if [[ ${ASH_PLUGS[@]} =~ "atuin" ]]; then
-    ash_trace "common.plugins" "Initializing atuin configuration"
-    export ATUIN_CONFIG_DIR="$ASH_USER/atuin"
+if [[ ${ANOSH_PLUGS[@]} =~ "atuin" ]]; then
+    AnoSH_trace "common.plugins" "Initializing atuin configuration"
+    export ATUIN_CONFIG_DIR="$ANOSH_CONFIG/atuin"
     export ATUIN_CONFIG="$ATUIN_CONFIG_DIR/config.toml"
 fi
 
 # --- Copy default config if needed --- #
-if [ ! -f "$ASH_USER/starship.toml" ]; then
-    ash_trace "common.plugins" "Copying starship.toml to user dir"
-    cp $ASH_INST/plugins/starship.toml $ASH_USER/starship.toml
+if [ ! -f "$ANOSH_CONFIG/starship.toml" ]; then
+    AnoSH_trace "common.plugins" "Copying starship.toml to user dir"
+    cp $ANOSH_INST/plugins/starship.toml $ANOSH_CONFIG/starship.toml
 fi
-if [ ! -f "$ASH_USER/atuin/config.toml" ]; then
-    ash_trace "common.plugins" "Copying starship.toml to user dir"
-    cp $ASH_INST/plugins/atuin.toml $ASH_USER/atuin/config.toml
+if [ ! -f "$ANOSH_CONFIG/atuin/config.toml" ]; then
+    AnoSH_trace "common.plugins" "Copying starship.toml to user dir"
+    cp $ANOSH_INST/plugins/atuin.toml $ANOSH_CONFIG/atuin/config.toml
 fi
