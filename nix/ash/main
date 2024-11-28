@@ -52,7 +52,7 @@ function _extra_anosh_update {
     old_path=$PWD
     cd $ANOSH_INST
 
-    ash_info "ash.common" "Updating from $ANOSH_HOME"
+    AnoSH_info "ash.common" "Updating from $ANOSH_HOME"
 
     if [[ ! $ANOSH_HOME == /* ]]; then
         git reset --hard origin
