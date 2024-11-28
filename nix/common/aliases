@@ -22,47 +22,32 @@ alias ...='cd ../..'
 ls_cmd=""
 if [[ ${ANOSH_PLUGS[@]} =~ "eza" ]]; then
     ls_cmd="eza --icons=auto --color=auto --classify=auto"
+    alias ls="${ls_cmd}"
+    alias ll="${ls_cmd} -lg"     # long listing format
+    alias l.="${ls_cmd} -a"      # show hidden files
+    alias l.l="${ls_cmd} -lga"   # show hidden files
+    alias lr="${ls_cmd} -lgRh"   # recursive ls
+    unset ls_cmd
 else
     ls_cmd="ls --color=always"
+    alias ls="${ls_cmd}"
+    alias ll="${ls_cmd} -l"      # long listing format
+    alias l.="${ls_cmd} -ah"     # show hidden files
+    alias l.l="${ls_cmd} -la"    # show hidden files
+    alias lr="${ls_cmd} -lRh"    # recursive ls
+    unset ls_cmd
 fi
-alias ls="${ls_cmd}"
-alias ll="${ls_cmd} -l"                     # long listing format
-alias l.="${ls_cmd} -ah"                    # show hidden files
-alias l.l="${ls_cmd} -la"                   # show hidden files
-alias lw="${ls_cmd} -xah"                   # wide listing format
-alias lr="${ls_cmd} -lRh"                   # recursive ls
-
-alias lf="${ls_cmd} -l | egrep -v '^d'"     # files only
-alias l.f="${ls_cmd} -lah | egrep -v '^d'"  # files only
-
-alias ldir="${ls_cmd} -l | egrep '^d'"      # directories only
-alias l.dir="${ls_cmd} -l | egrep '^d'"     # directories only
-
-alias lm="${ls_cmd} -alh | more"            # pipe through 'more'
-alias lg="${ls_cmd} -alh | grep"            # pipe through 'grep'
-
-alias lsx="${ls_cmd} -lXBh"                 # sort by extension
-alias lsk="${ls_cmd} -lSrh"                 # sort by size
-alias lsc="${ls_cmd} -lcrh"                 # sort by change time
-alias lsu="${ls_cmd} -lurh"                 # sort by access time
-alias lst="${ls_cmd} -ltrh"                 # sort by date
-alias labc="${ls_cmd} -lap"                 # sort alphabetically
-unset ls_cmd
 
 # Search running processes
 alias topcpu="/bin/ps -eo pcpu,pid,user,args | sort -k 1 -r | head -10"
 
 
 # Show open ports
-alias openports='netstat -nape --tcp --udp'
-alias listening='netstat -npel --tcp --udp'
-
-# Alias's to show disk space and space used in a folder
-alias diskspace="du -S | sort -n -r | more"
-alias folders='du -h --max-depth=1'
-alias folderssort='find . -maxdepth 1 -type d -print0 | xargs -0 du -sk | sort -rn'
-
-alias mountedinfo='df -hT'
+if [ -x "$(command -v netstat)" ]; then
+    alias openports='netstat -nape --tcp --udp'
+    alias listening='netstat -npel --tcp --udp'
+fi
+alias lsprocport='ss -lpntu'
 
 # Show all logs in /var/log
 alias logs="sudo find /var/log -type f -exec file {} \; | grep 'text' | cut -d' ' -f1 | sed -e's/:$//g' | grep -v '[0-9]$' | xargs tail -f"
