@@ -6,7 +6,7 @@
 # Author: Anonoei (https://github.com/anonoei)
 # Source: https://github.com/anonoei/anosh
 # License: MIT
-ANOSH_VERSION="0.12.1"
+ANOSH_VERSION="0.12.3"
 ANOSH_CONFIG="$HOME/.config/anosh"
 ANOSH_TIMER=$(date +%s%N | cut -b1-13)
 
@@ -109,7 +109,7 @@ if [[ $- == *i* ]]; then # interactive shell
     fi
 
     # Open tmux on SSH
-    if [[ -z $(command -v tmux) ]]; then
+    if [[ $(command -v tmux) ]]; then
         if [[ -z "$TMUX" ]] && [[ -n "$SSH_TTY" ]]; then
             tmux attach-session -t ssh_tmux || tmux new-session -s ssh_tmux
         fi
