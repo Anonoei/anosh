@@ -3,7 +3,7 @@ scan_timeout = 10
 add_newline = false
 command_timeout = 5000
 palette = 'ano'
-continuation_prompt = '▶▶ '
+continuation_prompt = '[▶▶](fg:prompt) '
 
 format = """
 [](fg:shell)\
@@ -50,41 +50,40 @@ show_always = true
 
 [hostname]
 disabled = false
-format = "[[@](bg:user fg:prompt)$ssh_symbol$hostname](bg:user fg:user_fg)"
+format = "[[@](bg:hostname fg:prompt)$ssh_symbol$hostname](bg:hostname fg:user_fg)"
 ssh_only = true
 ssh_symbol = ""
 trim_at = "."
 
 [directory]
 disabled = false
-format = "[$path](bg:directory fg:directory_fg)$read_only"
+format = "[$path](bg:directory fg:directory_fg)"
 truncation_length = 2
 truncation_symbol = "…/"
 truncate_to_repo = true
 fish_style_pwd_dir_length = 3
-read_only = '🔒'
 
 [git_branch]
 disabled = false
-format = "[( $branch )](bg:git)"
+format = "[($branch)](bg:git fg:214)"
 truncation_length = 4
 truncation_symbol = ""
 
 [git_status]
 disabled = false
 format = "[($conflicted$untracked$stashed$modified$staged$renamed$deleted)($ahead_behind)](bg:git)"
-conflicted = "[=](bg:git fg:red)"
-untracked = "[?](bg:git fg:blue)"
-stashed = "[$](bg:git fg:cyan)"
-modified = "[!](bg:git fg:red)"
-staged = "[+](bg:git fg:green)"
-renamed = "[»](bg:git fg:red)"
-deleted = "[✘](bg:git fg:red)"
+conflicted = "[=](bg:git fg:196)"
+untracked = "[?](bg:git fg:214)"
+stashed = "[$](bg:git fg:117)"
+modified = "[!](bg:git fg:196)"
+staged = "[+](bg:git fg:112)"
+renamed = "[»](bg:git fg:90)"
+deleted = "[✘](bg:git fg:124)"
 
-diverged = "[⇕⇡$ahead_count/⇣$behind_count](bg:git fg:red)"
-ahead = "[⇡$count](bg:git fg:green)"
-behind = "[⇣$count](bg:git fg:red)"
-up_to_date = "[✓](bg:git fg:green)"
+diverged = "[⇕⇡$ahead_count/⇣$behind_count](bg:git fg:126)"
+ahead = "[⇡$count](bg:git fg:226)"
+behind = "[⇣$count](bg:git fg:126)"
+up_to_date = "[✓](bg:git fg:82)"
 
 [character]
 disabled = false
@@ -99,11 +98,11 @@ format = "[$time](bg:shell fg:time_fg)"
 
 [git_metrics]
 disabled = false
-format = "[(([+$added](bg:git bold green))([-$deleted](bg:git bold red)))](bg:git)"
+format = "[(([+$added](bg:git bold yellow))([-$deleted](bg:git bold red)))](bg:git)"
 
 [cmd_duration]
 disabled = false
-format	='[($duration)](bg:#004550 fg:#0E80AF)'
+format	='[($duration)](bg:22 fg:21)'
 min_time = 100
 
 ## --- Languages --- ##
@@ -118,9 +117,9 @@ commands = [ [ 'cc', '--version' ], [ 'gcc', '--version' ], [ 'clang', '--versio
 
 [python]
 disabled = false
-format = "[($symbol$version($virtualenv))](bg:language fg:#CABF17)"
+format = "[($symbol$version($virtualenv))](bg:language fg:language_fg)"
 version_format = "v${raw}"
-symbol = "🐍"
+symbol = " "
 pyenv_version_name = true
 python_binary = ['python', 'python3', 'python2']
 
@@ -146,16 +145,18 @@ format = "[($state( $progress_current of $progress_total))](bg:git)"
 
 ## --- Palettes --- #
 [palettes.ano]
-shell = "#0F0050"
-shell_fg = "#696969"
-user = "#001E50"
-user_fg = "#2AB5AF"
-root_fg = "#DB590F"
-directory = "#004150"
-directory_fg = "cyan"
-git = "#005039"
-git_sep = "#0F8161"
-language = "#904303"
-prompt = "#DB590F"
+shell = "233"
+shell_fg = "240"
+user = "52"
+hostname = "17"
+user_fg = "9"
+root_fg = "21"
+directory = "234"
+directory_fg = "130"
+git = "94"
+git_sep = "64"
+language = "17"
+language_fg = "142"
+prompt = "54"
 duration = "#004550"
 time_fg = "#337590"
