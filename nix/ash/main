@@ -1,19 +1,19 @@
 #!/bin/bash
 
 function _extra_anosh_help {
-    echo "Usage:  anosh COMMAND"
+    echo "Usage:  anonoei/anosh COMMAND"
     echo ""
     echo "Helper for AnoSH"
     echo ""
     echo "Commands:"
-    commands=(
+    local ash_arg=(
         "h|help;show_this_message"
         "i|install;install_AnoSH"
         "R|reinstall;reinstall_AnoSH"
         "U|uninstall;uninstall_AnoSH"
         "u|update;update_AnoSH"
         )
-    _ash_fmt_help_items "${commands[@]}"
+    _ash_fmt_help_items "${ash_arg[@]}"
     echo ""
 }
 

@@ -6,7 +6,7 @@
 # Author: Anonoei (https://github.com/anonoei)
 # Source: https://github.com/anonoei/anosh
 # License: MIT
-ANOSH_VERSION="0.11.0"
+ANOSH_VERSION="0.12.0"
 ANOSH_CONFIG="$HOME/.config/anosh"
 ANOSH_TIMER=$(date +%s%N | cut -b1-13)
 
@@ -79,24 +79,40 @@ _anosh_main_source "$ANOSH_INST/nix/$ASH_SHELL/main"
 
 ### ---- Initialize everything else ---- ###
 if [[ $- == *i* ]]; then # interactive shell
+    if [[ ${ANOSH_PLUGS[@]} =~ "cod" ]]; then
+        source <(cod init $$ $ASH_SHELL)
+    fi
+
+    if [[ ${ANOSH_PLUGS[@]} =~ "navi" ]]; then
+        eval "$(navi widget $ASH_SHELL)"
+    fi
+
     if [[ ${ANOSH_PLUGS[@]} =~ "zoxide" ]]; then
         AnoSH_debug "main" "Initializing zoxide..."
         eval "$(zoxide init $ASH_SHELL)"
     fi
 
-    if [[ ! $TERM == "linux" ]]; then
-        if [[ ${ANOSH_PLUGS[@]} =~ "atuin" ]]; then
-            AnoSH_debug "main" "Initializing atuin..."
-            eval "$(atuin init $ASH_SHELL)"
-        fi
+    if [[ ${ANOSH_PLUGS[@]} =~ "atuin" ]]; then
+        AnoSH_debug "main" "Initializing atuin..."
+        eval "$(atuin init $ASH_SHELL)"
+    fi
 
+    if [[ ! $TERM == "linux" ]]; then
         if [[ ${ANOSH_PLUGS[@]} =~ "starship" ]]; then
             AnoSH_debug "main" "Initializing starship..."
             eval "$(starship init $ASH_SHELL)"
         fi
     else
-        AnoSH_debug "main" "Using built in terminal, skipping atuin and starship"
+        AnoSH_debug "main" "Using built in terminal, skipping starship"
     fi
+
+    # Open tmux on SSH
+    if [[ -z $(command -v tmux) ]]; then
+        if [[ -z "$TMUX" ]] && [[ -n "$SSH_TTY" ]]; then
+            tmux attach-session -t ssh_tmux || tmux new-session -s ssh_tmux
+        fi
+    fi
+
     ANOSH_TIMER=$(($(date +%s%N | cut -b1-13)-$ANOSH_TIMER))
     ANOSH_TIMER="$(($ANOSH_TIMER/1000)).${ANOSH_TIMER:-3}"
     AnoSH_info "main" "AnoSH initialized after ${ANOSH_TIMER}s"

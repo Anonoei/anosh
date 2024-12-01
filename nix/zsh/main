@@ -1,4 +1,7 @@
 ### ---- Options ---- ###
+autoload -Uz compinit
+compinit
+
 autoload -U select-word-style
 select-word-style bash
 setopt AUTO_CD

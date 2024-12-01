@@ -1,14 +1,14 @@
 local all_pkgs
 local all_cmds
 local needed_pkgs
-all_pkgs=(tree fzf trash-cli tldr btop fastfetch eza bat)
-all_cmds=(tree fzf trash tldr btop fastfetch eza bat)
+all_pkgs=(tree tmux fzf trash-cli tldr btop fastfetch eza bat)
+all_cmds=(tree tmux fzf trash tldr btop fastfetch eza bat)
 needed_pkgs=()
 
 for ((i=0; i<${#all_pkgs[@]}; i++)); do
     AnoSH_trace "common.packages" "Checking if package $i ${all_pkgs[$i]} is installed"
     if [[ -z "${all_cmds[$i]}" ]]; then # zsh index 0 is empty?
-
+        true
     elif [[ -z $(command -v ${all_cmds[$i]}) ]]; then
         AnoSH_trace "common.packages" "Package ${all_pkgs[$i]} is not installed."
         needed_pkgs+=("${all_pkgs[$i]}")

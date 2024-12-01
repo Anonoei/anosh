@@ -12,17 +12,17 @@ export PATH="$PATH:$ANOSH_ROOT/plugins/bin" # Add ash plugs to PATH
 
 # --- Install plugins --- #
 # starship
-if [ ! -f "$ANOSH_ROOT/plugins/bin/starship" ] && ! command -v starship &> /dev/null; then
+if [ ! -f "$ANOSH_ROOT/plugins/bin/starship" ] && [[ -z $(command -v starship) ]]; then
     echo "Installing starship..."
     sh <(curl -sS "https://starship.rs/install.sh") -y --bin-dir "$ANOSH_ROOT/plugins/bin"
 fi
 # zoxide
-if [ ! -f "$ANOSH_ROOT/plugins/bin/zoxide" ] && ! command -v zoxide &> /dev/null; then
+if [ ! -f "$ANOSH_ROOT/plugins/bin/zoxide" ] && [[ -z $(command -v zoxide) ]]; then
     echo "Installing zoxide..."
     bash <(curl -sSfL "https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh") --bin-dir "$ANOSH_ROOT/plugins/bin"
 fi
 # atuin
-if [ ! -f "$ANOSH_ROOT/plugins/bin/atuin" ] && ! command -v atuin &> /dev/null; then
+if [ ! -f "$ANOSH_ROOT/plugins/bin/atuin" ] && [[ -z $(command -v atuin) ]]; then
     echo "Installing atuin..."
     sh <(curl --proto '=https' --tlsv1.2 -LsSf https://github.com/atuinsh/atuin/releases/latest/download/atuin-installer.sh) --no-modify-path
     mv "${HOME}/.atuin/bin/atuin" "$ANOSH_ROOT/plugins/bin/atuin"
@@ -31,9 +31,40 @@ if [ ! -f "$ANOSH_ROOT/plugins/bin/atuin" ] && ! command -v atuin &> /dev/null; 
 
     $ANOSH_ROOT/plugins/bin/atuin import auto
 fi
+# cod
+if [ ! -f "$ANOSH_ROOT/plugins/bin/cod" ] && [[ -z $(command -v cod) ]]; then
+    echo "Installing cod..."
+    curl -L "https://github.com/dim-an/cod/releases/download/v0.1.0/cod-linux-amd64.tgz" > "$ANOSH_ROOT/plugins/cod.tar.gz"
+    mkdir -p $ANOSH_ROOT/plugins/cod
+    tar -xzf $ANOSH_ROOT/plugins/cod.tar.gz -C $ANOSH_ROOT/plugins/cod
+    mv $ANOSH_ROOT/plugins/cod/cod $ANOSH_ROOT/plugins/bin/cod
+    rm $ANOSH_ROOT/plugins/cod.tar.gz
+    rm -rf $ANOSH_ROOT/plugins/cod
+fi
+# navi
+if [ ! -f "$ANOSH_ROOT/plugins/bin/navi" ] && [[ -z $(command -v navi) ]]; then
+    echo "Installing navi..."
+    curl -L "https://github.com/denisidoro/navi/releases/download/v2.23.0/navi-v2.23.0-x86_64-unknown-linux-musl.tar.gz" > "$ANOSH_ROOT/plugins/navi.tar.gz"
+    mkdir -p $ANOSH_ROOT/plugins/navi
+    tar -xzf $ANOSH_ROOT/plugins/navi.tar.gz -C $ANOSH_ROOT/plugins/navi
+    mv $ANOSH_ROOT/plugins/navi/navi $ANOSH_ROOT/plugins/bin/navi
+    rm $ANOSH_ROOT/plugins/navi.tar.gz
+    rm -rf $ANOSH_ROOT/plugins/navi
+fi
+
+if [ ! -f "$ANOSH_ROOT/plugins/bin/xplr" ] && [[ -z $(command -v xplr) ]]; then
+    echo "Installing xplr..."
+    curl -L "https://github.com/sayanarijit/xplr/releases/download/v0.21.9/xplr-linux.tar.gz" > "$ANOSH_ROOT/plugins/xplr.tar.gz"
+    mkdir -p $ANOSH_ROOT/plugins/xplr
+    tar -xzf $ANOSH_ROOT/plugins/xplr.tar.gz -C $ANOSH_ROOT/plugins/xplr
+    mv $ANOSH_ROOT/plugins/xplr/xplr $ANOSH_ROOT/plugins/bin/xplr
+    rm $ANOSH_ROOT/plugins/xplr.tar.gz
+    rm -rf $ANOSH_ROOT/plugins/xplr
+fi
+
 
 # --- Verify installed plugins --- #
-for plug in "starship" "zoxide" "atuin"; do
+for plug in "starship" "zoxide" "atuin" "cod" "navi" "xplr"; do
     AnoSH_trace "common.plugins" "Checking if $plug is installed"
     if [ -f "$ASH_PLUG_BIN/$plug" ] || command -v $plug &> /dev/null; then
         AnoSH_trace "common.plugins" "$plug is installed!"
@@ -45,20 +76,38 @@ if [[ ${ANOSH_PLUGS[@]} =~ "starship" ]]; then
     AnoSH_trace "common.plugins" "Initializing starship configuration"
     export STARSHIP_CONFIG="$ANOSH_CONFIG/starship.toml"
     export STARSHIP_CACHE="$ANOSH_CONFIG/starship-cache"
+    if [ ! -f "$ANOSH_CONFIG/starship.toml" ]; then
+        AnoSH_trace "common.plugins" "Copying starship config to user dir"
+        cp $ANOSH_INST/plugins/starship.toml $ANOSH_CONFIG/starship.toml
+    fi
 fi
 
 if [[ ${ANOSH_PLUGS[@]} =~ "atuin" ]]; then
     AnoSH_trace "common.plugins" "Initializing atuin configuration"
     export ATUIN_CONFIG_DIR="$ANOSH_CONFIG/atuin"
     export ATUIN_CONFIG="$ATUIN_CONFIG_DIR/config.toml"
+    if [ ! -f "$ANOSH_CONFIG/atuin/config.toml" ]; then
+        AnoSH_trace "common.plugins" "Copying atuin config to user dir"
+        cp $ANOSH_INST/plugins/atuin.toml $ANOSH_CONFIG/atuin/config.toml
+    fi
 fi
 
-# --- Copy default config if needed --- #
-if [ ! -f "$ANOSH_CONFIG/starship.toml" ]; then
-    AnoSH_trace "common.plugins" "Copying starship.toml to user dir"
-    cp $ANOSH_INST/plugins/starship.toml $ANOSH_CONFIG/starship.toml
+if [[ ${ANOSH_PLUGS[@]} =~ "cod" ]]; then
+    AnoSH_trace "common.plugins" "Initializing cod configuration"
+    if [ ! -f "$ANOSH_CONFIG/cod.toml" ]; then
+        AnoSH_trace "common.plugins" "Copying cod config to user dir"
+        cp $ANOSH_INST/plugins/cod.toml $ANOSH_CONFIG/cod.toml
+        mkdir -p $HOME/.config/cod
+        ln -s $ANOSH_CONFIG/cod.toml $HOME/.config/cod/config.toml
+    fi
 fi
-if [ ! -f "$ANOSH_CONFIG/atuin/config.toml" ]; then
-    AnoSH_trace "common.plugins" "Copying starship.toml to user dir"
-    cp $ANOSH_INST/plugins/atuin.toml $ANOSH_CONFIG/atuin/config.toml
+
+if [[ ${ANOSH_PLUGS[@]} =~ "navi" ]]; then
+    AnoSH_trace "common.plugins" "Initializing navi configuration"
+    if [ ! -f "$ANOSH_CONFIG/navi.yaml" ]; then
+        AnoSH_trace "common.plugins" "Copying navi config to user dir"
+        cp $ANOSH_INST/plugins/navi.yaml $ANOSH_CONFIG/navi.yaml
+        mkdir -p $HOME/.config/navi
+        ln -s $ANOSH_CONFIG/navi.yaml $HOME/.config/navi/config.yaml
+    fi
 fi
