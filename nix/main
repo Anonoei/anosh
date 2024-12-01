@@ -57,6 +57,8 @@ _ANOSH_PATH_COMMON="$ANOSH_INST/nix/common"
 ash log new "AnoSH" -l "WARN"
 AnoSH_debug "main" "Starting up AnoSH v${ANOSH_VERSION}!"
 
+# Make sure ash has anosh as an extra
+ash x install $ANOSH_INST/nix/ash 1> /dev/null
 
 ANOSH_PLUGS=()
 
