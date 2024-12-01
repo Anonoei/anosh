@@ -6,13 +6,18 @@ all_cmds=(tree fzf trash tldr btop fastfetch eza bat)
 needed_pkgs=()
 
 for ((i=0; i<${#all_pkgs[@]}; i++)); do
-    if ! command -v "${all_cmds[$i]}" &> /dev/null; then
+    AnoSH_trace "common.packages" "Checking if package $i ${all_pkgs[$i]} is installed"
+    if [[ -z "${all_cmds[$i]}" ]]; then # zsh index 0 is empty?
+
+    elif [[ -z $(command -v ${all_cmds[$i]}) ]]; then
         AnoSH_trace "common.packages" "Package ${all_pkgs[$i]} is not installed."
         needed_pkgs+=("${all_pkgs[$i]}")
     else
         ANOSH_PLUGS+=("${all_pkgs[$i]}")
     fi
 done
+
+AnoSH_trace "common.packages" "Needed packages: '${needed_pkgs[@]}'"
 
 if [[ ! ${#needed_pkgs[@]} -eq 0 ]]; then
     case $ANOSH_DISTRO in
@@ -38,7 +43,7 @@ if [[ ! ${#needed_pkgs[@]} -eq 0 ]]; then
 
 
     AnoSH_info "common.packages" "Installing ${needed_pkgs[@]}"
-    _anosh_pkg_install ${needed_pkgs[@]}
+    ash x pkg install ${needed_pkgs[@]}
     for plug in ${needed_pkgs[@]}; do
         ANOSH_PLUGS+=("$plug")
     done
