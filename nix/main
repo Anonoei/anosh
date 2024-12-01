@@ -6,7 +6,7 @@
 # Author: Anonoei (https://github.com/anonoei)
 # Source: https://github.com/anonoei/anosh
 # License: MIT
-ANOSH_VERSION="0.12.0"
+ANOSH_VERSION="0.12.1"
 ANOSH_CONFIG="$HOME/.config/anosh"
 ANOSH_TIMER=$(date +%s%N | cut -b1-13)
 
