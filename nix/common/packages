@@ -35,6 +35,12 @@ if [[ ! ${#needed_pkgs[@]} -eq 0 ]]; then
                 sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
                 sudo apt update
             fi
+            if [[ ${needed_pkgs[@]} =~ "fastfetch" ]]; then
+                needed_pkgs=( "${needed_pkgs[@]/fastfetch}" )
+                curl -L https://github.com/fastfetch-cli/fastfetch/releases/download/2.30.1/fastfetch-linux-amd64.deb > fastfetch.deb
+                sudo apt install ./fastfetch.deb
+                rm fastfetch.deb
+            fi
             ;;
         *)
             echo "Unsupported distro: $ANOSH_DISTRO"

@@ -176,6 +176,8 @@ fi
 if [[ ! -d "$HOME/.config/ash" ]]; then
     echo "Installing ASH"
     $SHELL <(curl -sS "https://raw.githubusercontent.com/anonoei/ash-cli/main/install")
+else
+    ash update # make sure ash is up to date
 fi
 
 echo -n "Installed! Running AnoSH"
