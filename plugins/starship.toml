@@ -50,7 +50,7 @@ show_always = true
 
 [hostname]
 disabled = false
-format = "[[@](bg:hostname fg:prompt)$ssh_symbol$hostname](bg:hostname fg:user_fg)"
+format = "[[@](bg:user fg:81)$ssh_symbol$hostname](bg:user fg:user_fg)"
 ssh_only = true
 ssh_symbol = ""
 trim_at = "."
@@ -148,7 +148,6 @@ format = "[($state( $progress_current of $progress_total))](bg:git)"
 shell = "233"
 shell_fg = "240"
 user = "52"
-hostname = "17"
 user_fg = "9"
 root_fg = "21"
 directory = "234"
