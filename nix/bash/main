@@ -16,8 +16,10 @@ fi
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 
 # Bash completion
-if [[ ! -f /usr/share/bash-completion/bash_completion ]]; then
-    _anosh_pkg_install "bash_completion"
-fi
+# if [[ ! -f /usr/share/bash-completion/bash_completion ]]; then
+#     _anosh_pkg_install "bash_completion"
+# fi
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
     . /usr/share/bash-completion/bash_completion
+
+bind 'TAB:menu-complete'

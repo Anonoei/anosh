@@ -6,7 +6,7 @@
 # Author: Anonoei (https://github.com/anonoei)
 # Source: https://github.com/anonoei/anosh
 # License: MIT
-ANOSH_VERSION="0.12.5"
+ANOSH_VERSION="0.12.6"
 ANOSH_CONFIG="$HOME/.config/anosh"
 ANOSH_TIMER=$(date +%s%N | cut -b1-13)
 
@@ -63,7 +63,6 @@ ash x install $ANOSH_INST/nix/ash 1> /dev/null
 ANOSH_PLUGS=()
 
 ANOSH_DISTRO=$(bash $_ANOSH_PATH_COMMON/scripts/distro)
-ANOSH_PKGMAN=$(bash $_ANOSH_PATH_COMMON/scripts/pkgman)
 
 
 function _anosh_main_source {
