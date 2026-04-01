@@ -1,14 +1,9 @@
 # AnoSH *nix installer
 # (C) Anonoei, Licenced under the MIT license
 
-# --- User variables --- #
-# ANOSH_SRC is where the files for AnoSH are.
-#  If using -l, it is the directory containing AnoSH
-ANOSH_SRC="https://github.com/Anonoei/anosh"
-
-# ANOSH_ROOT is where AnoSH files will be stored
-ANOSH_ROOT="${HOME}/.local/anosh"
-ANOSH_CONFIG="${HOME}/.config/anosh"
+AINST_SRC="https://github.com/Anonoei/anosh"
+AINST_ROOT="${HOME}/.local/anosh"
+AINST_CONFIG="${HOME}/.config/anosh"
 # ---------------------- #
 
 ANOSH_SHELLS=(bash zsh pwsh)
@@ -18,22 +13,23 @@ ARG_PLUGINS=0
 ARG_USER=0
 ARG_LOCAL=0
 
-function show_help {
+function _show_help {
     echo "AnoSH installer"
     echo " <shell>       : one of (${ANOSH_SHELLS[@]})"
     echo " -h|--help     : show this message"
     echo " -p|--plugins  : delete anosh/plugins"
     echo " -u|--user     : delete user settings"
-    echo " -l|--local    : install from specified path"
 }
 
-function parse_args {
+function _parse_args {
     if [[ $# -eq 0 ]]; then
         return
     fi
-    case $1 in
+    AINST_ARG=$1
+    shift
+    case $AINST_ARG in
         -h|--help)
-            show_help
+            _show_help
             exit 0
             ;;
         -p|--plugins)
@@ -44,147 +40,131 @@ function parse_args {
             ARG_USER=1
             shift
             ;;
-        -l|--local)
-            ARG_LOCAL=1
-            ANOSH_SRC=$2
-            shift
-            shift
-            ;;
         *)
-            echo "Unknown argument! $1"
+            echo "Unknown argument! $AINST_ARG"
             exit 1
             ;;
     esac
-
-    parse_args $*
+    _parse_args $*
 
 }
 
-if [[ $# -eq 0 ]]; then
-    echo "No shell was provided!"
-    show_help
-    exit 2
-else
-    ARG_SHELL=$1
-    shift
-fi
-
-if [[ ! ${ANOSH_SHELLS[@]} =~ "$ARG_SHELL" ]]; then
-    echo "Unknown shell $ARG_SHELL"
-    show_help
-    exit 3
-fi
-
-parse_args $*
-
-#echo "Arguments:"
-#echo "shell: $ARG_SHELL"
-#echo "plugins: $ARG_PLUGINS"
-#echo "user: $ARG_USER"
-#echo "local: $ARG_LOCAL"
-
-# Process arguments
-
-if [[ $ARG_PLUGINS -eq 1 ]]; then
-    if [ -d "${ANOSH_ROOT}/plugins" ]; then
-        rm -rf "${ANOSH_ROOT}/plugins"
+function anosh_remove_plugins {
+    if [ -d "${AINST_ROOT}/plugins" ]; then
+        rm -rf "${AINST_ROOT}/plugins"
     fi
-fi
-
-if [[ $ARG_USER -eq 1 ]]; then
+}
+function anosh_remove_user {
     if [ -d "$ANOSH_HOME" ]; then
         rm -rf "$ANOSH_HOME"
     fi
-fi
+}
 
-if [[ ! $ARG_LOCAL -eq 0 ]]; then
-    if [[ "$ANOSH_SRC" == "." ]]; then
-        ANOSH_SRC="$PWD"
+function anosh_updaterc {
+    # $1 = path to rc
+    # $2 = name of shell
+    if [ -f "$1" ]; then
+        if ! grep -q "^source $AINST_ROOT/src/nix/main $2" "$1"; then
+            echo "Updaing $INST_RC..."
+            echo "" >> $1
+            echo "# --- AnoSH Begin --- #" >> $1
+            echo "source $HOME/.local/ash/a.sh" >> $1
+            echo "source $AINST_ROOT/src/nix/main $2" >> $1
+            echo "# --- AnoSH End--- #" >> $1
+            echo "" >> $1
+        fi
+    else
+        touch "$1"
+        anosh_updaterc $1 $2
     fi
-    foldername=${ANOSH_SRC##*/}
-    foldername=${foldername:-/}
-    if [[ ! $foldername == "anosh" ]]; then
-        echo "Please install from AnoSH source, not $foldername"
-        exit 4
+}
+
+function AINST_CONFIG {
+    if [ ! -f "$AINST_CONFIG/anosh.conf" ]; then
+        echo "Copying AnoSH configuration"
+        cp "$AINST_ROOT/src/nix/anosh.conf.default" "$AINST_CONFIG/anosh.conf"
     fi
-    if [ ! -d "$ANOSH_SRC" ]; then
-        echo "Unable to install from local directory $ANOSH_SRC"
-        exit 5
+}
+
+function anosh_ash {
+    if [[ ! -d "$HOME/.config/ash" ]]; then
+        echo "Installing ASH"
+        $SHELL <(curl -sS "https://raw.githubusercontent.com/anonoei/ash-cli/main/install")
+    else
+        if ! command -v ash &> /dev/null; then
+            echo "ash is installed but not properly sourced?"
+        else
+            ash update # make sure ash is up to date
+        fi
     fi
-fi
+}
 
-# Begin installation
-echo '    ___               _____ __  __'
-echo '   /   |  ____  ____ / ___// / / /'
-echo '  / /| | / __ \/ __ \\__ \/ /_/ / '
-echo ' / ___ |/ / / / /_/ /__/ / __  /  '
-echo '/_/  |_/_/ /_/\____/____/_/ /_/   '
+function anosh_pre {
+    mkdir -p $AINST_ROOT
+    mkdir -p $AINST_CONFIG
+    [[ -d "${AINST_ROOT}/src" ]] && rm -rf "${AINST_ROOT}/src"
+}
+function anosh_post {
+    # $1 = shell name
+    INST_SHELL=$1
+    INST_RC=".${INST_SHELL}rc"
+    anosh_updaterc "$HOME/$INST_RC" $INST_SHELL
+    AINST_CONFIG
+    anosh_ash
+}
 
-LAST_DIR=$PWD
-INST_RC=".${ARG_SHELL}rc"
 
-if [[ ! $ANOSH_SRC == /* ]]; then
+if [ "${BASH_SOURCE[0]}" -ef "$0" ]
+then
+    if [[ $# -eq 0 ]]; then
+        echo "No shell was provided!"
+        _show_help
+        exit 2
+    else
+        ARG_SHELL=$1
+        shift
+    fi
+
+    if [[ ! ${ANOSH_SHELLS[@]} =~ "$ARG_SHELL" ]]; then
+        echo "Unknown shell $ARG_SHELL"
+        _show_help
+        exit 3
+    fi
+    _parse_args $*
+    echo '    ___               _____ __  __'
+    echo '   /   |  ____  ____ / ___// / / /'
+    echo '  / /| | / __ \/ __ \\__ \/ /_/ / '
+    echo ' / ___ |/ / / / /_/ /__/ / __  /  '
+    echo '/_/  |_/_/ /_/\____/____/_/ /_/   '
     if ! command -v git &> /dev/null; then
         echo "Missing required package: git"
         exit 10
     fi
-fi
 
-cd ${HOME}
-echo "Installing from $ANOSH_SRC"
+    # echo "Arguments:"
+    # echo "shell: $ARG_SHELL"
+    # echo "plugins: $ARG_PLUGINS"
+    # echo "user: $ARG_USER"
 
-mkdir -p $ANOSH_ROOT
-mkdir -p $ANOSH_CONFIG
-
-echo "Cloning AnoSH..."
-[[ -d "${ANOSH_ROOT}/src" ]] &&  rm -rf "${ANOSH_ROOT}/src"
-
-if [[ ! $ANOSH_SRC == /* ]]; then
-    git clone $ANOSH_SRC "${ANOSH_ROOT}/src"
-else
-    cp -R "${ANOSH_SRC}" "${ANOSH_ROOT}/src"
-fi
-
-echo "Updaing $INST_RC..."
-function ANOSH_updrc {
-    echo "" >> $1
-    echo "# --- AnoSH Begin --- #" >> $1
-    echo "source $HOME/.local/ash/a.sh" >> ${HOME}/$INST_RC
-    echo "source $ANOSH_ROOT/src/nix/main $ARG_SHELL" >> $1
-    echo "# --- AnoSH End--- #" >> $1
-    echo "" >> $1
-}
-if [ -f "$HOME/$INST_RC" ]; then
-    if ! grep -q "^source $ANOSH_ROOT/src/nix/main $ARG_SHELL" "${HOME}/$INST_RC"; then
-        ANOSH_updrc "${HOME}/$INST_RC"
+    if [[ $ARG_PLUGINS -eq 1 ]]; then
+        anosh_remove_plugins
     fi
-else
-    touch "${HOME}/$INST_RC"
-    ANOSH_updrc "${HOME}/$INST_RC"
-fi
 
-echo "Copying AnoSH configuration"
-if [ ! -f "$ANOSH_CONFIG/anosh.conf" ]; then
-    cp "$ANOSH_ROOT/src/nix/anosh.conf.default" "$ANOSH_CONFIG/anosh.conf"
-
-    if [[ $ANOSH_SRC == /* ]]; then
-        sed -i "/PATH_HOME/c\PATH_HOME=$ANOSH_SRC" $ANOSH_CONFIG/anosh.conf
-        sed -i "/PATH_DOWN/c\PATH_DOWN=$ANOSH_SRC" $ANOSH_CONFIG/anosh.conf
+    if [[ $ARG_USER -eq 1 ]]; then
+        anosh_remove_user
     fi
+
+    anosh_pre
+    echo "Cloning AnoSH..."
+    git clone $AINST_SRC "${AINST_ROOT}/src"
+    anosh_post $ARG_SHELL
+
+    echo -n "Installed! Running AnoSH"
+    for _ in {1..5}; do
+        sleep .25
+        echo -n "."
+    done
+
+    echo ""
+    exec $SHELL
 fi
-
-if [[ ! -d "$HOME/.config/ash" ]]; then
-    echo "Installing ASH"
-    $SHELL <(curl -sS "https://raw.githubusercontent.com/anonoei/ash-cli/main/install")
-else
-    ash update # make sure ash is up to date
-fi
-
-echo -n "Installed! Running AnoSH"
-for _ in {1..5}; do
-    sleep .25
-    echo -n "."
-done
-
-echo ""
-exec $SHELL
