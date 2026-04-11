@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function _extra_anosh_help {
-    echo "Usage:  $0 COMMAND"
+    echo "Usage:  ash x anonoei/anosh COMMAND"
     echo ""
     echo "Helper for AnoSH"
     echo ""

@@ -15,6 +15,10 @@ if [[ -z $ASH_VERSION ]]; then
     return
 fi
 
+# if [[ "$(ash is_updated)" == "0" ]]; then
+#     echo "AnoSH.main WARN: ash is not up to date. Run ash update"
+# fi
+
 ANOSH_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && cd ../.. && pwd)"
 ash new config "AnoSH" -f "$ANOSH_CONFIG/anosh.conf" -d "$ANOSH_ROOT/src/nix/anosh.conf.defaults"
 ash new log "AnoSH" -l "$(AnoSH_get "LOG_LEVEL")"
@@ -42,8 +46,6 @@ if [[ ! -f "$ANOSH_CONFIG/anosh.conf" ]]; then
     return
 fi
 
-
-
 ANOSH_HOME="$(AnoSH_get "PATH_HOME")"
 AnoSH_trace "main" "Read config PATH_HOME: '${ANOSH_HOME}'"
 ANOSH_DOWN="$(AnoSH_get "PATH_DOWN")"
@@ -52,7 +54,9 @@ ANOSH_INST="$ANOSH_ROOT/src"
 _ANOSH_PATH_COMMON="$ANOSH_INST/nix/common"
 
 # Make sure ash has anosh as an extra
-ash x install $ANOSH_INST/nix/ash 1> /dev/null
+if [[ "$(ash extra is_installed anonoei/anosh)" == "0" ]]; then
+    ash x install $ANOSH_INST/nix/ash
+fi
 
 ANOSH_PLUGS=()
 if [[ -z "$ASH_ROOT" ]]; then
