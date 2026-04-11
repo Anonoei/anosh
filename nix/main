@@ -6,12 +6,22 @@
 # Author: Anonoei (https://github.com/anonoei)
 # Source: https://github.com/anonoei/anosh
 # License: MIT
-ANOSH_VERSION="0.12.6"
+ANOSH_VERSION="0.13.0"
 ANOSH_CONFIG="$HOME/.config/anosh"
 ANOSH_TIMER=$(date +%s%N | cut -b1-13)
 
+if [[ -z $ASH_VERSION ]]; then
+    echo "AnoSH.main ERROR: ash is not installed!"
+    return
+fi
+
+ANOSH_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && cd ../.. && pwd)"
+ash new config "AnoSH" -f "$ANOSH_CONFIG/anosh.conf" -d "$ANOSH_ROOT/src/nix/anosh.conf.defaults"
+ash new log "AnoSH" -l "$(AnoSH_get "LOG_LEVEL")"
+AnoSH_debug "main" "Starting up AnoSH v${ANOSH_VERSION}!"
+
 if [[ $# -eq 0 ]]; then
-    echo "AnoSH.main ERROR: Missing shell!"
+    AnoSH_error "main" "Missing shell"
     echo "  Add your shell to your rc file to use AnoSH."
     return
 fi
@@ -19,7 +29,7 @@ fi
 ANOSH_SHELLS=(bash zsh pwsh)
 
 if [[ ! ${ANOSH_SHELLS[@]} =~ "$1" ]]; then
-    echo "AnoSH.main ERROR: Unknown shell \"$1\""
+    AnoSH_error "main" "Unknown Shell \"$1\""
     echo "  shell must be one of (${ANOSH_SHELLS[@]})"
     echo "  Update your shell in your rc file to use AnoSH."
     return
@@ -27,46 +37,33 @@ fi
 ASH_SHELL=$1
 
 if [[ ! -f "$ANOSH_CONFIG/anosh.conf" ]]; then
-    echo "AnoSH.main ERROR: Failed to find configuration!"
-    echo "  $ANOSH_CONFIG/anosh.conf"
+    AnoSH_warn "main" "Failed to find configuration!"
+    cp "$ANOSH_CONFIG/src/nix/anosh.conf.defaults" "$ANOSH_CONFIG/anosh.conf"
     return
 fi
 
-function anosh_config_read {
-    (grep -E "^${2}=" -m 1 "${1}" 2>/dev/null || echo "VAR=__UNDEFINED__") | head -n 1 | cut -d '=' -f 2-;
-}
 
-function anosh_config_get {
-    val="$(anosh_config_read $ANOSH_CONFIG/anosh.conf "${1}")";
-    if [ "${val}" = "__UNDEFINED__" ]; then
-        val="$(anosh_config_read nix/anosh.conf.defaults "${1}")";
-    fi
-    printf -- "%s" "${val}";
-}
 
-# Initialize AnoSH variables
-ANOSH_ROOT="$(anosh_config_get "PATH_ROOT" | sed 's/~/$HOME/g')"
-ANOSH_ROOT="$(eval echo $ANOSH_ROOT)"
-ANOSH_HOME="$(anosh_config_get "PATH_HOME")"
-ANOSH_DOWN="$(anosh_config_get "PATH_DOWN")"
-
+ANOSH_HOME="$(AnoSH_get "PATH_HOME")"
+AnoSH_trace "main" "Read config PATH_HOME: '${ANOSH_HOME}'"
+ANOSH_DOWN="$(AnoSH_get "PATH_DOWN")"
+AnoSH_trace "main" "Read config PATH_DOWN: '${ANOSH_DOWN}'"
 ANOSH_INST="$ANOSH_ROOT/src"
 _ANOSH_PATH_COMMON="$ANOSH_INST/nix/common"
-
-
-ash log new "AnoSH" -l "WARN"
-AnoSH_debug "main" "Starting up AnoSH v${ANOSH_VERSION}!"
 
 # Make sure ash has anosh as an extra
 ash x install $ANOSH_INST/nix/ash 1> /dev/null
 
 ANOSH_PLUGS=()
-
-ANOSH_DISTRO=$(bash $_ANOSH_PATH_COMMON/scripts/distro)
-
+if [[ -z "$ASH_ROOT" ]]; then
+    source ${HOME}/.local/ash/a.sh
+fi
+if [[ -z "$ASH_PKGMAN" ]]; then
+    ASH_PKGMAN=$(bash $ASH_ROOT/extras.d/pkg.d/pkgman)
+fi
 
 function _anosh_main_source {
-    AnoSH_trace "main" "Sourcing $1"
+    AnoSH_debug "main" "Sourcing $1"
     source $1
 }
 

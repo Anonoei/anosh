@@ -19,18 +19,16 @@
 ## Helper CLI
 Run `ash help` to see commands
 
- - Update AnoSH: `ash update`
- - Reinstall: `ash reinstall`
- - Uninstall: `ash uninstall`
+ - Update AnoSH: `ash x anonoei/anosh update`
+ - Reinstall: `ash x anonoei/anosh reinstall`
+ - Uninstall: `ash x anonoei/anosh uninstall`
 
 
 ## AnoSH plugins
  - [starship](https://starship.rs/) graphical prompt
  - [zoxide](https://github.com/ajeetdsouza/zoxide) modern cd
  - [atuin](https://github.com/atuinsh/atuin) zoxide for command history
- - [cod](https://github.com/dim-an/cod) --help autocompletion
  - [navi](https://github.com/denisidoro/navi) command cheatsheets
- - [xplr](https://github.com/sayanarijit/xplr) tui file explorer
 
 ## AnoSH packages
  - tree
@@ -40,13 +38,13 @@ Run `ash help` to see commands
  - [tldr](https://github.com/tldr-pages/tldr) More concise man pages
  - [btop](https://github.com/aristocratos/btop) Prettier top/htop
  - [fastfetch](https://github.com/fastfetch-cli/fastfetch) new neofetch
- - [eza](https://github.com/eza-community/eza) modern ls
- - [bat](https://github.com/sharkdp/bat) cat with wings
 
 
 ## Other packages
  - [neovim](https://neovim.io/) General text editor
  - [vscode](https://code.visualstudio.com/) IDE
+ - [eza](https://github.com/eza-community/eza) modern ls
+ - [bat](https://github.com/sharkdp/bat) cat with wings
  - [hyperfine](https://github.com/sharkdp/hyperfine) cli benchmakring
  - [pyenv](https://github.com/pyenv/pyenv) Python versioning manager
  - [keepassxc](https://keepassxc.org/) Password manager
@@ -56,6 +54,7 @@ Run `ash help` to see commands
  - [delta](https://github.com/dandavison/delta) syntax-highlighting pager
  - [multitail](https://vanheusden.com/multitail) for better tail
  - [up](https://github.com/akavel/up) interactive pipe creation
+ - [cod](https://github.com/dim-an/cod) --help autocompletion
  - Terminal emulators:
    - [alacritty](https://github.com/alacritty/alacritty)
    - [kitty](https://sw.kovidgoyal.net/kitty/)
@@ -70,3 +69,4 @@ Run `ash help` to see commands
    - [bandwhich](https://github.com/imsnif/bandwhich) bandwidth usage tui
    - [dust](https://github.com/bootandy/dust) df -h and windirstat successor
    - [gping](https://github.com/orf/gping) ping with graph
+   - [xplr](https://github.com/sayanarijit/xplr) tui file explorer

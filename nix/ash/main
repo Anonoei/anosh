@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function _extra_anosh_help {
-    echo "Usage:  anonoei/anosh COMMAND"
+    echo "Usage:  $0 COMMAND"
     echo ""
     echo "Helper for AnoSH"
     echo ""
@@ -12,6 +12,7 @@ function _extra_anosh_help {
         "R|reinstall;reinstall_AnoSH"
         "U|uninstall;uninstall_AnoSH"
         "u|update;update_AnoSH"
+        "s|state;configuration_helper"
         )
     _ash_fmt_help_items "${ash_arg[@]}"
     echo ""
@@ -67,6 +68,17 @@ function _extra_anosh_update {
     exec $ANOSH_SHELL
 }
 
+function _extra_anosh_state {
+    echo "ANOSH_VERSION........$ANOSH_VERSION"
+    echo "ANOSH_CONFIG.........$ANOSH_CONFIG"
+    echo "ANOSH_ROOT...........$ANOSH_ROOT"
+    echo "ANOSH_HOME...........$ANOSH_HOME"
+    echo "ANOSH_DOWN...........$ANOSH_DOWN"
+    echo "ANOSH_INST...........$ANOSH_INST"
+    echo "ANOSH_TIMER..........${ANOSH_TIMER}s"
+    echo "ANOSH_PLUGS..........${ANOSH_PLUGS[*]}"
+}
+
 if [[ $# -eq 0 ]]; then
     _extra_anosh_help
     return
@@ -89,6 +101,9 @@ case $ASH_CMD in
         ;;
     u|update)
         _extra_anosh_update $*
+        ;;
+    s|state)
+        _extra_anosh_state $*
         ;;
     *)
         _ash_fmt_help_unk "anosh" $ASH_CMD $*

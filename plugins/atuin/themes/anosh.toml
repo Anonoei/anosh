@@ -1,0 +1,15 @@
+[theme]
+name = "anosh"
+parent = ""
+debug = true
+
+[colors]
+Base = "#acacac"
+Annotation = "#9c9c9c"
+Muted = "#5c5c5c"
+Guidance = "#236229"
+Important = "#3fcbd8"
+Title = "#dbdbdb"
+AlertInfo = "#bead2d"
+AlertWarn = "#c16834"
+AlertError = "#e54343"

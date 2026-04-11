@@ -1,4 +1,4 @@
-### ---- Starship ---- ###
+# See: https://starship.rs/config/
 scan_timeout = 10
 add_newline = false
 command_timeout = 5000

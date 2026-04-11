@@ -1,8 +1,8 @@
 local all_pkgs
 local all_cmds
 local needed_pkgs
-all_pkgs=(tree tmux fzf trash-cli tldr btop fastfetch eza bat)
-all_cmds=(tree tmux fzf trash tldr btop fastfetch eza bat)
+all_pkgs=(tree tmux fzf trash-cli tldr btop fastfetch)
+all_cmds=(tree tmux fzf trash tldr btop fastfetch)
 needed_pkgs=()
 
 for ((i=0; i<${#all_pkgs[@]}; i++)); do
@@ -20,14 +20,10 @@ done
 AnoSH_trace "common.packages" "Needed packages: '${needed_pkgs[@]}'"
 
 if [[ ! ${#needed_pkgs[@]} -eq 0 ]]; then
-    case $ANOSH_DISTRO in
-        rhel)
+    case $ASH_PKGMAN in
+        pacman)
             ;;
-        arch)
-            ;;
-        MacOS)
-            ;;
-        debian)
+        apt)
             if [[ ${needed_pkgs[@]} =~ "eza" ]]; then
                 sudo mkdir -p /etc/apt/keyrings
                 wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
@@ -43,10 +39,9 @@ if [[ ! ${#needed_pkgs[@]} -eq 0 ]]; then
             fi
             ;;
         *)
-            echo "Unsupported distro: $ANOSH_DISTRO"
+            AnoSH_warn "common.packages" "Unsupported package manager: $ASH_PKGMAN"
             ;;
     esac
-
 
     AnoSH_info "common.packages" "Installing ${needed_pkgs[@]}"
     ash x pkg install ${needed_pkgs[@]}

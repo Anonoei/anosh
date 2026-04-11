@@ -1,0 +1,28 @@
+# See: https://alacritty.org/config-alacritty.html
+[general]
+import = [
+    "~/.config/alacritty/theme-anosh.toml"
+]
+
+[window]
+padding = { x = 0, y = 0 }
+decorations = "Full"
+opacity = 0.9
+blur = true
+dynamic_title = true
+
+[scrolling]
+history = 10000
+
+[font]
+normal = { family = "LiberationMono", style = "Regular" }
+size = 11
+offset = { x = -1, y = 0 }
+
+[colors]
+transparent_background_colors = true
+
+[cursor]
+style = { shape = "Block", blinking = "On" }
+blink_interval = 500
+unfocused_hollow = true
