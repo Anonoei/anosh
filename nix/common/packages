@@ -1,8 +1,8 @@
 local all_pkgs
 local all_cmds
 local needed_pkgs
-all_pkgs=(tree tmux fzf trash-cli tldr btop fastfetch)
-all_cmds=(tree tmux fzf trash tldr btop fastfetch)
+all_pkgs=(tree fzf)
+all_cmds=(tree fzf)
 needed_pkgs=()
 
 for ((i=0; i<${#all_pkgs[@]}; i++)); do

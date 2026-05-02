@@ -32,7 +32,6 @@ alias grep='grep --color=auto'
 # Search running processes
 alias topcpu="/bin/ps -eo pcpu,pid,user,args | sort -k 1 -r | head -10"
 
-
 # Show open ports
 if [ -x "$(command -v netstat)" ]; then
     alias openports='netstat -nape --tcp --udp'
