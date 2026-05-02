@@ -55,13 +55,9 @@ function _extra_anosh_update {
 
     AnoSH_info "ash.common" "Updating from $ANOSH_HOME"
 
-    if [[ ! $ANOSH_HOME == /* ]]; then
-        if [[ ! -z $(git fetch --dry-run) ]]; then
-            git pull
-        fi
-    else
-        rm -rf $ANOSH_INST
-        cp -r $ANOSH_HOME $ANOSH_INST
+    if [[ ! -z $(git fetch --dry-run) ]]; then
+        git pull
+        git checkout origin/main
     fi
 
     cd $old_path
