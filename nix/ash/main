@@ -49,19 +49,27 @@ function _extra_anosh_uninstall {
     exec $ANOSH_SHELL
 }
 
-function _extra_anosh_update {
-    old_path=$PWD
-    cd $ANOSH_INST
+function _extra_anosh_remote_version {
+    local remote=$(curl -sS https://raw.githubusercontent.com/Anonoei/anosh/refs/heads/main/nix//main 2>/dev/null | grep "ANOSH_VERSION" | tail -n 1)
+    local remote="$(echo "$remote" | cut -d'=' -f2)"
+    local remote="${remote:1:-1}"
+    echo "$remote"
+}
 
+function _extra_anosh_update {
     AnoSH_info "ash.common" "Updating from $ANOSH_HOME"
 
-    if [[ ! -z $(git fetch --dry-run) ]]; then
-        git pull
-        git checkout origin/main
-    fi
+    local lver=$ANOSH_VERSION
+    local rver=$(_extra_anosh_remote_version)
+    local is_updated=$(ash is_updated "$lver" "$rver")
 
-    cd $old_path
-    exec $ANOSH_SHELL
+    if [[ $is_updated -eq 0 ]]; then
+        echo "Updating ANOSH from v${lver} to v${rver}!"
+        ash git_update "$ANOSH_INST" "origin/main"
+        exec $ANOSH_SHELL
+    else
+        echo "ANOSH (v${lver}) is up to date."
+    fi
 }
 
 function _extra_anosh_state {
